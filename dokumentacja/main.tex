@@ -1,0 +1,45 @@
+\documentclass[a4paper,12pt]{article}
+
+% Polski język i kodowanie
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+
+% Podstawowe pakiety
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title{Mój pierwszy dokument \LaTeX}
+\author{Jan Kowalski}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Wprowadzenie}
+
+To jest mój pierwszy dokument w systemie \LaTeX.  
+Kompiluję go w Visual Studio Code za pomocą rozszerzenia \textbf{LaTeX Workshop}.
+
+\section{Przykład matematyki}
+
+Prosty wzór kwadratowy:
+\[
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+\]
+
+\section{Lista punktowana}
+
+\begin{itemize}
+    \item Punkt pierwszy
+    \item Punkt drugi
+    \item Punkt trzeci
+\end{itemize}
+
+\section{Odnośnik}
+
+Odwiedź \href{https://www.latex-project.org}{stronę projektu \LaTeX}.
+
+\end{document}
