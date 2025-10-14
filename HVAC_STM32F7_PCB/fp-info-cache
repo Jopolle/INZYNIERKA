@@ -1,4 +1,4 @@
-25597584688839493
+25601105592490494
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -102647,3 +102647,17 @@ SLW-1276864-4A-D_FOOTPRINT
 0
 3
 3
+własne
+STM32F7_DISCO
+Arduino UNO R3, http://www.mouser.com/pdfdocs/Gravitech_Arduino_Nano3_0.pdf
+Arduino UNO R3
+0
+36
+33
+własne
+dac
+
+
+0
+14
+14

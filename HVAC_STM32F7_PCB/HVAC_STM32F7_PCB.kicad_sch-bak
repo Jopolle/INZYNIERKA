@@ -2579,107 +2579,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "power:GNDA"
-			(power)
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "#PWR"
-				(at 0 -6.35 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Value" "GNDA"
-				(at 0 -3.81 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Power symbol creates a global label with name \"GNDA\" , analog ground"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "global power"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "GNDA_0_1"
-				(polyline
-					(pts
-						(xy 0 0) (xy 0 -1.27) (xy 1.27 -1.27) (xy 0 -2.54) (xy -1.27 -1.27) (xy 0 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "GNDA_1_1"
-				(pin power_in line
-					(at 0 0 270)
-					(length 0)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 	)
 	(junction
 		(at 44.45 125.73)
@@ -2716,6 +2615,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "238d7c64-a902-4e0d-8568-a182adf85231")
+	)
+	(junction
+		(at 134.62 77.47)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2e5fe06d-5360-49ed-8912-3e1b521f920f")
 	)
 	(junction
 		(at 68.58 123.19)
@@ -2802,6 +2707,12 @@
 		(uuid "6f373e1e-a663-420a-9a91-b692f495f25e")
 	)
 	(junction
+		(at 152.4 110.49)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "751b0a2f-6bf4-4a5b-85b2-8a1109cc7fcf")
+	)
+	(junction
 		(at 107.95 95.25)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2884,12 +2795,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d4f3f201-b3c9-487a-a21c-2ef1bec6827f")
-	)
-	(junction
-		(at 36.83 176.53)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d78807d3-3a84-4fe7-a04c-062d5749eeb8")
 	)
 	(junction
 		(at 44.45 158.75)
@@ -3406,7 +3311,7 @@
 	)
 	(wire
 		(pts
-			(xy 101.6 77.47) (xy 142.24 77.47)
+			(xy 101.6 77.47) (xy 134.62 77.47)
 		)
 		(stroke
 			(width 0)
@@ -3516,6 +3421,16 @@
 	)
 	(wire
 		(pts
+			(xy 134.62 77.47) (xy 142.24 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5711d690-4666-4363-a732-810e46c61750")
+	)
+	(wire
+		(pts
 			(xy 68.58 107.95) (xy 68.58 113.03)
 		)
 		(stroke
@@ -3573,6 +3488,16 @@
 			(type default)
 		)
 		(uuid "5e7f05ec-5e4c-4792-a5ef-1610682bc28c")
+	)
+	(wire
+		(pts
+			(xy 134.62 77.47) (xy 134.62 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5ebe1c08-7991-492a-8e38-4954aec1cd56")
 	)
 	(wire
 		(pts
@@ -3634,16 +3559,6 @@
 			(type default)
 		)
 		(uuid "65e9aba3-725e-48c3-bc34-881a72cb5c87")
-	)
-	(wire
-		(pts
-			(xy 36.83 176.53) (xy 44.45 176.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "66011aa7-c892-431a-9a6c-98d50359fe67")
 	)
 	(wire
 		(pts
@@ -3859,6 +3774,16 @@
 	)
 	(wire
 		(pts
+			(xy 134.62 110.49) (xy 152.4 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8e498fa9-6c79-485a-9999-21bf5275d4d1")
+	)
+	(wire
+		(pts
 			(xy 33.02 77.47) (xy 44.45 77.47)
 		)
 		(stroke
@@ -4029,7 +3954,7 @@
 	)
 	(wire
 		(pts
-			(xy 33.02 176.53) (xy 36.83 176.53)
+			(xy 33.02 176.53) (xy 44.45 176.53)
 		)
 		(stroke
 			(width 0)
@@ -4614,72 +4539,6 @@
 				)
 				(justify left)
 				(hide yes)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDA")
-		(at 36.83 176.53 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "0f5ed474-727c-4399-8fb1-2a5fb426e8e4")
-		(property "Reference" "#PWR041"
-			(at 36.83 182.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GNDA"
-			(at 36.83 181.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 36.83 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 36.83 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GNDA\" , analog ground"
-			(at 36.83 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "04b4911a-3d88-4147-8526-f505371380a7")
-		)
-		(instances
-			(project ""
-				(path "/79f65717-d4aa-4d9b-9389-67dd3cbc0c4f"
-					(reference "#PWR041")
-					(unit 1)
-				)
 			)
 		)
 	)
@@ -5866,7 +5725,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "własne:STM32F7_DISCO"
+		(property "Footprint" "własne_foot:STM32F7_DISCO"
 			(at 125.476 44.704 0)
 			(effects
 				(font
