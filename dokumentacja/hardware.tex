@@ -1,0 +1,16 @@
+\section{Projekt części sprzętowej}
+\subsection{Zestaw bazowy}
+Użyto zestawu STM32F746G-Discovery z wyświetlaczem TFT
+\subsection{Tor pomiarowy 0–10 V}
+Opis idei: dzielnik wejściowy, ochrona ESD, filtr RC antyaliasing, bufor operacyjny o niskim prądzie biasu,
+dopasowanie do ADC MCU lub zewnętrznego ADC (jeśli w schemacie). Wstaw tutaj referencje do konkretnych wzmacniaczy/oporników z BOM.
+
+\subsection{Tor wyjściowy 0–10 V}
+Opis: DAC (wewnętrzny z wzmacniaczem/zewnętrzny), wzmacniacz operacyjny w konfiguracji nieodwracającej,
+zasilanie symetryczne/podwyższające jeśli wymagane, ograniczenie prądowe, filtr wyjściowy. Podmień TODO na rzeczywiste MPN.
+
+\subsection{Zasilanie i separacja}
+Regulatory LDO/DC-DC, separacja AGND/DGND, gwiazda masy, ekranowanie przewodów pomiarowych.
+
+\subsection{PCB i testy}
+Reguły DRC, szerokości ścieżek, pętle masy. Zrzuty z KiCada (\texttt{figures/}).

@@ -9,37 +9,46 @@
 \usepackage{amsmath, amssymb}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{lmodern}
+\usepackage{csquotes}
+ \usepackage{siunitx}
+ \sisetup{per-mode=symbol,detect-all}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[backend=bibtex,style=numeric,sortcites,sorting=nty,backref,natbib,hyperref]{biblatex}
 
-\title{Mój pierwszy dokument \LaTeX}
-\author{Jan Kowalski}
+\addbibresource{bibliografia.bib}
+
+
+
+
+\title{Projekt stanowiska pomiarowego podstawowych wielkości fizycznych wykorzystywanych w systemach HVAC
+\\\large w oparciu o zestaw STM32F746G-Discovery z wyświetlaczem TFT}
+\author{Imię Nazwisko}
 \date{\today}
 
 \begin{document}
-
 \maketitle
 
-\section{Wprowadzenie}
+\input{abstract}
 
-To jest mój pierwszy dokument w systemie \LaTeX.  
-Kompiluję go w Visual Studio Code za pomocą rozszerzenia \textbf{LaTeX Workshop}.
+\tableofcontents
 
-\section{Przykład matematyki}
+\input{intro}
+\input{state_of_art}
+\input{requirements}
+\input{hardware}
+\input{software}
+\input{validation}
 
-Prosty wzór kwadratowy:
-\[
-x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
-\]
+\cite{Analog_0_10V_Guideline}
 
-\section{Lista punktowana}
 
-\begin{itemize}
-    \item Punkt pierwszy
-    \item Punkt drugi
-    \item Punkt trzeci
-\end{itemize}
 
-\section{Odnośnik}
-
-Odwiedź \href{https://www.latex-project.org}{stronę projektu \LaTeX}.
-
+\printbibliography
 \end{document}
