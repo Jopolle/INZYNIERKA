@@ -1,16 +1,29 @@
 \section{Projekt części sprzętowej}
-\subsection{Zestaw bazowy}
-Użyto zestawu STM32F746G-Discovery z wyświetlaczem TFT
-\subsection{Tor pomiarowy 0–10 V}
-Opis idei: dzielnik wejściowy, ochrona ESD, filtr RC antyaliasing, bufor operacyjny o niskim prądzie biasu,
-dopasowanie do ADC MCU lub zewnętrznego ADC (jeśli w schemacie). Wstaw tutaj referencje do konkretnych wzmacniaczy/oporników z BOM.
+
+\label{sec:wymagania-sprzetowe-przeglad}
+\subsection{Wymagania sprzętowe — przegląd}
+\label{sec:wymagania-sprzetowe-przeglad}
+
+Projektowana płytka stanowi jedną, spójną platformę do pomiaru i generacji sygnałów 0--10~V w aplikacjach HVAC, współpracującą z zestawem uruchomieniowym wyposażonym w m.in. MCU STM32F7 i panel TFT. Od strony zasilania przewidziano wejście instalacyjne DC z podstawowym torem ochronnym (odwrotna polaryzacja, przepięcia, wstępna filtracja), następnie podział zasilania na osobne gałęzie dla części cyfrowej, analogowej i elementów interfejsowych. Taki układ zmniejsza wpływ zakłóceń na pomiary i stabilizuje pracę torów. Interfejs do świata zewnętrznego obejmuje wejścia 0--10~V przygotowane do bezpiecznego próbkowania przez ADC (buforowanie i prosta filtracja antyaliasingowa) oraz wyjścia 0--10~V realizowane przez DAC i wzmacniacze operacyjne. Warstwa analogowa jest topologicznie oddzielona od cyfrowej (kontrolowane powroty prądowe, wydzielone obszary masy, filtry na przejściach między domenami), co ogranicza przesłuchy i dryft.
+
+
+\subsection{Moduł zasilania}
+
+Układ zasilania płytki został zaprojektowany tak, aby bezpiecznie przyjąć instalacyjne napięcie stałe (do ok.~24~V, por.\ schemat) i rozdzielić je na dwie stabilne linie: \mbox{+5~V} oraz \mbox{+3{,}3~V}. Na wejściu zastosowano gniazdo \textbf{J1} (DC~jack 5{,}5\,$\times$\,2{,}1~mm), za którym znajduje się polimerowy bezpiecznik samoresetujący \textbf{F1} (PPTC~1{,}1~A/30~V) pełniący rolę zabezpieczenia nadprądowego. Dodatkowo tranzystor \textbf{Q1} (PMOS \textit{IRLML9301}) w układzie ``idealnej diody'' realizuje ochronę przed odwrotną polaryzacją zasilania; rezystory \textbf{R5}/\textbf{R4} formują dzielnik i sterowanie bramki. Równolegle do toru wejściowego umieszczono diodę TVS \textbf{D3} (SMBJ33A) tłumiącą przepięcia oraz diodę \textbf{D4} (SOD323) do szybkiego klampowania krótkich impulsów. Włącznik \textbf{SW1} odcina cały moduł zasilania, a wskaźnik \textbf{D5} z rezystorem \textbf{R14} sygnalizuje obecność napięcia po stronie ``\emph{po włączeniu}''.
+\newline
+Za sekcją ochronną znajduje się wstępna filtracja: dławik \textbf{L3} (33~\textmu H) oraz kondensatory \textbf{C15} (100~\textmu F/63~V), \textbf{C26} (100~nF), \textbf{C27} (47~\textmu F) i \textbf{C16} (1~\textmu F) ograniczają wahania napięcia i szpilki prądowe ładujące przetwornice. Dodatkowy koralik ferrytowy \textbf{FB1} poprawia tłumienie zakłóceń o wyższych częstotliwościach, izolując domenę wejściową od przetworników DC/DC obniżających napięcie.
+\newline
+Konwersję napięcia realizują dwie niezależne przetwornice obniżające z rodziny \textit{LM2596S}. Układ \textbf{U1} (\textit{LM2596S--5}) generuje linię \mbox{+5~V}; w jego torze znajdują się: dławik \textbf{L2} (33~\textmu H), dioda Schottky’ego \textbf{D1} (SK56) oraz kondensatory wejściowe \textbf{C2} (100~\textmu F/63~V) i \textbf{C1} (470~nF) oraz wyjściowe \textbf{C4}/\textbf{C3}. Analogicznie \textbf{U2} (\textit{LM2596S--3{,}3}) dostarcza \mbox{+3{,}3~V} z użyciem dławika \textbf{L1} (68~\textmu H), diody \textbf{D2} (SK56) oraz zestawu kondensatorów \textbf{C5}, \textbf{C6} po stronie wejściowej i \textbf{C7}, \textbf{C8} po stronie wyjściowej. Dobór elementów został wykonany w zgodności z zaleceniami producenta przetwornic. Wspólny punkt masy prowadzony jest od strony wejściowej, a rozdział linii \mbox{+5~V} i \mbox{+3{,}3~V} pozwala zasilać oddzielnie część cyfrową, analogową i interfejsową, co ogranicza przesłuchy i wrażliwość torów pomiarowych.
+
+Stan szyn wyjściowych jest sygnalizowany diodami LED: \textbf{D7} (\mbox{+5~V}) z rezystorem \textbf{R16} oraz \textbf{D6} (\mbox{+3{,}3~V}) z rezystorem \textbf{R15}. Na schemacie umieszczono również znaczniki \texttt{PWR\_FLAG}, ułatwiające kontrolę ciągów zasilania w~narzędziu CAD i jednoznacznie wskazujące punkty dystrybucji energii na płytce. Całość tworzy spójny, warstwowy tor: \emph{wejście i zabezpieczenia $\rightarrow$ filtracja wstępna $\rightarrow$ konwersja \mbox{+5~V}/\mbox{+3{,}3~V} $\rightarrow$ dystrybucja i sygnalizacja}, co przekłada się na stabilną pracę układu w warunkach typowych dla instalacji HVAC.
+
+
+
 
 \subsection{Tor wyjściowy 0–10 V}
 Opis: DAC (wewnętrzny z wzmacniaczem/zewnętrzny), wzmacniacz operacyjny w konfiguracji nieodwracającej,
 zasilanie symetryczne/podwyższające jeśli wymagane, ograniczenie prądowe, filtr wyjściowy. Podmień TODO na rzeczywiste MPN.
 
-\subsection{Zasilanie i separacja}
-Regulatory LDO/DC-DC, separacja AGND/DGND, gwiazda masy, ekranowanie przewodów pomiarowych.
 
 \subsection{PCB i testy}
 Reguły DRC, szerokości ścieżek, pętle masy. Zrzuty z KiCada (\texttt{figures/}).
