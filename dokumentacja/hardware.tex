@@ -2,7 +2,6 @@
 
 \label{sec:wymagania-sprzetowe-przeglad}
 \subsection{Wymagania sprzętowe — przegląd}
-\label{sec:wymagania-sprzetowe-przeglad}
 
 Projektowana płytka stanowi jedną, spójną platformę do pomiaru i generacji sygnałów 0--10~V w aplikacjach HVAC, współpracującą z zestawem uruchomieniowym wyposażonym w m.in. MCU STM32F7 i panel TFT. Od strony zasilania przewidziano wejście instalacyjne DC z podstawowym torem ochronnym (odwrotna polaryzacja, przepięcia, wstępna filtracja), następnie podział zasilania na osobne gałęzie dla części cyfrowej, analogowej i elementów interfejsowych. Taki układ zmniejsza wpływ zakłóceń na pomiary i stabilizuje pracę torów. Interfejs do świata zewnętrznego obejmuje wejścia 0--10~V przygotowane do bezpiecznego próbkowania przez ADC (buforowanie i prosta filtracja antyaliasingowa) oraz wyjścia 0--10~V realizowane przez DAC i wzmacniacze operacyjne. Warstwa analogowa jest topologicznie oddzielona od cyfrowej (kontrolowane powroty prądowe, wydzielone obszary masy, filtry na przejściach między domenami), co ogranicza przesłuchy i dryft.
 
@@ -25,11 +24,15 @@ Stan szyn wyjściowych jest sygnalizowany diodami LED: \textbf{D7} (\mbox{+5~V})
 
 Tor wyjściowy generujący sygnały \mbox{0--10~V} oparto na ośmiokanałowym przetworniku cyfrowo–analogowym \textbf{U3} (\textit{DAC7568IAPW}) współpracującym z dwoma czterokanałowymi wzmacniaczami operacyjnymi \textbf{U5} i \textbf{U6} (\textit{TLV9304xPW}). DAC zasilany jest z linii \mbox{+3{,}3~V}, a komunikację z STM32 discovery realizuje przez interfejs SPI wykluczając przewód \texttt{DOUT/MISO}. Wyprowadzenie \texttt{VREFIN/VREFOUT} służy do ustalenia napięcia referencyjnego, a wszystkie masy części analogowej prowadzone są do \texttt{GNDA} (\texttt{GND} ale po prostej filtracji dla czystego sygnału wyjściowego). Kondensator \textbf{C17} (\mbox{150~nF}) umieszczono możliwie blisko zgodnie z zaleceniami producenta przy używaniu wewnętrznego napięcia referencyjnego (TUTAJ CYTAT NOTY KATALOGOWEJ GAMONIU).
 
+\paragraph{Filtracja sygnału analogowego}
+
 Każdy z ośmiu kanałów \texttt{VOUTA}--\texttt{VOUTH} jest dalej kształtowany przez prosty filtr dolnoprzepustowy RC na wejściu wzmacniacza: rezystor szeregowy (\textbf{R8}, \textbf{R9}, \textbf{R11}--\textbf{R13}, \textbf{R6}, \textbf{R7}, \textbf{R10}, \(3{,}3\,\mathrm{k}\Omega\)) oraz kondensator do masy (\textbf{C18}, \textbf{C21}--\textbf{C25}, \(1\,\mu\mathrm{F}\)). Wyznacza to częstotliwość odcięcia rzędu
 \[
 f_c \approx \frac{1}{2\pi R C} \approx \frac{1}{2\pi \cdot 3{,}3\ \mathrm{k}\Omega \cdot 1\ \mu\mathrm{F}} \approx 48\ \mathrm{Hz},
 \]
 co skutecznie powinno tłumić szum i poszarpanie przebiegu pochodzące z aktualizacji DAC, a jednocześnie jest wystarczająco szybkie dla aplikacji HVAC.
+
+\paragraph{Skalowanie sygnału do zakresów \mbox{0--10~V}}
 
 Wzmacniacze \textbf{U5A}--\textbf{U5D} oraz \textbf{U6A}--\textbf{U6D} pracują w konfiguracji nieodwracającej i są zasilane bezpośrednio z linii \mbox{+24~V}, co zapewnia odpowiedni zapas napięciowy dla wyjść \mbox{0--10~V}. Dla każdego kanału zastosowano identyczną sieć sprzężenia zwrotnego: rezystor do masy (\textbf{RG1}/\textbf{RG2}/\dots/\textbf{RG8}, \(10\,\mathrm{k}\Omega\)) oraz rezystor w pętli sprzężenia (\textbf{RF1}/\textbf{RF2}/\dots/\textbf{RF8}, \(30\,\mathrm{k}\Omega\)). Wzmocnienie napięciowe pojedynczego toru wynosi więc
 \[
@@ -40,3 +43,28 @@ co przy referencji DAC rzędu \mbox{2{,}5~V} pozwala uzyskać zakres \mbox{0--10
 Wyjścia poszczególnych wzmacniaczy są wyprowadzone na uniwersalne złącza \textbf{J6}--\textbf{J13}. Każde złącze udostępnia linię sygnałową \mbox{0--10~V}, odniesienie \texttt{SG} (\emph{signal ground}) oraz pin \texttt{SHIELD} przeznaczony do ekranowania przewodów.
 
 Cały tor wyjściowy ma zatem strukturę:\newline \emph{STM32 $\rightarrow$ DAC $\rightarrow$ filtr RC  $\rightarrow$ wzmacniacz nieodwracający \texttt{x4} $\rightarrow$ złącze sygnałowe z ekranem}.
+
+
+\subsection{Tor wejściowy \texorpdfstring{0--10\,V}{0–10 V}: interfejs pomiarowy}
+
+Tor wejściowy odpowiada za obłużenie czujników przemysłowych (pasywnych i aktywnych) i bezpieczne doprowadzenie sygnałów \mbox{0--10~V} do przetwornicy A/C \texttt{ADS8688}. Sygnał cyfrowy \emph{SPI} następnie jest doprowadzany na \emph{GPIO} mikrokontrolera.
+
+
+\paragraph{Wejście pseudo-różnicowe i powroty sygnałowe}
+Linia \texttt{SIG} każdego złącza jest prowadzona bezpośrednio do odpowiedniego pinu wejścia przetwornika (AIN\_xP), natomiast odpowiadający jej pin \texttt{SG} trafia do przypisanego ujemnego wejścia odniesienia kanału (AIN\_xGND). Taka topologia kompensuje spadki i przesłuchy na przewodzie powrotnym oraz poprawia odporność na zakłócenia, co jest kluczowe przy dłuższych odcinkach okablowania. W torze nie stosuje się zewnętrznych dzielników ani filtrów antyaliasingowych — skalowanie i zabezpieczenie wejść realizuje wewnętrzny front-end ADC (rezystorowa sieć wejściowa, przełączane zakresy).
+
+\paragraph{Ekranowanie i separacja mas}
+Piny \texttt{SHIELD} wszystkich wejść są połączone do wspólnego ekranu wylanego pod ścieżkami sygnału i dociążonego względem masy przez tłumik \(\mathrm{RC}\): rezystor \textbf{R2} \(=\) \(1\,\mathrm{M}\Omega\) równolegle z kondensatorem \textbf{C11} \(=\) \(10\,\mathrm{nF}\) (\texttt{GNDA}~\(\rightarrow\)~\texttt{GND}). Zapewnia to upływ ładunków statycznych i tłumienie składowych o wysokiej częstotliwości, a jednocześnie ogranicza prądy pętli masy i chroni ekran przed "brudną" masą cyfrową.
+
+\paragraph{Zasilanie i interfejs cyfrowy ADC}
+Część analogowa układu zasilana jest z \mbox{+5\,V} (filtracja \textbf{C9} \(1\,\mu\mathrm{F}\) blisko pinów zasilania), a część cyfrowa z \mbox{+3{,}3\,V} (filtracja \textbf{C10} \(10\,\mu\mathrm{F}\)). Linia \texttt{RST/PD} jest podciągana przez rezystor \(\sim\)\(10\,\mathrm{k}\Omega\) do \mbox{+3{,}3\,V} i może być sterowana z MCU. Komunikacja odbywa się po \texttt{SPI}: \texttt{SDO}, \texttt{SDI}, \texttt{SCLK}, \texttt{CS}.
+
+\paragraph{Odniesienie napięciowe}
+Wykorzystano wewnętrzną referencję przetwornika: wyprowadzenia \texttt{REFCAP}/\texttt{REFIO}/\texttt{REFGND} są odsprzęgnięte kondensatorami klasy X7R (\textbf{C11X7R} \(1\,\mu\mathrm{F}\) pomiędzy \texttt{REFCAP} i \texttt{REFGND} oraz \textbf{C12}, \textbf{C13} po \(1\,\mu\mathrm{F}\) przy \texttt{REFIO}), zgodnie z zaleceniami producenta dla uzyskania niskoszumowego, stabilnego odniesienia.
+
+\paragraph{Zasilanie czujników w polu}
+Na pin \texttt{+V} każdego złącza doprowadzono \mbox{+24\,V} z magistrali instalacyjnej — umożliwia to zasilanie zewnętrznych przetworników/wyjść \mbox{0--10\,V} bez dodatkowych przewodów. Linie \texttt{+24\,V} nie są wprowadzane do ADC; pełnią wyłącznie funkcję zasilającą urządzenia polowe.
+
+\paragraph{Podsumowanie ścieżki sygnału}
+\emph{Złącze (SIG, SG, SHIELD, +24\,V) \(\rightarrow\) wejście pseudo-różnicowe \texttt{AIN\_xP}/\texttt{AIN\_xGND} \(\rightarrow\) wewnętrzny front-end i multiplekser ADC \(\rightarrow\) konwersja SAR z referencją wewnętrzną \(\rightarrow\) interfejs \texttt{SPI}.} Rozwiązanie minimalizuje liczbę elementów analogowych na płytce, a jednocześnie zwiększa odporność EMC dzięki osobnym powrotom \texttt{SG} dla każdego kanału oraz kontrolowanemu połączeniu ekranów z masą przez \(R\parallel C\).
+

@@ -1,0 +1,33 @@
+\section{Firmware}
+Opis i rozważania metod budowy oprogramowania i samego firmware-u mikrokontrolera odpowiedzialnego za kompletną logikę rozwiązania projeku. 
+
+
+\subsection{Wybór środowiska uruchomieniowego}
+
+Projekt wymaga równoległego i deterministycznego wykonywania kilku zadań: odświeżania interfejsu HMI na TFT, akwizycji i filtracji pomiarów, generacji sygnałów \mbox{0--10~V} (SPI do DAC) oraz obsługi komunikacji i diagnostyki. Z tych powodów wybrano \textbf{Zephyr RTOS} z wbudowaną integracją \textbf{LVGL} jako główne środowisko uruchomieniowe.
+
+\paragraph{Dlaczego Zephyr + LVGL?}%
+\begin{itemize}
+  \item \textbf{Deterministyczny kernel i prosty model współbieżności} Wątki o priorytetach, workqueue, przerwania i timery wysokiej rozdzielczości umożliwiają wydzielenie zadań: wątku interfejsu, wątku przetwarzania oraz wątku komunikacji ze sprzętem. Tryb \emph{tickless} ogranicza narzut czasowy, a jednocześnie pozwala utrzymać stałe okresy odświeżania UI.
+  \item \textbf{Spójny ekosystem sterowników i konfiguracji} Standardowe API (SPI, I\textsuperscript{2}C, ADC, DAC\;/\;PWM, GPIO, DMA) oraz konfiguracja sprzętu przez \texttt{DeviceTree} i \texttt{Kconfig} redukują ilość kodu klejącego do minimum. Dla mikrokontrolerów STM32 dostępne są gotowe warstwy abstrakcji oraz integracja z biblioteką HAL, co znacząco przyspiesza uruchomienie peryferiów (np.\ SPI dla zewnętrznych przetwornic).
+  \item \textbf{Prosta integracja z LVGL} Zephyr dostarcza oficjalny subsystem \texttt{LVGL} (obsługa zegara tick, wątku renderującego, pamięci i sterowników wyświetlaczy/wejść). Konfiguracja odbywa się parami \texttt{Kconfig}+\texttt{DeviceTree} (bufory, \emph{flush callback}, wejście dotykowe), dzięki czemu UI działa stabilnie bez ręcznego sklejania sterowników.
+  \item \textbf{Narzędzia deweloperskie} Jednolity system budowania (\texttt{CMake}+\texttt{west}), logger, konsola shell, persistent settings (NVS), systemy plików (FAT/LittleFS), testy (\texttt{twister}) oraz bogate przykłady ułatwiają utrzymanie i automatyzację. 
+  \item \textbf{Skalowalność i przyszła rozbudowa.} W razie potrzeby dostępne są stosy sieciowe (Ethernet, BLE, IP) i bootloader \texttt{MCUboot}.
+  \item \textbf{Licencja i wsparcie.} Zephyr (\texttt{Apache-2.0}) i LVGL (\texttt{MIT}) mają dojrzałe, permisywne licencje oraz aktywne społeczności, co sprzyja długoterminowemu utrzymaniu.
+\end{itemize}
+
+\paragraph{Porównanie z podejściem bare–metal}%
+\begin{itemize}
+  \item \textbf{Koszt wytworzenia i ryzyko} W bare–metal należałoby samodzielnie zaimplementować harmonogram zadań, synchronizację, wieloźródłowe timery, kolejki zdarzeń oraz integrację z DMA i przerwaniami. To zwiększa złożoność, czas prac i ryzyko błędów w sytuacjach granicznych (priorytety przerwań, zakleszczenia, jitter czasów odświeżania).
+  \item \textbf{Utrzymywalność} Każda zmiana sprzętu lub peryferiów wymaga przeróbek w wielu miejscach. Brak standaryzowanego \texttt{DeviceTree}/\texttt{Kconfig} utrudnia przenoszenie konfiguracji i automatyzację budowania.
+\end{itemize}
+
+\paragraph{Porównanie z FreeRTOS i innymi RTOS.}%
+\begin{itemize}
+  \item \textbf{Zakres projektu} FreeRTOS dostarcza głównie kernel; większość elementów ekosystemu (sterowniki, pliki, logowanie, sieć, integracja z LVGL) trzeba dobierać i łączyć samodzielnie. W Zephyrze te klocki są spójne i utrzymywane w jednym repozytorium z jednolitym API.
+  \item \textbf{Konfiguracja i portowalność} Zephyrowe \texttt{DeviceTree} i \texttt{Kconfig} zapewniają powtarzalną konfigurację sprzętu i budowy na różnych płytkach. W FreeRTOS typowo używa się mieszanki plików \texttt{board support} i skryptów producenta, co zwiększa różnice między platformami.
+  \item \textbf{Integracja LVGL} Zarówno FreeRTOS, jak i Zephyr mogą uruchomić LVGL, ale w FreeRTOS wymaga to ręcznego spięcia \emph{tick}, zadań, sterowników wyświetlacza i wejść. W Zephyrze LVGL jest pierwszoplanowym komponentem z gotowymi opcjami \texttt{Kconfig} i przykładowymi driverami. Co znacząco ułatwia opanowanie narzędzia i implementacje rozwiązania.
+  \item \textbf{Utrzymanie i testy} Zephyr oferuje ustandaryzowane narzędzia CI/testów (\texttt{twister}), \texttt{west} do zarządzania modułami i bogaty katalog przykładów, w tym z integracją LVGL. 
+\end{itemize}
+
+\paragraph{Konkluzja.} Z perspektywy wymagań projektu (stabilne odświeżanie UI, deterministyczna akwizycja i generacja sygnałów, szybkie uruchomienie peryferiów, łatwa rozbudowa) wybór \textbf{Zephyr~RTOS + LVGL} minimalizuje ilość kodu specyficznego dla sprzętu, skraca czas integracji i zmniejsza ryzyko błędów \emph{czasowych}. W porównaniu z bare–metal oraz z kernelami pokroju FreeRTOS, Zephyr dostarcza pełniejszy, spójny ekosystem, który lepiej wspiera zarówno bieżące wymagania, jak i przyszłe rozszerzenia projektu.
