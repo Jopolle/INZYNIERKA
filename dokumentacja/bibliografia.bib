@@ -22,6 +22,14 @@
   note         = {RTOS użyty w projekcie}
 }
 
+@manual{LVGLDocs,
+  title        = {LVGL v9 Documentation},
+  organization = {LVGL LLC},
+  year         = {2024},
+  url          = {https://docs.lvgl.io/latest/},
+  note         = {Biblioteka GUI dla interfejsu użytkownika}
+}
+
 @manual{KiCadDocs,
   title        = {KiCad Eeschema — Generating Outputs (BOM)},
   organization = {KiCad Project},
@@ -36,62 +44,52 @@
   note         = {}
 }
 
-@manual{TODO_OpAmp_Buffer,
-  title        = {TODO: Op-amp (np. rail-to-rail, low bias) — datasheet},
-  author       = {TODO: Manufacturer},
-  year         = {TODO},
-  url          = {https://...},
-  note         = {Bufor/driver toru 0–10 V}
+@manual{TI_TLV9304,
+  title        = {TLVx9304 Low-Noise, Rail-to-Rail Output Operational Amplifiers},
+  organization = {Texas Instruments},
+  year         = {2023},
+  url          = {https://www.ti.com/lit/ds/symlink/tlv9304.pdf},
+  note         = {Bufor analogowy U5, U6}
 }
 
-@manual{TODO_ADC_External,
-  title        = {TODO: Zewnętrzny ADC (jeśli użyty) — datasheet},
-  author       = {TODO: Manufacturer},
-  year         = {TODO},
-  url          = {https://...}
+@manual{TI_ADS8688,
+  title        = {ADS8688 12-Bit, 500-kSPS, 8-Channel Data Acquisition System},
+  organization = {Texas Instruments},
+  year         = {2021},
+  url          = {https://www.ti.com/lit/ds/symlink/ads8688.pdf},
+  note         = {Zewnętrzny ADC U7}
 }
 
-@manual{TODO_DAC_External,
-  title        = {TODO: Zewnętrzny DAC (jeśli użyty) — datasheet},
-  author       = {TODO: Manufacturer},
-  year         = {TODO},
-  url          = {https://...}
+@manual{TI_DAC7568,
+  title        = {DAC7568 12-Bit, Octal, Buffered Voltage Output DAC},
+  organization = {Texas Instruments},
+  year         = {2017},
+  url          = {https://www.ti.com/lit/ds/symlink/dac7568.pdf},
+  note         = {Zewnętrzny DAC U3}
 }
 
-@manual{TODO_TouchController,
-  title        = {TODO: Kontroler dotyku TFT — datasheet},
-  author       = {TODO: Manufacturer},
-  year         = {TODO},
-  url          = {https://...}
+@manual{TI_LM2596,
+  title        = {LM2596 SIMPLE SWITCHER 3-A Step-Down Voltage Regulator},
+  organization = {Texas Instruments},
+  year         = {2020},
+  url          = {https://www.ti.com/lit/ds/symlink/lm2596.pdf},
+  note         = {Regulatory zasilania U1 (5 V) i U2 (3.3 V)}
 }
 
-@manual{TODO_Regulators,
-  title        = {TODO: Regulator(y) zasilania — datasheet},
-  author       = {TODO: Manufacturer},
-  year         = {TODO},
-  url          = {https://...}
+@manual{Infineon_IRLML9301,
+  title        = {IRLML9301 Logic Level N-Channel MOSFET},
+  organization = {Infineon Technologies},
+  year         = {2016},
+  url          = {https://www.infineon.com/dgdl/irlml9301.pdf?fileId=5546d462533600a401535668d5c2263c},
+  note         = {Element Q1 sterujący wyjściami}
 }
 
-@manual{TODO_Protection_ESD_TVS,
-  title        = {TODO: Dioda TVS/ESD — datasheet},
-  author       = {TODO: Manufacturer},
-  year         = {TODO},
-  url          = {https://...}
+@manual{Littelfuse_SMBJ33A,
+  title        = {SMBJ Series Transient Voltage Suppressor Diodes},
+  organization = {Littelfuse},
+  year         = {2018},
+  url          = {https://www.littelfuse.com/~/media/electronics/datasheets/tvs_diode_smbj_series/littelfuse_tvs_diode_smbj_datasheet.pdf},
+  note         = {Ochrona przepięciowa D3 (33 V)}
 }
 
-@manual{TODO_Sensors_Temp_RH_Pressure_Flow,
-  title        = {TODO: Czujnik(i) temperatury/wilgotności/ciśnienia/przepływu — datasheet},
-  author       = {TODO: Manufacturer},
-  year         = {TODO},
-  url          = {https://...},
-  note         = {Wstaw osobne rekordy, np. SHT3x, BME280, MPX5010, itp., zgodnie z BOM}
-}
 
-% --- PUBLIKACJE POMOCNICZE (opcjonalnie) ---
-@article{HVAC_Sensor_Survey,
-  author  = {Autor, A. and Autor, B.},
-  title   = {Review of Low-Cost Sensors for HVAC Monitoring and Control},
-  journal = {Journal of Building Engineering},
-  year    = {2021},
-  note    = {TBA}
-}
