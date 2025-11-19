@@ -3501,7 +3501,7 @@
 	)
 	(wire
 		(pts
-			(xy 165.1 69.85) (xy 165.1 76.2)
+			(xy 165.1 66.04) (xy 165.1 76.2)
 		)
 		(stroke
 			(width 0)
@@ -3751,7 +3751,7 @@
 	)
 	(wire
 		(pts
-			(xy 165.1 69.85) (xy 172.72 69.85)
+			(xy 165.1 66.04) (xy 153.67 66.04)
 		)
 		(stroke
 			(width 0)
@@ -5558,7 +5558,7 @@
 				)
 			)
 		)
-		(property "Value" "SLW-1276864-4A-D"
+		(property "Value" "ON/OFF"
 			(at 101.6 72.39 0)
 			(effects
 				(font
@@ -6647,7 +6647,7 @@
 	)
 	(symbol
 		(lib_id "power:+24V")
-		(at 172.72 69.85 0)
+		(at 153.67 66.04 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6656,7 +6656,7 @@
 		(fields_autoplaced yes)
 		(uuid "aa36abcc-7bad-4a3d-a40c-a0bcc812f022")
 		(property "Reference" "#PWR011"
-			(at 172.72 73.66 0)
+			(at 153.67 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6665,7 +6665,7 @@
 			)
 		)
 		(property "Value" "+24V"
-			(at 172.72 64.77 0)
+			(at 153.67 60.96 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6673,7 +6673,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 172.72 69.85 0)
+			(at 153.67 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6682,7 +6682,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 172.72 69.85 0)
+			(at 153.67 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6691,7 +6691,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+24V\""
-			(at 172.72 69.85 0)
+			(at 153.67 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7061,7 +7061,7 @@
 				)
 			)
 		)
-		(property "Value" "Ferrite Bead 1210"
+		(property "Value" "Ferrite"
 			(at 155.956 81.788 90)
 			(effects
 				(font
@@ -7087,7 +7087,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Ferrite bead"
+		(property "Description" "Ferrite Bead 1210"
 			(at 154.94 76.2 0)
 			(effects
 				(font
