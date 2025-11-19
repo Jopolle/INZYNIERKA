@@ -5558,7 +5558,7 @@
 				)
 			)
 		)
-		(property "Value" "SLW-1276864-4A-D"
+		(property "Value" "ON/OFF"
 			(at 101.6 72.39 0)
 			(effects
 				(font
@@ -7061,7 +7061,7 @@
 				)
 			)
 		)
-		(property "Value" "Ferrite Bead 1210"
+		(property "Value" "Ferrite"
 			(at 155.956 81.788 90)
 			(effects
 				(font
@@ -7087,7 +7087,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Ferrite bead"
+		(property "Description" "Ferrite Bead 1210"
 			(at 154.94 76.2 0)
 			(effects
 				(font
