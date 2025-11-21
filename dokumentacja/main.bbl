@@ -3,8 +3,8 @@
 % Do not modify the above lines!
 %
 % This is an auxiliary file used by the 'biblatex' package.
-% This file may safely be deleted. It will be recreated as
-% required.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
 %
 \begingroup
 \makeatletter
@@ -16,147 +16,168 @@
   {}
 \endgroup
 
-\datalist[entry]{nty/global//global/global}
-  \entry{TI_ADS8688}{manual}{}
-    \list{organization}{1}{%
-      {Texas Instruments}%
-    }
-    \field{labeltitlesource}{title}
-    \field{sortinit}{A}
-    \field{sortinithash}{A}
-    \field{note}{Zewnętrzny ADC U7}
-    \field{title}{ADS8688 12-Bit, 500-kSPS, 8-Channel Data Acquisition System}
-    \verb{url}
-    \verb https://www.ti.com/lit/ds/symlink/ads8688.pdf
-    \endverb
-    \field{year}{2021}
-  \endentry
 
-  \entry{Analog_0_10V_Guideline}{manual}{}
-    \list{organization}{1}{%
-      {ASHRAE}%
-    }
-    \field{labeltitlesource}{title}
-    \field{sortinit}{A}
-    \field{sortinithash}{A}
-    \field{title}{Application Guidelines for 0–10 V Control Interfaces in HVAC}
-    \field{year}{2019}
-  \endentry
-
-  \entry{TI_DAC7568}{manual}{}
-    \list{organization}{1}{%
-      {Texas Instruments}%
-    }
-    \field{labeltitlesource}{title}
-    \field{sortinit}{D}
-    \field{sortinithash}{D}
-    \field{note}{Zewnętrzny DAC U3}
-    \field{title}{DAC7568 12-Bit, Octal, Buffered Voltage Output DAC}
-    \verb{url}
-    \verb https://www.ti.com/lit/ds/symlink/dac7568.pdf
-    \endverb
-    \field{year}{2017}
-  \endentry
-
-  \entry{Infineon_IRLML9301}{manual}{}
-    \list{organization}{1}{%
-      {Infineon Technologies}%
-    }
-    \field{labeltitlesource}{title}
-    \field{sortinit}{I}
-    \field{sortinithash}{I}
-    \field{note}{Element Q1 sterujący wyjściami}
-    \field{title}{IRLML9301 Logic Level N-Channel MOSFET}
-    \verb{url}
-    \verb https://www.infineon.com/dgdl/irlml9301.pdf?fileId=5546d462533600a401
-    \verb 535668d5c2263c
-    \endverb
-    \field{year}{2016}
-  \endentry
-
-  \entry{TI_LM2596}{manual}{}
-    \list{organization}{1}{%
-      {Texas Instruments}%
-    }
-    \field{labeltitlesource}{title}
-    \field{sortinit}{L}
-    \field{sortinithash}{L}
-    \field{note}{Regulatory zasilania U1 (5 V) i U2 (3.3 V)}
-    \field{title}{LM2596 SIMPLE SWITCHER 3-A Step-Down Voltage Regulator}
-    \verb{url}
-    \verb https://www.ti.com/lit/ds/symlink/lm2596.pdf
-    \endverb
-    \field{year}{2020}
-  \endentry
-
-  \entry{Littelfuse_SMBJ33A}{manual}{}
-    \list{organization}{1}{%
-      {Littelfuse}%
-    }
-    \field{labeltitlesource}{title}
-    \field{sortinit}{S}
-    \field{sortinithash}{S}
-    \field{note}{Ochrona przepięciowa D3 (33 V)}
-    \field{title}{SMBJ Series Transient Voltage Suppressor Diodes}
-    \verb{url}
-    \verb https://www.littelfuse.com/~/media/electronics/datasheets/tvs_diode_s
-    \verb mbj_series/littelfuse_tvs_diode_smbj_datasheet.pdf
-    \endverb
-    \field{year}{2018}
-  \endentry
-
-  \entry{ST_STM32F746NG_Datasheet}{manual}{}
-    \list{organization}{1}{%
-      {STMicroelectronics}%
-    }
-    \field{labeltitlesource}{title}
-    \field{sortinit}{S}
-    \field{sortinithash}{S}
-    \field{note}{MCU zastosowany na płytce STM32F746G-Discovery}
-    \field{title}{STM32F746xG Datasheet}
-    \verb{url}
-    \verb https://www.st.com/en/microcontrollers-microprocessors/stm32f746ng.ht
-    \verb ml
-    \endverb
-    \field{year}{2023}
-  \endentry
-
-  \entry{ST_32F746GDISCOVERY}{online}{}
-    \name{author}{1}{}{%
-      {{hash=S}{%
-         family={{STMicroelectronics}},
-         familyi={S\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{S1}
-    \strng{fullhash}{S1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{sortinit}{S}
-    \field{sortinithash}{S}
-    \field{title}{32F746GDISCOVERY — Discovery kit with STM32F746NG MCU}
-    \verb{url}
-    \verb https://www.st.com/en/evaluation-tools/32f746gdiscovery.html
-    \endverb
-    \field{year}{2025}
-    \field{urlday}{10}
-    \field{urlmonth}{10}
-    \field{urlyear}{2025}
-  \endentry
-
-  \entry{TI_TLV9304}{manual}{}
-    \list{organization}{1}{%
-      {Texas Instruments}%
-    }
-    \field{labeltitlesource}{title}
-    \field{sortinit}{T}
-    \field{sortinithash}{T}
-    \field{note}{Bufor analogowy U5, U6}
-    \field{title}{TLVx9304 Low-Noise, Rail-to-Rail Output Operational Amplifiers}
-    \verb{url}
-    \verb https://www.ti.com/lit/ds/symlink/tlv9304.pdf
-    \endverb
-    \field{year}{2023}
-  \endentry
-\enddatalist
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{TI_ADS8688}{manual}{}
+      \list{organization}{1}{%
+        {Texas Instruments}%
+      }
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labeltitlesource}{title}
+      \field{note}{Zewnętrzny ADC U7}
+      \field{title}{ADS8688 12-Bit, 500-kSPS, 8-Channel Data Acquisition System}
+      \field{year}{2021}
+      \verb{urlraw}
+      \verb https://www.ti.com/lit/ds/symlink/ads8688.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.ti.com/lit/ds/symlink/ads8688.pdf
+      \endverb
+    \endentry
+    \entry{Analog_0_10V_Guideline}{manual}{}
+      \list{organization}{1}{%
+        {ASHRAE}%
+      }
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labeltitlesource}{title}
+      \field{title}{Application Guidelines for 0–10 V Control Interfaces in HVAC}
+      \field{year}{2019}
+    \endentry
+    \entry{TI_DAC7568}{manual}{}
+      \list{organization}{1}{%
+        {Texas Instruments}%
+      }
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labeltitlesource}{title}
+      \field{note}{Zewnętrzny DAC U3}
+      \field{title}{DAC7568 12-Bit, Octal, Buffered Voltage Output DAC}
+      \field{year}{2017}
+      \verb{urlraw}
+      \verb https://www.ti.com/lit/ds/symlink/dac7568.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.ti.com/lit/ds/symlink/dac7568.pdf
+      \endverb
+    \endentry
+    \entry{Infineon_IRLML9301}{manual}{}
+      \list{organization}{1}{%
+        {Infineon Technologies}%
+      }
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{labeltitlesource}{title}
+      \field{note}{Element Q1 sterujący wyjściami}
+      \field{title}{IRLML9301 Logic Level N-Channel MOSFET}
+      \field{year}{2016}
+      \verb{urlraw}
+      \verb https://www.infineon.com/dgdl/irlml9301.pdf?fileId=5546d462533600a401535668d5c2263c
+      \endverb
+      \verb{url}
+      \verb https://www.infineon.com/dgdl/irlml9301.pdf?fileId=5546d462533600a401535668d5c2263c
+      \endverb
+    \endentry
+    \entry{TI_LM2596}{manual}{}
+      \list{organization}{1}{%
+        {Texas Instruments}%
+      }
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labeltitlesource}{title}
+      \field{note}{Regulatory zasilania U1 (5 V) i U2 (3.3 V)}
+      \field{title}{LM2596 SIMPLE SWITCHER 3-A Step-Down Voltage Regulator}
+      \field{year}{2020}
+      \verb{urlraw}
+      \verb https://www.ti.com/lit/ds/symlink/lm2596.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.ti.com/lit/ds/symlink/lm2596.pdf
+      \endverb
+    \endentry
+    \entry{Littelfuse_SMBJ33A}{manual}{}
+      \list{organization}{1}{%
+        {Littelfuse}%
+      }
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labeltitlesource}{title}
+      \field{note}{Ochrona przepięciowa D3 (33 V)}
+      \field{title}{SMBJ Series Transient Voltage Suppressor Diodes}
+      \field{year}{2018}
+      \verb{urlraw}
+      \verb https://www.littelfuse.com/~/media/electronics/datasheets/tvs_diode_smbj_series/littelfuse_tvs_diode_smbj_datasheet.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.littelfuse.com/~/media/electronics/datasheets/tvs_diode_smbj_series/littelfuse_tvs_diode_smbj_datasheet.pdf
+      \endverb
+    \endentry
+    \entry{ST_STM32F746NG_Datasheet}{manual}{}
+      \list{organization}{1}{%
+        {STMicroelectronics}%
+      }
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labeltitlesource}{title}
+      \field{note}{MCU zastosowany na płytce STM32F746G-Discovery}
+      \field{title}{STM32F746xG Datasheet}
+      \field{year}{2023}
+      \verb{urlraw}
+      \verb https://www.st.com/en/microcontrollers-microprocessors/stm32f746ng.html
+      \endverb
+      \verb{url}
+      \verb https://www.st.com/en/microcontrollers-microprocessors/stm32f746ng.html
+      \endverb
+    \endentry
+    \entry{ST_32F746GDISCOVERY}{online}{}
+      \name{author}{1}{}{%
+        {{hash=c38884ab3cf908c2798725960369391b}{%
+           family={{STMicroelectronics}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{c38884ab3cf908c2798725960369391b}
+      \strng{fullhash}{c38884ab3cf908c2798725960369391b}
+      \strng{bibnamehash}{c38884ab3cf908c2798725960369391b}
+      \strng{authorbibnamehash}{c38884ab3cf908c2798725960369391b}
+      \strng{authornamehash}{c38884ab3cf908c2798725960369391b}
+      \strng{authorfullhash}{c38884ab3cf908c2798725960369391b}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{32F746GDISCOVERY — Discovery kit with STM32F746NG MCU}
+      \field{urlday}{10}
+      \field{urlmonth}{10}
+      \field{urlyear}{2025}
+      \field{year}{2025}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.st.com/en/evaluation-tools/32f746gdiscovery.html
+      \endverb
+      \verb{url}
+      \verb https://www.st.com/en/evaluation-tools/32f746gdiscovery.html
+      \endverb
+    \endentry
+    \entry{TI_TLV9304}{manual}{}
+      \list{organization}{1}{%
+        {Texas Instruments}%
+      }
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{labeltitlesource}{title}
+      \field{note}{Bufor analogowy U5, U6}
+      \field{title}{TLVx9304 Low-Noise, Rail-to-Rail Output Operational Amplifiers}
+      \field{year}{2023}
+      \verb{urlraw}
+      \verb https://www.ti.com/lit/ds/symlink/tlv9304.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.ti.com/lit/ds/symlink/tlv9304.pdf
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
 \endinput
+

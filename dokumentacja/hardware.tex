@@ -27,17 +27,20 @@ Tor wyjściowy generujący sygnały \mbox{0--10~V} oparto na ośmiokanałowym pr
 \paragraph{Filtracja sygnału analogowego}
 
 Każdy z ośmiu kanałów \texttt{VOUTA}--\texttt{VOUTH} jest dalej kształtowany przez prosty filtr dolnoprzepustowy RC na wejściu wzmacniacza: rezystor szeregowy (\textbf{R8}, \textbf{R9}, \textbf{R11}--\textbf{R13}, \textbf{R6}, \textbf{R7}, \textbf{R10}, \(3{,}3\,\mathrm{k}\Omega\)) oraz kondensator do masy (\textbf{C18}, \textbf{C21}--\textbf{C25}, \(1\,\mu\mathrm{F}\)). Wyznacza to częstotliwość odcięcia rzędu
-\[
+
+
+\begin{equation}
 f_c \approx \frac{1}{2\pi R C} \approx \frac{1}{2\pi \cdot 3{,}3\ \mathrm{k}\Omega \cdot 1\ \mu\mathrm{F}} \approx 48\ \mathrm{Hz},
-\]
+\end{equation}
 co skutecznie powinno tłumić szum i poszarpanie przebiegu pochodzące z aktualizacji DAC, a jednocześnie jest wystarczająco szybkie dla aplikacji HVAC.
 
 \paragraph{Skalowanie sygnału do zakresów \mbox{0--10~V}}
 
 Wzmacniacze \textbf{U5A}--\textbf{U5D} oraz \textbf{U6A}--\textbf{U6D} pracują w konfiguracji nieodwracającej i są zasilane bezpośrednio z linii \mbox{+24~V}, co zapewnia odpowiedni zapas napięciowy dla wyjść \mbox{0--10~V}. Dla każdego kanału zastosowano identyczną sieć sprzężenia zwrotnego: rezystor do masy (\textbf{RG1}/\textbf{RG2}/\dots/\textbf{RG8}, \(10\,\mathrm{k}\Omega\)) oraz rezystor w pętli sprzężenia (\textbf{RF1}/\textbf{RF2}/\dots/\textbf{RF8}, \(30\,\mathrm{k}\Omega\)). Wzmocnienie napięciowe pojedynczego toru wynosi więc
-\[
-A_v = 1 + \frac{R_F}{R_G} = 1 + \frac{30\ \mathrm{k}\Omega}{10\ \mathrm{k}\Omega} = 4,
-\]
+\begin{equation}
+    A_v = 1 + \frac{R_F}{R_G} = 1 + \frac{30\ \mathrm{k}\Omega}{10\ \mathrm{k}\Omega} = 4,
+\end{equation}
+
 co przy referencji DAC rzędu \mbox{2{,}5~V} pozwala uzyskać zakres \mbox{0--10~V} na wyjściu wzmacniacza. Dodatkowe kondensatory (\textbf{C19}, \textbf{C20}, \dots, \textbf{C23}, \(1\,\mu\mathrm{F}\)) pełnią funkcję lokalnej filtracji i wraz z impedancją obciążenia wygładzają sygnał na wyjściu, ograniczając szybkie skoki prądu podczas przełączeń.
 
 Wyjścia poszczególnych wzmacniaczy są wyprowadzone na uniwersalne złącza \textbf{J6}--\textbf{J13}. Każde złącze udostępnia linię sygnałową \mbox{0--10~V}, odniesienie \texttt{SG} (\emph{signal ground}) oraz pin \texttt{SHIELD} przeznaczony do ekranowania przewodów.
