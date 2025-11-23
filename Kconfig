@@ -1,0 +1,62 @@
+# Copyright (c) 2023 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+source "Kconfig.zephyr"
+
+mainmenu "HVAC Controller UI"
+
+menu "User interface runtime"
+
+config UI_THREAD_STACK_SIZE
+	int "UI thread stack size"
+	default 4096
+	help
+	  Stack size (in bytes) used by the LVGL UI thread. Increase this
+	  value when adding widgets that need more stack during creation.
+
+config UI_THREAD_PRIORITY
+	int "UI thread priority"
+	default 5
+	range 1 15
+	help
+	  Cooperative priority of the UI thread. Lower numbers are higher
+	  priority. Adjust if the UI should preempt other workloads.
+
+config UI_REFRESH_PERIOD_MS
+	int "UI loop period (ms)"
+	default 16
+	range 5 100
+	help
+	  Period used by the UI thread between LVGL handler calls. Values
+	  around 16 ms target roughly 60 Hz refresh.
+
+config UI_MODEL_QUEUE_DEPTH
+	int "UI model queue depth"
+	default 8
+	range 1 32
+	help
+	  Number of buffered data snapshots for the UI. Increase if the
+	  application pushes state updates faster than the UI thread processes
+	  them.
+
+endmenu
+
+menu "Application helpers"
+
+config APP_USE_SIMULATED_DATA
+	bool "Enable simulated data generator"
+	default y if LVGL
+	help
+	  When enabled, a lightweight worker periodically publishes
+	  pseudo-random HVAC measurements so the UI can be exercised without
+	  real hardware sensors.
+
+config APP_DEMO_UPDATE_INTERVAL_MS
+	int "Simulated data update period (ms)"
+	default 1000
+	range 100 60000
+	depends on APP_USE_SIMULATED_DATA
+	help
+	  Interval between successive simulated HVAC updates.
+
+endmenu

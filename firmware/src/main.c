@@ -10,7 +10,7 @@
 
 LOG_MODULE_REGISTER(app, CONFIG_LOG_DEFAULT_LEVEL);
 
-void main(void)
+int main(void)
 {
     const struct device *display = DEVICE_DT_GET(DT_CHOSEN(zephyr_display));
 
@@ -28,4 +28,5 @@ void main(void)
         lv_task_handler();              /* obsługa LVGL */
         k_sleep(K_MSEC(10));
     }
+    return 0;
 }
