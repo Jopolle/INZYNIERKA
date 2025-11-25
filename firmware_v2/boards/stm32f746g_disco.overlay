@@ -1,0 +1,88 @@
+#include <zephyr/dt-bindings/pinctrl/stm32-pinctrl.h>
+#include <zephyr/dt-bindings/gpio/gpio.h>
+#include <zephyr/dt-bindings/i2c/i2c.h>
+
+&i2c1 {
+//compatible="st,stm32f401";
+status = "okay";
+clock-frequency = < I2C_BITRATE_STANDARD >;
+dac0: mcp4725@60{
+compatible = "microchip,mcp4725";
+status = "okay";
+reg = < 0x60 >;
+#io-channel-cells = < 1 >;
+};
+};
+
+&sdmmc1{
+status="okay";
+bus-width=<4>;
+slot {
+compatible="st,stm32-sdmmc-slot";
+status="okay";
+cap-sd-highspeed;
+cap-mmc-highspeed;
+bus-width=<4>;
+sd-uhs-sdr12;
+sd-uhs-sdr25;
+mmc{
+compatible="zephyr,sdmmc-disk";
+status="okay";
+disk-name="SD";
+};
+};
+};
+&dma2 {
+status = "okay";
+};
+
+/ {
+leds{
+compatible="gpio-leds";
+outputenable: output_enable {
+gpios=<&gpioa 8 GPIO_ACTIVE_HIGH>;
+label="Output Enable";
+};
+rs485txenable: rs485Tx_enable {
+gpios=<&gpiog 6 GPIO_ACTIVE_HIGH>;
+label="485 tx Enable";
+};
+};
+
+buttons{
+compatible="gpio-keys";
+inputdooropen: input_dooropen {
+gpios=<&gpioi 3 GPIO_ACTIVE_HIGH>;
+label="Input Door Open";
+zephyr,code = <INPUT_KEY_0>;
+};
+inputhomesw: input_homesw {
+gpios=<&gpiob 4 GPIO_ACTIVE_HIGH>;
+label="Input Home Sw";
+zephyr,code = <INPUT_KEY_0>;
+};
+inputcyclecount: input_cyclecount{
+gpios=<&gpiog 7 GPIO_ACTIVE_HIGH>;
+label="Input Cycle Count";
+zephyr,code = <INPUT_KEY_0>;
+};
+inputdownswitch: input_downsw{
+gpios=<&gpioh 6 GPIO_ACTIVE_HIGH>;
+label="Input Arm Down Sw";
+zephyr,code = <INPUT_KEY_0>;
+};
+};
+
+aliases{
+outputenable=&outputenable;
+rs485txenable=&rs485txenable;
+inputdooropen = &inputdooropen;
+inputhomesw = &inputhomesw;
+inputcyclecount=&inputcyclecount;
+inputdownswitch=&inputdownswitch;
+// dac0 = &dac0;
+// sdcard = &sdmmc1;
+// disk0 = "/dev/mmcblk0"; // Linux-style alias
+};
+
+};

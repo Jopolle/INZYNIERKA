@@ -53,7 +53,7 @@ static int pid_row_index = 0;
 
 
 static lv_obj_t *temp_value_label;
-static int16_t temp_setpoint = 21; /* domyślna zadana temperatura */
+static int16_t temp_setpoint = 21; 
 
 static io_indicator_t input_indicators[UI_NUM_INPUTS];
 static io_indicator_t output_indicators[UI_NUM_OUTPUTS];
@@ -290,7 +290,6 @@ static void build_dashboard_screen(void)
     lv_label_set_text(title, "HVAC Dashboard");
     lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 10);
 
-    /* Przycisk do menu w prawym górnym rogu */
     lv_obj_t *menu_btn = lv_btn_create(dashboard_screen);
     lv_obj_align(menu_btn, LV_ALIGN_TOP_RIGHT, -10, 10);
     lv_obj_add_event_cb(menu_btn, load_screen_event_cb,
@@ -343,7 +342,6 @@ static void build_dashboard_screen(void)
                           LV_FLEX_ALIGN_START,
                           LV_FLEX_ALIGN_START);
 
-    /* Pierwszy wiersz – nagłówki IN/OUT */
     lv_obj_t *in_header = lv_label_create(io_cont);
     lv_label_set_text(in_header, "Inputs");
     lv_obj_t *out_header = lv_label_create(io_cont);
@@ -377,7 +375,7 @@ static void build_dashboard_screen(void)
 
 static void build_menu_screen(void)
 {
-    /* tytuł pod przyciskiem Back */
+
     lv_obj_t *title_label = lv_label_create(menu_screen);
     lv_label_set_text(title_label, "HVAC Controller");
     lv_obj_align(title_label, LV_ALIGN_TOP_MID, 0, 40);
@@ -546,7 +544,7 @@ void ui_simple_init(void)
     io_selector_screen = create_sub_screen(dashboard_screen, "Back");
     diag_screen        = create_sub_screen(dashboard_screen, "Back");
 
-    /* budowa zawartości ekranów */
+
     build_dashboard_screen();
     build_menu_screen();
     build_pid_tuner_screen();
@@ -558,6 +556,6 @@ void ui_simple_init(void)
     build_io_screen();
     build_diag_screen();
 
-    /* start od dashboardu */
+
     lv_scr_load(dashboard_screen);
 }

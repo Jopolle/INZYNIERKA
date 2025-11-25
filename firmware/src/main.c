@@ -25,7 +25,7 @@ int main(void)
     display_blanking_off(display);
 
     while (1) {
-        lv_task_handler();              /* obsługa LVGL */
+        lv_task_handler();      
         k_sleep(K_MSEC(10));
     }
     return 0;
