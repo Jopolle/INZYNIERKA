@@ -1,9 +1,8 @@
 \documentclass{pginz}
 
 %%%%%%%%%Miejsce na dodatkowe pakiety%%%%%%%%%%%%%
-\usepackage[backend=biber,style=numeric,sortcites,sorting=nty,backref,natbib,hyperref]{biblatex}
 \usepackage{csquotes}
-
+\usepackage[backend=bibtex,style=numeric,sortcites,sorting=nty,backref,natbib,hyperref]{biblatex}
 
 
 
@@ -42,11 +41,13 @@
 \date{\today}
 
 \begin{document}
-\maketitle
+
+\includepdf[pages=-]{StronaTytulowa_193652.pdf}
+\tableofcontents
 
 \input{abstract}
 
-\tableofcontents
+
 
 \input{intro}
 \input{state_of_art}
@@ -54,10 +55,6 @@
 \input{hardware}
 \input{firmware}
 \input{validation}
-
-\cite{Analog_0_10V_Guideline}
-
-
 
 \printbibliography
 \end{document}

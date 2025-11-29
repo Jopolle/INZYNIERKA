@@ -1,72 +1,146 @@
-\section{Projekt części sprzętowej}
-
+\chapter{Projekt części sprzętowej}
 \label{sec:wymagania-sprzetowe-przeglad}
-\subsection{Wymagania sprzętowe — przegląd}
 
-Projektowana płytka stanowi jedną, spójną platformę do pomiaru i generacji sygnałów 0--10~V w aplikacjach HVAC\cite{Analog_0_10V_Guideline}, współpracującą z zestawem uruchomieniowym wyposażonym w m.in. MCU STM32F7 i panel TFT\cite{ST_STM32F746NG_Datasheet,ST_32F746GDISCOVERY}. Od strony zasilania przewidziano wejście instalacyjne DC z podstawowym torem ochronnym (odwrotna polaryzacja, przepięcia, wstępna filtracja), następnie podział zasilania na osobne gałęzie dla części cyfrowej, analogowej i elementów interfejsowych. Taki układ zmniejsza wpływ zakłóceń na pomiary i stabilizuje pracę torów. Interfejs do świata zewnętrznego obejmuje wejścia 0--10~V przygotowane do bezpiecznego próbkowania przez ADC (buforowanie i prosta filtracja antyaliasingowa) oraz wyjścia 0--10~V realizowane przez DAC i wzmacniacze operacyjne. Warstwa analogowa jest topologicznie oddzielona od cyfrowej (kontrolowane powroty prądowe, wydzielone obszary masy, filtry na przejściach między domenami), co ogranicza przesłuchy i dryft.
+\section{Wymagania sprzętowe — przegląd}
 
+Projektowana płytka stanowi jedną, spójną platformę do pomiaru i generacji sygnałów 0--10~V w aplikacjach HVAC\cite{Analog_0_10V_Guideline}, współpracującą z zestawem uruchomieniowym STM32F746G-DISCO wyposażonym m.in.\ w mikrokontroler STM32F7 i panel TFT\cite{ST_STM32F746NG_Datasheet,ST_32F746GDISCOVERY}. Rozwiązanie to ma pełnić rolę uniwersalnego „front-endu” analogowego dla laboratoryjnego sterownika HVAC: umożliwia zarówno rejestrację sygnałów z czujników i przetworników 0--10~V, jak i generację ośmiu niezależnych kanałów 0--10~V do sterowania elementami wykonawczymi (siłowniki przepustnic, zawory mieszające, przetwornice wentylatorów itp.).
 
-\subsection{Moduł zasilania}
+Od strony zasilania przewidziano instalacyjne wejście DC (nominalnie 24~V) z podstawowym torem ochronnym (odwrotna polaryzacja, przepięcia, wstępna filtracja), a następnie podział zasilania na osobne gałęzie dla części cyfrowej, analogowej i elementów interfejsowych. Taki układ zmniejsza wpływ zakłóceń na pomiary i stabilizuje pracę torów. Interfejs do świata zewnętrznego obejmuje osiem wejść 0--10~V przygotowanych do bezpiecznego próbkowania przez przetwornik A/C oraz osiem wyjść 0--10~V realizowanych przez przetwornik C/A i wzmacniacze operacyjne.
 
+Istotnym założeniem projektowym było zachowanie kompatybilności elektrycznej i mechanicznej z płytką STM32F746G-DISCO. W centralnej części PCB przewidziano złącze ddupoint, którego raster i położenie odpowiada złączu rozszerzeń zestawu Discovery. Dzięki temu całość tworzy układ kanapkowy: płytka z analogowym interfejsem pełni funkcję karty pomiarowej, a zestaw uruchomieniowy zapewnia moc obliczeniową oraz interfejs użytkownika (TFT z panelem dotykowym).
 
-Układ zasilania płytki został zaprojektowany tak, aby bezpiecznie przyjąć instalacyjne napięcie stałe (do ok.~24~V) i rozdzielić je na dwie stabilne linie: \mbox{+5~V} oraz \mbox{+3{,}3~V}. Na wejściu zastosowano gniazdo \textbf{J1} (DC~jack 5{,}5\,$\times$\,2{,}1~mm), za którym znajduje się polimerowy bezpiecznik samoresetujący \textbf{F1} (PPTC~1{,}1~A/30~V) pełniący rolę zabezpieczenia nadprądowego. Dodatkowo tranzystor \textbf{Q1} (PMOS \textit{IRLML9301}) realizuje ochronę przed odwrotną polaryzacją zasilania\cite{Infineon_IRLML9301}; rezystory \textbf{R5}/\textbf{R4} służą do wysterowania tranzystora.
-
-Równolegle do toru wejściowego umieszczono diodę TVS \textbf{D3} (SMBJ33A) tłumiącą przepięcia\cite{Littelfuse_SMBJ33A} oraz diodę \textbf{D4} (SOD323) do szybkiego klampowania krótkich impulsów. Włącznik \textbf{SW1} odcina cały moduł zasilania, a wskaźnik \textbf{D5} z rezystorem \textbf{R14} sygnalizuje obecność napięcia.
-
-Za sekcją ochronną znajduje się wstępna filtracja: dławik \textbf{L3} (33~\textmu H) oraz kondensatory \textbf{C15} (100~\textmu F/63~V), \textbf{C26} (100~nF), \textbf{C27} (47~\textmu F) i \textbf{C16} (1~\textmu F) ograniczają wahania napięcia i szpilki prądowe ładujące przetwornice. Dodatkowy koralik ferrytowy \textbf{FB1} poprawia tłumienie zakłóceń o wyższych częstotliwościach.
-
-Konwersję napięcia realizują dwie niezależne przetwornice buck z rodziny \textit{LM2596S}\cite{TI_LM2596}. Układ \textbf{U1} (\textit{LM2596S--5}) generuje linię \mbox{+5~V}; w jego torze znajdują się: dławik \textbf{L2} (33~\textmu H), dioda Schottky’ego \textbf{D1} (SK56) oraz kondensatory wejściowe \textbf{C2} (100~\textmu F/63~V) i \textbf{C1} (470~nF) oraz wyjściowe \textbf{C4}/\textbf{C3}. Analogicznie \textbf{U2} (\textit{LM2596S--3{,}3}) dostarcza \mbox{+3{,}3~V} z użyciem dławika \textbf{L1} (68~\textmu H), diody \textbf{D2} (SK56) oraz zestawu kondensatorów \textbf{C5}, \textbf{C6} po stronie wejściowej i \textbf{C7}, \textbf{C8} po stronie wyjściowej. Dobór elementów został wykonany w zgodności z zaleceniami producenta przetwornic. Wspólny punkt masy prowadzony jest od strony wejściowej, a rozdział linii \mbox{+5~V} i \mbox{+3{,}3~V} pozwala zasilać oddzielnie część cyfrową, analogową i interfejsową, co ogranicza przesłuchy i wrażliwość torów pomiarowych.
-
-Stan szyn wyjściowych jest sygnalizowany diodami LED: \textbf{D7} (\mbox{+5~V}) z rezystorem \textbf{R16} oraz \textbf{D6} (\mbox{+3{,}3~V}) z rezystorem \textbf{R15}. Na schemacie umieszczono również znaczniki \texttt{PWR\_FLAG}, ułatwiające kontrolę ciągów zasilania w~narzędziu CADe. Całość tworzy spójny, tor: \emph{wejście i zabezpieczenia $\rightarrow$ filtracja wstępna $\rightarrow$ konwersja \mbox{+5~V}/\mbox{+3{,}3~V} $\rightarrow$ dystrybucja i sygnalizacja}, co przekłada się na stabilną pracę układu w warunkach typowych dla instalacji HVAC.
+\begin{figure}[htbp]
+  \centering
+  \includesvg[inkscapelatex=false,width=\textwidth]{img/pcb/pcb_drawing.svg}
+  \caption{Widok płytki PCB z zaprojektowanym rozmieszczeniem elementów i złącz. W centralnej części znajduje się obszar montażu płytki STM32F746G-DISCO.}
+  \label{fig:pcb-obraz}
+\end{figure}
 
 
-\subsection{Tor wyjściowy \texorpdfstring{0--10\,V}{0–10 V}: przetwornik DAC + wzmacniacze operacyjne}
-
-Tor wyjściowy generujący sygnały \mbox{0--10~V} oparto na ośmiokanałowym przetworniku cyfrowo–analogowym \textbf{U3} (\textit{DAC7568IAPW})\cite{TI_DAC7568} współpracującym z dwoma czterokanałowymi wzmacniaczami operacyjnymi \textbf{U5} i \textbf{U6} (\textit{TLV9304xPW})\cite{TI_TLV9304}. DAC zasilany jest z linii \mbox{+3{,}3~V}, a komunikację z STM32 discovery realizuje przez interfejs SPI wykluczając przewód \texttt{DOUT/MISO}. Wyprowadzenie \texttt{VREFIN/VREFOUT} służy do ustalenia napięcia referencyjnego, a wszystkie masy części analogowej prowadzone są do \texttt{GNDA} (\texttt{GND} ale po prostej filtracji dla czystego sygnału wyjściowego). Kondensator \textbf{C17} (\mbox{150~nF}) umieszczono możliwie blisko zgodnie z zaleceniami producenta przy używaniu wewnętrznego napięcia referencyjnego\cite{TI_DAC7568}.
-
-\paragraph{Filtracja sygnału analogowego}
-
-Każdy z ośmiu kanałów \texttt{VOUTA}--\texttt{VOUTH} jest dalej kształtowany przez prosty filtr dolnoprzepustowy RC na wejściu wzmacniacza: rezystor szeregowy (\textbf{R8}, \textbf{R9}, \textbf{R11}--\textbf{R13}, \textbf{R6}, \textbf{R7}, \textbf{R10}, \(3{,}3\,\mathrm{k}\Omega\)) oraz kondensator do masy (\textbf{C18}, \textbf{C21}--\textbf{C25}, \(1\,\mu\mathrm{F}\)). Wyznacza to częstotliwość odcięcia rzędu
 
 
+\section{Moduł zasilania}
+
+Układ zasilania płytki został zaprojektowany tak, aby bezpiecznie przyjąć instalacyjne napięcie stałe (do ok.\ 24~V) i rozdzielić je na dwie stabilne linie robocze: +5~V oraz +3,3~V. Schemat modułu zasilania przedstawiono na rysunku~\ref{fig:schemat-zasilanie}.
+
+Na wejściu zastosowano gniazdo J1 (DC~jack 5,5$\times$2,1~mm), do którego doprowadzane jest napięcie z zewnętrznego zasilacza. Bezpośrednio za złączem znajduje się polimerowy bezpiecznik samoresetujący F1 (PPTC~1,1~A/30~V), pełniący rolę zabezpieczenia nadprądowego w przypadku zwarcia na płytce lub błędnego podłączenia odbiorników. Równolegle do wejścia umieszczono diodę TVS D3 (SMBJ33A) tłumiącą przepięcia.
+
+Ochronę przed odwrotną polaryzacją zasilania zrealizowano w oparciu o tranzystor P-MOSFET mocy Q1 (AO4407A w obudowie SO–8 lub równoważny)\cite{AO4407A}. Tranzystor włączono w konfiguracji „idealnej diody”: jego źródło jest połączone z wejściem zasilania, dren z resztą układu, a bramka sterowana jest poprzez rezystor R4 i diodę zenera D4 (1N4742A)\cite{Goodark_1N47xxA}. Przy poprawnej polaryzacji tranzystor przewodzi z minimalnym spadkiem napięcia na kanale, a w przypadku odwrotnego podłączenia zasilacza blokuje przepływ prądu i chroni dalsze stopnie zasilania.
+
+Za sekcją ochronną pracuje wyłącznik SW1 odcinający cały moduł zasilania. Dioda LED D5 z rezystorem szeregowym R14 sygnalizuje obecność napięcia po stronie wejściowej; pozwala to na szybką kontrolę stanu zasilania przed przetwornicami.
+
+Kolejnym etapem jest wstępna filtracja C-L-C napięcia wejściowego . Dławik L3 (33~\textmu H) oraz kondensatory C15 (100~\textmu F/63~V), C26 (100~nF), C27 (47~\textmu F) i C16 (1~\textmu F) tworzą filtr typu PI, ograniczający wahania napięcia oraz szpilki prądowe związane z pracą przetwornic impulsowych. Dodatkowy koralik ferrytowy FB1, włączony szeregowo w linii 24~V, poprawia tłumienie zakłóceń o wyższych częstotliwościach, które mogłyby przenikać do dalszych części instalacji.
+
+Konwersję napięcia na poziomy logiczne realizują dwie niezależne przetwornice buck z rodziny LM2596S\cite{TI_LM2596}. Układ U1 (LM2596S-5) generuje linię +5~V. W jego torze znajdują się dławik L2 (33~\textmu H), dioda Schottky’ego D1 (SK56) oraz kondensatory wejściowe C2 (100~\textmu F/63~V) i C1 (470~nF) oraz wyjściowe C4 i C3. Analogicznie układ U2 (LM2596S-3,3) dostarcza linię +3,3~V z użyciem dławika L1 (68~\textmu H), diody D2 (SK56) oraz zestawu kondensatorów C5, C6 po stronie wejściowej i C7, C8 po stronie wyjściowej. Elementy zostały dobrane zgodnie z zaleceniami producenta, tak aby zapewnić stabilność pętli regulacji dla zakładanych obciążeń oraz odpowiednio niski poziom tętnień.
+
+Zastosowanie dwóch niezależnych przetwornic zamiast jednego źródła z liniowymi stabilizatorami wtórnymi ma kluczowe znaczenie w kontekście sprawności i wydzielania ciepła. Przy typowych prądach pobieranych przez mikrokontroler, przetwornik A/C i przetwornik C/A z 24~V na 5~V/3,3~V skutkowałoby znaczącym poborem mocy. Przetwornice impulsowe LM2596S pozwalają ograniczyć straty do pojedynczych watów nawet przy pełnym obciążeniu linii 5~V i 3,3~V.
+
+Analogicznie do sygnalizacji becności napięcia na linii 24~V, stan szyn wyjściowych jest sygnalizowany diodami LED: D7 (dla linii +5~V) z rezystorem R16 oraz D6 (dla linii +3,3~V) z rezystorem R15. Na schemacie umieszczono również znaczniki PWR\_FLAG, ułatwiające kontrolę ciągów zasilania w narzędziu CAD i zapobiegające fałszywym ostrzeżeniom o „niezasilonych” sieciach. Całość tworzy spójny tor:
+\emph{wejście i zabezpieczenia $\rightarrow$ filtracja wstępna $\rightarrow$ konwersja 24~V na +5~V}/+3,3~V $\rightarrow$ dystrybucja i sygnalizacja, co przekłada się na stabilną pracę układu..
+
+Na poziomie PCB cały moduł zasilania został umieszczony w górnej części płytki jak widać na obrazie \ref{fig:pcb-obraz}, możliwie blisko gniazda wejściowego oraz oddalony od wrażliwych części analogowych. Ścieżki prowadzące prądy impulsowe z przetwornic LM2596S zaprojektowano jako szerokie i możliwie krótkie, z lokalnymi polami masy minimalizującymi powierzchnię pętli prądowych. Dzięki temu ograniczono emisję zakłóceń przewodzonych i promieniowanych oraz uproszczono separację pomiędzy strefą mocy a strefą pomiarową.
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[inkscapelatex=false,width=\textwidth]{img/schemat_zasilanie.svg}
+  \caption{Moduł zasilania płytki z wejściem instalacyjnym 24~V, torem ochrony przed przepięciami i odwrotną polaryzacją oraz przetwornicami step-down LM2596 generującymi linie +5~V i +3,3~V.}
+  \label{fig:schemat-zasilanie}
+\end{figure}
+
+\section{Tor wyjściowy \texorpdfstring{0--10\,V}{0–10 V}: przetwornik DAC + wzmacniacze operacyjne}
+
+Tor wyjściowy generujący sygnały 0--10~V oparto na ośmiokanałowym przetworniku cyfrowo–analogowym U3 (DAC7568IAPW)\cite{TI_DAC7568} współpracującym z dwoma czterokanałowymi wzmacniaczami operacyjnymi U5 i U6 (TLV9304xPW)\cite{TI_TLV9304}. Dzięki temu możliwe jest niezależne sterowanie wszystkimi ośmioma wyjściami analogowymi. Schemat toru wyjściowego przedstawiono na rysunku~\ref{fig:schemat-dac}.
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[inkscapelatex=false,width=\textwidth]{img/schemat_dac.svg}
+  \caption{Schemat toru wyjściowego 0--10~V wraz z wzmacniaczami operacyjymi.}
+  \label{fig:schemat-dac}
+\end{figure}
+
+Przetwornik DAC7568 jest zasilany z linii +3,3~V. Komunikację z płytką STM32F746G-DISCO realizuje poprzez magistralę SPI: linie \texttt{NSS\_OUT}, \texttt{MOSI\_OUT} i \texttt{SCK\_OUT} zostały wyprowadzone z MCU i doprowadzone do odpowiednich pinów układu U3. Z uwagi na charakter przetwornika (układ typu „write-only”) nie przewidziano linii MISO; konfiguracja rejestrów i aktualizacja wyjść odbywa się wyłącznie poprzez wysyłanie ramek danych z mikrokontrolera.
+
+Wyprowadzenie \texttt{VREFIN/VREFOUT} służy do ustalenia napięcia referencyjnego, w projekcie wykorzystano wewnętrzne źródło odniesienia przetwornika, dlatego pin został odsprzęgnięty kondensatorem C17 (150~nF) umieszczonym możliwie blisko wyprowadzeń, zgodnie z zaleceniami producenta\cite{TI_DAC7568}. Masę części analogowej doprowadzono do masy analogowej GNDA, która na PCB prowadzona jest jako wydzielona wyspa z kontrolowanym połączeniem do wspólnej GND poprzez elementy R2/C11 (opisane szerzej w podrozdziale o torze wejściowym).
+
+Każdy z ośmiu kanałów wyjściowych DAC (VOUTA--VOUTH) jest dalej kształtowany przez prosty filtr dolnoprzepustowy RC na wejściu wzmacniacza: rezystor szeregowy (R6--R13, typowo 3,3~k$\Omega$) oraz kondensator do masy (C18, C21--C25, 1~\textmu F). Wyznacza to częstotliwość odcięcia rzędu
 \begin{equation}
-f_c \approx \frac{1}{2\pi R C} \approx \frac{1}{2\pi \cdot 3{,}3\ \mathrm{k}\Omega \cdot 1\ \mu\mathrm{F}} \approx 48\ \mathrm{Hz},
+f_c \approx \frac{1}{2\pi R C} \approx \frac{1}{2\pi \cdot 3,3\ \mathrm{k}\Omega \cdot 1\ \mu\mathrm{F}} \approx 48\ \mathrm{Hz},
 \end{equation}
-co skutecznie powinno tłumić szum i poszarpanie przebiegu pochodzące z aktualizacji DAC, a jednocześnie jest wystarczająco szybkie dla aplikacji HVAC.
+co skutecznie tłumi szum oraz poszarpanie przebiegu pochodzące z aktualizacji DAC, a jednocześnie jest w pełni wystarczające dla powolnych procesów w systemach HVAC.
 
-\paragraph{Skalowanie sygnału do zakresów \mbox{0--10~V}}
+Wzmacniacze U5A--U5D oraz U6A--U6D pracują w konfiguracji nieodwracającej i są zasilane z linii +24~V (wg producenta maksymalne napięcie zasilania to 40~VDC). Jednak w ramach zabezpieczenia na torze zasilającym idącym do wzmacniaczy znajdzuje się polimerowy bezpiecznik samoresetujący F2 oraz filtr dolnoprzepustowy C-R-C skłądający się z rezystora R17, kondensatorów elektrolitycznych C29 i C31 i ceramicznych c28, C30. Filtr usuwa wszelkie niechciane zakłocenia które mogą występować w torze zasilania. 
 
-Wzmacniacze \textbf{U5A}--\textbf{U5D} oraz \textbf{U6A}--\textbf{U6D} pracują w konfiguracji nieodwracającej i są zasilane bezpośrednio z linii \mbox{+24~V}, co zapewnia odpowiedni zapas napięciowy dla wyjść \mbox{0--10~V}. Dla każdego kanału zastosowano identyczną sieć sprzężenia zwrotnego: rezystor do masy (\textbf{RG1}/\textbf{RG2}/\dots/\textbf{RG8}, \(10\,\mathrm{k}\Omega\)) oraz rezystor w pętli sprzężenia (\textbf{RF1}/\textbf{RF2}/\dots/\textbf{RF8}, \(30\,\mathrm{k}\Omega\)). Wzmocnienie napięciowe pojedynczego toru wynosi więc
+Zastosowanie wzmacniaczy o szerokim zakresie napięć zasilania pozwala uzyskać odpowiedni zapas napięciowy dla wyjść 0--10~V bez konieczności stosowania dodatkowych przetwornic podwyższających. Dla każdego kanału zastosowano identyczną sieć sprzężenia zwrotnego: rezystor do masy RG (10~k$\Omega$) oraz rezystor w pętli sprzężenia RF (30~k$\Omega$). Wzmocnienie napięciowe pojedynczego toru wynosi więc
 \begin{equation}
-    A_v = 1 + \frac{R_F}{R_G} = 1 + \frac{30\ \mathrm{k}\Omega}{10\ \mathrm{k}\Omega} = 4,
+A_v = 1 + \frac{R_F}{R_G} = 1 + \frac{30\ \mathrm{k}\Omega}{10\ \mathrm{k}\Omega} = 4.
 \end{equation}
+Przy referencji DAC rzędu 2,5~V umożliwia to uzyskanie pełnego zakresu 0--10~V na wyjściu wzmacniacza, z zapasem na niewielkie tolerancje i błędy kalibracji.
 
-co przy referencji DAC rzędu \mbox{2{,}5~V} pozwala uzyskać zakres \mbox{0--10~V} na wyjściu wzmacniacza. Dodatkowe kondensatory (\textbf{C19}, \textbf{C20}, \dots, \textbf{C23}, \(1\,\mu\mathrm{F}\)) pełnią funkcję lokalnej filtracji i wraz z impedancją obciążenia wygładzają sygnał na wyjściu, ograniczając szybkie skoki prądu podczas przełączeń.
+Wyjścia poszczególnych wzmacniaczy są wyprowadzone na uniwersalne złącza J21--J28. Każde złącze udostępnia linię sygnałową 0--10~V, odniesienie SG (signal ground) oraz pin SHIELD przeznaczony do ekranowania przewodów.
 
-Wyjścia poszczególnych wzmacniaczy są wyprowadzone na uniwersalne złącza \textbf{J6}--\textbf{J13}. Każde złącze udostępnia linię sygnałową \mbox{0--10~V}, odniesienie \texttt{SG} (\emph{signal ground}) oraz pin \texttt{SHIELD} przeznaczony do ekranowania przewodów.
+Na płytce PCB \ref{fig:pcb-obraz} złącza wyjściowe zostały rozmieszczone wzdłuż prawej krawędzi w regularnym rastrze, co ułatwia prowadzenie przewodów i daje poczucie "przepływu" sygnałów przez sterownik (od lewej do prawej). Ścieżki sygnałowe pomiędzy wzmacniaczami a złączami są możliwie krótkie i prowadzone nad ciągłą płaszczyzną masy, co redukuje indukcyjność pętli i przesłuchy pomiędzy kanałami.
 
-Cały tor wyjściowy ma zatem strukturę:\newline \emph{STM32 $\rightarrow$ DAC $\rightarrow$ filtr RC  $\rightarrow$ wzmacniacz nieodwracający \texttt{x4} $\rightarrow$ złącze sygnałowe z ekranem}.
+Podsumowując, tor wyjściowy ma strukturę:
+\emph{STM32 $\rightarrow$ DAC7568 $\rightarrow$ filtr RC $\rightarrow$ wzmacniacz nieodwracający o wzmocnieniu 4 $\rightarrow$ złącze sygnałowe z ekranem i zasilaniem pola},
+co zapewnia zarówno elastyczność sterowania, jak i zgodność z powszechnie stosowanym standardem 0--10~V.
+
+\section{Tor wejściowy \texorpdfstring{0--10\,V}{0–10 V}: interfejs pomiarowy}
+
+Tor wejściowy odpowiada za obsługę czujników przemysłowych (pasywnych i aktywnych) oraz bezpieczne doprowadzenie sygnałów 0--10~V do wielokanałowego przetwornika A/C ADS8688\cite{TI_ADS8688}. Schemat tej części układu na zdjęciu \ref{fig:schemat-mcu}. Przetwornik ten integruje w sobie przełączany multiplekser wejściowy, programowalne zakresy napięciowe oraz wewnętrzny front-end zabezpieczający, co pozwala uprościć zewnętrzny tor analogowy.
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[inkscapelatex=false,width=\textwidth]{img/schemat_mcu.svg}
+  \caption{Schemat toru wejściowego 0--10~V wraz z przetwornikami ADC oraz połączenia do mikrokontrolera.}
+  \label{fig:schemat-mcu}
+\end{figure}
 
 
-\subsection{Tor wejściowy \texorpdfstring{0--10\,V}{0–10 V}: interfejs pomiarowy}
+Po lewej stronie schematu rozmieszczono osiem identycznych złączy wejściowych (oznaczonych jako Signal\_connector, J2--J9). Na każdym złączu wyprowadzono cztery piny:
+\begin{itemize}
+    \item SIG — linia sygnałowa 0--10~V,
+    \item SG — dedykowany powrót sygnałowy (signal ground) dla danego kanału,
+    \item SHIELD — ekran przewodu, przeznaczony do podłączenia oplotu lub ekranu kabla,
+    \item +24~V — zasilanie czujnika/konwertera z instalacji 24~V.
+\end{itemize}
+Takie ustandaryzowane złącza pozwalają na łatwą zamianę czujników pomiędzy kanałami oraz ograniczają liczbę pomyłek przy okablowaniu.
 
-Tor wejściowy odpowiada za obłużenie czujników przemysłowych (pasywnych i aktywnych) i bezpieczne doprowadzenie sygnałów \mbox{0--10~V} do przetwornicy A/C \texttt{ADS8688}\cite{TI_ADS8688}. Sygnał cyfrowy \emph{SPI} następnie jest doprowadzany na \emph{GPIO} mikrokontrolera.
+Linia SIG każdego złącza jest prowadzona bezpośrednio do odpowiedniego pinu wejściowego przetwornika (AIN\_xP), natomiast powrót SG trafia do przypisanego ujemnego wejścia odniesienia kanału (AIN\_xGND). W ten sposób tworzony jest układ wejściowy o charakterze pseudo-różnicowym, w którym każdy kanał ma swój lokalny powrót odniesiony do tej samej masy analogowej GNDA. Taka topologia kompensuje spadki napięć i przesłuchy na przewodzie powrotnym oraz poprawia odporność na zakłócenia wspólne przy dłuższych odcinkach okablowania, co jest kluczowe w instalacjach HVAC rozproszonych na dużej przestrzeni.
 
+W torze wejściowym nie stosuje się dodatkowych dzielników ani zewnętrznych filtrów antyaliasingowych; skalowanie i zabezpieczenie wejść realizuje wewnętrzny front-end przetwornika ADS8688\cite{TI_ADS8688}, który oferuje kilka przełączanych zakresów pomiarowych oraz obwody ograniczające prądy przy przepięciach. 
 
-\paragraph{Wejście pseudo-różnicowe i powroty sygnałowe}
-Linia \texttt{SIG} każdego złącza jest prowadzona bezpośrednio do odpowiedniego pinu wejścia przetwornika (AIN\_xP), natomiast odpowiadający jej pin \texttt{SG} trafia do przypisanego ujemnego wejścia odniesienia kanału (AIN\_xGND). Taka topologia kompensuje spadki i przesłuchy na przewodzie powrotnym oraz poprawia odporność na zakłócenia, co jest kluczowe przy dłuższych odcinkach okablowania. W torze nie stosuje się zewnętrznych dzielników ani filtrów antyaliasingowych — skalowanie i zabezpieczenie wejść realizuje wewnętrzny front-end ADC (rezystorowa sieć wejściowa, przełączane zakresy).
+Piny SHIELD wszystkich wejść są połączone do wspólnego ekranu wylanego pod ścieżkami sygnału i docciągniętego względem masy przez filtr RC: rezystor R2 (1~M$\Omega$) równolegle z kondensatorem C11 (10~nF) pomiędzy GNDA i GND. Zapewnia to upływ ładunków statycznych oraz tłumienie składowych o wysokiej częstotliwości, a jednocześnie ogranicza stałoprądowe prądy pętli masy i chroni ekran przed „przeciąganiem” potencjału przez inne urządzenia podłączone do tej samej instalacji. Rozwiązanie to stanowi jednocześnie kontrolowany punkt połączenia masy analogowej i cyfrowej — GNDA jest używana w torach wejściowych i wyjściowych, natomiast GND stanowi referencję dla logiki cyfrowej i zasilania 3,3~V.
 
-\paragraph{Ekranowanie i separacja mas}
-Piny \texttt{SHIELD} wszystkich wejść są połączone do wspólnego ekranu wylanego pod ścieżkami sygnału i dociążonego względem masy przez tłumik \(\mathrm{RC}\): rezystor \textbf{R2} \(=\) \(1\,\mathrm{M}\Omega\) równolegle z kondensatorem \textbf{C11} \(=\) \(10\,\mathrm{nF}\) (\texttt{GNDA}~\(\rightarrow\)~\texttt{GND}). Zapewnia to upływ ładunków statycznych i tłumienie składowych o wysokiej częstotliwości, a jednocześnie ogranicza prądy pętli masy i chroni ekran przed "brudną" masą cyfrową.
+Część analogowa przetwornika ADS8688\cite{TI_ADS8688} jest zasilana z linii +5~V (kondensator C9 1~\textmu F blisko pinów AVDD/AGND), natomiast część cyfrowa z linii +3,3~V (kondensator C10 10~\textmu F przy DVDD/DGND). Linia \texttt{RST/PD} jest podciągnięta rezystorem 10~k$\Omega$ do +3,3~V i może być sterowana z mikrokontrolera, co umożliwia programowe resetowanie przetwornika oraz przechodzenie w tryb uśpienia w stanie bezczynności.
 
-\paragraph{Zasilanie i interfejs cyfrowy ADC}
-Część analogowa układu zasilana jest z \mbox{+5\,V} (filtracja \textbf{C9} \(1\,\mu\mathrm{F}\) blisko pinów zasilania), a część cyfrowa z \mbox{+3{,}3\,V} (filtracja \textbf{C10} \(10\,\mu\mathrm{F}\)). Linia \texttt{RST/PD} jest podciągana przez rezystor \(\sim\)\(10\,\mathrm{k}\Omega\) do \mbox{+3{,}3\,V} i może być sterowana z MCU. Komunikacja odbywa się po \texttt{SPI}: \texttt{SDO}, \texttt{SDI}, \texttt{SCLK}, \texttt{CS}.
+Odniesienie napięciowe przetwornika realizowane jest wewnętrznie; piny REFCAP, REFIO i REFGND są odsprzęgnięte kondensatorami klasy X7R (C12 i C13 po 1~\textmu F) umieszczonymi możliwie blisko wyprowadzeń, zgodnie z zaleceniami producenta\cite{TI_ADS8688}. Zapewnia to niskoszumowe, stabilne napięcie odniesienia, co bezpośrednio przekłada się na rozdzielczość efektywną przetwornika.
 
-\paragraph{Odniesienie napięciowe}
-Wykorzystano wewnętrzną referencję przetwornika: wyprowadzenia \texttt{REFCAP}/\texttt{REFIO}/\texttt{REFGND} są odsprzęgnięte kondensatorami klasy X7R (\textbf{C11X7R} \(1\,\mu\mathrm{F}\) pomiędzy \texttt{REFCAP} i \texttt{REFGND} oraz \textbf{C12}, \textbf{C13} po \(1\,\mu\mathrm{F}\) przy \texttt{REFIO}), zgodnie z zaleceniami producenta dla uzyskania niskoszumowego, stabilnego odniesienia\cite{TI_ADS8688}.
+Na schemacie przewidziano również dodatkowe złącze J18 w postaci listwy goldpin z możliwością założenia zworek. Złącze to służy do konfigurowania połączenia pomiędzy masą sygnałową (SG), wykorzystywaną jako powrót dla wejść 0--10~V, a ogólną masą układu (GND). Poprzez odpowiednie ustawienie zworek użytkownik może zdecydować, czy masa sygnałowa ma pozostać możliwie „czysta” i odniesiona głównie do GNDA (praca z czujnikami pasywnymi), czy też powinna zostać zwarta z masą zasilania w celu zasilania czujników aktywnych, wymagających wspólnego potencjału odniesienia dla toru zasilania i sygnału.
 
-\paragraph{Zasilanie czujników w polu}
-Na pin \texttt{+V} każdego złącza doprowadzono \mbox{+24\,V} z magistrali instalacyjnej — umożliwia to zasilanie zewnętrznych przetworników/wyjść \mbox{0--10\,V} bez dodatkowych przewodów. Linie \texttt{+24\,V} nie są wprowadzane do ADC; pełnią wyłącznie funkcję zasilającą urządzenia polowe.
+Takie rozwiązanie ma kilka zalet:
+\begin{itemize}
+    \item umożliwia elastyczną konfigurację toru wejściowego w zależności od typu podłączonych czujników (pasywne z odseparowaną masą sygnałową vs. aktywne wymagające wspólnego potencjału zasilania i sygnału),
+    \item poprawia kompatybilność z typowymi przetwornikami 0--10~V, które zakładają wspólną masę zasilania i wyjścia napięciowego,
+    \item pozwala na łatwe eksperymentowanie i diagnostykę w warunkach laboratoryjnych — zmiana konfiguracji sprowadza się do przełożenia zworek, bez konieczności modyfikacji PCB ani rozcinania ścieżek.
+\end{itemize}
 
-\paragraph{Podsumowanie ścieżki sygnału}
-\emph{Złącze (SIG, SG, SHIELD, +24\,V) \(\rightarrow\) wejście pseudo-różnicowe \texttt{AIN\_xP}/\texttt{AIN\_xGND} \(\rightarrow\) wewnętrzny front-end i multiplekser ADC \(\rightarrow\) konwersja SAR z referencją wewnętrzną \(\rightarrow\) interfejs \texttt{SPI}.} Rozwiązanie minimalizuje liczbę elementów analogowych na płytce, a jednocześnie zwiększa odporność EMC dzięki osobnym powrotom \texttt{SG} dla każdego kanału oraz kontrolowanemu połączeniu ekranów z masą przez \(R\parallel C\).
+Komunikacja z mikrokontrolerem odbywa się po magistrali SPI: linie SDI, SDO, SCLK i CS zostały połączone z odpowiednimi pinami do MCU. STM32F7 wyposażony jest w dwa oddzielne interfejsy SPI. Dzięki temu oba przetworniki (ADS8688 i DAC7568) mogą współdzielić komunikować się z MCU niezależnie od zajętości??? interfejsów; obie magistrale działają na osobnych wątkach.
+
+Na poziomie PCB \ref{fig:pcb-obraz} przetwornik ADS8688 oraz złącza wejściowe zostały umieszczone w lewej części płytki, w niewielkiej odległości od siebie. Ścieżki sygnałowe SIG/SG prowadzone są nad pełną płaszczyzną masy GNDA, z zachowaniem odstępów pomiędzy kanałami, co ogranicza pojemnościowe sprzężenia krzyżowe. Ekrany SHIELD tworzą osobną, częściowo wylaną strefę połączoną z GNDA poprzez elementy R2/C11.
+
+\section{Projekt PCB i separacja stref}
+
+Widok płytki PCB przedstawiono na rysunku wygenerowanym z narzędzia CAD \ref{fig:pcb-obraz}. Płytka została zaprojektowana jako dwuwarstwowa, z rozległymi polami masy w obu warstwach. Główna powierzchnia zajmowana jest przez prostokątny obrys odpowiadający formatowi płytki Discovery, w którego obrębie przewidziano wycięty obszar (strefę bez elementów i ścieżek) stanowiący miejsce montażu zestawu STM32F746G-DISCO. W czterech narożach oraz w pobliżu złączy umieszczono otwory montażowe umożliwiające sztywne zamocowanie całości do płyty bazowej lub obudowy.
+
+Pod względem funkcjonalnym płytkę można podzielić na trzy główne strefy:
+\begin{enumerate}
+    \item \textbf{Strefa mocy} — w górnej części, obejmująca gniazdo zasilania J1, układ ochrony (F1, D3, D4, Q1, L3, FB1) oraz przetwornice LM2596S. Ścieżki o dużych prądach i impulsowych zmianach prądu prowadzone są lokalnie, nad fragmentarycznymi polami masy, co ogranicza emisję zakłóceń.
+    \item \textbf{Strefa analogowa} — przy lewej i prawej krawędzi, obejmująca przetwornik ADS8688, przetwornik DAC7568, wzmacniacze TLV9304 oraz złącza wejściowe i wyjściowe. W tych częściach płytki zastosowano wydzieloną masę GNDA, która jest łączona z ogólną masą GND w jednym punkcie poprzez elementy R2/C11.
+    \item \textbf{Strefa cyfrowa} — w centralnej części, wokół rastru GPIO mikrokontrolera, gdzie prowadzone są linie SPI. Tutaj masa GND jest wylana jako osobna wyspa, a przejścia do masy analogowej są kontrolowane.
+\end{enumerate}
+
+Rozdzielenie tych stref w przestrzeni płytki ogranicza przesłuchy pomiędzy torami, a jednocześnie pozwala na intuicyjną analizę układu podczas uruchamiania i diagnostyki. Szerokości ścieżek dobrano zgodnie z przewidywanymi prądami (najszersze dla linii 24~V, 5~V i 3,3~V, węższe dla linii sygnałowych). Przy przejściach pomiędzy warstwami stosowane są przelotki w „gęstych” grupach, tak aby zapewnić zwarty powrót prądu między płaszczyznami masy.
+
+Dodatkowym elementem ułatwiającym pracę z płytką jest rozbudowana warstwa opisowa (silkscreen), na której zaznaczono nazwy złączy, kierunki numeracji pinów, oznaczenia kanałów wejściowych i wyjściowych oraz podstawowe kierunki przepływu sygnału (strzałki). Dzięki temu użytkownik może korzystać z płytki w warunkach laboratoryjnych praktycznie bez konieczności sięgania do schematu.
+
+Opisany w niniejszym rozdziale projekt części sprzętowej stanowi bazę dla dalszych rozważań dotyczących implementacji algorytmów sterowania i architektury oprogramowania w rozdziałach poświęconych części programowej pracy.
