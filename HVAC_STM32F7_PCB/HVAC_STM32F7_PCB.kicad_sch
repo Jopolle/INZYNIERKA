@@ -6042,10 +6042,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "46f47262-f70d-4ab8-9d84-5da83aebc984")
 		(property "Reference" "J4"
-			(at 24.765 77.47 0)
+			(at 22.352 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6183,10 +6182,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "564973cc-592e-414b-92a7-c4843a75ec2d")
 		(property "Reference" "J2"
-			(at 24.765 49.53 0)
+			(at 22.606 59.436 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6258,10 +6256,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "5bd242ca-b4c5-4280-bff7-a0f926774a80")
 		(property "Reference" "J5"
-			(at 24.765 93.98 0)
+			(at 22.86 104.394 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6333,10 +6330,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "60273e09-3cc2-4299-920f-ea9d16716bad")
-		(property "Reference" "J14"
-			(at 24.765 111.76 0)
+		(property "Reference" "J6"
+			(at 22.606 121.412 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6393,7 +6389,7 @@
 		(instances
 			(project "HVAC_STM32F7_PCB"
 				(path "/79f65717-d4aa-4d9b-9389-67dd3cbc0c4f"
-					(reference "J14")
+					(reference "J6")
 					(unit 1)
 				)
 			)
@@ -6974,10 +6970,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "a6a2f240-3035-48ca-b6de-671eaa1f60a1")
-		(property "Reference" "J15"
-			(at 24.765 162.56 0)
+		(property "Reference" "J9"
+			(at 22.606 172.466 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7034,7 +7029,7 @@
 		(instances
 			(project "HVAC_STM32F7_PCB"
 				(path "/79f65717-d4aa-4d9b-9389-67dd3cbc0c4f"
-					(reference "J15")
+					(reference "J9")
 					(unit 1)
 				)
 			)
@@ -7049,10 +7044,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "abb616ab-34ac-491d-8b97-332174246a0c")
-		(property "Reference" "J16"
-			(at 24.765 128.27 0)
+		(property "Reference" "J7"
+			(at 22.606 138.684 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7109,7 +7103,7 @@
 		(instances
 			(project "HVAC_STM32F7_PCB"
 				(path "/79f65717-d4aa-4d9b-9389-67dd3cbc0c4f"
-					(reference "J16")
+					(reference "J7")
 					(unit 1)
 				)
 			)
@@ -7300,10 +7294,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "b99230de-eafc-4653-bef5-1b30cd24e19a")
 		(property "Reference" "J3"
-			(at 24.765 63.5 0)
+			(at 22.352 73.66 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7375,10 +7368,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "c3a9a522-cac7-481f-9030-980cb8532170")
-		(property "Reference" "J17"
-			(at 24.765 144.78 0)
+		(property "Reference" "J8"
+			(at 22.606 154.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7435,7 +7427,7 @@
 		(instances
 			(project "HVAC_STM32F7_PCB"
 				(path "/79f65717-d4aa-4d9b-9389-67dd3cbc0c4f"
-					(reference "J17")
+					(reference "J8")
 					(unit 1)
 				)
 			)

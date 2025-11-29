@@ -19,6 +19,9 @@
 \RequirePackage{siunitx}
 \renewcommand*{\familydefault}{\sfdefault}
 
+\RequirePackage{svg}
+
+
 %*************
 \RequirePackage{newtxtext, newtxmath} %lepiej wyglądające nagłówki
 \RequirePackage{epstopdf} %do dołączania obrazków w formacie eps
