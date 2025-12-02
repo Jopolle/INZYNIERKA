@@ -185,6 +185,113 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector:TestPoint"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "TestPoint_0_1"
+				(circle
+					(center 0 3.302)
+					(radius 0.762)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:C"
 			(pin_numbers
 				(hide yes)
@@ -3142,6 +3249,12 @@
 		(uuid "6368a7e0-f06b-4227-87ea-653746250e07")
 	)
 	(junction
+		(at 250.19 105.41)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "69213047-9d5d-4eae-87db-28431b4817bb")
+	)
+	(junction
 		(at 191.77 90.17)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3218,6 +3331,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "bcceef84-6a1f-403f-a898-20c5f56836fc")
+	)
+	(junction
+		(at 259.08 81.28)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "bd1c8a76-a3c4-462e-862a-5eed301f42d1")
 	)
 	(junction
 		(at 265.43 81.28)
@@ -3479,7 +3598,7 @@
 	)
 	(wire
 		(pts
-			(xy 259.08 105.41) (xy 248.92 105.41)
+			(xy 259.08 105.41) (xy 250.19 105.41)
 		)
 		(stroke
 			(width 0)
@@ -3609,6 +3728,16 @@
 	)
 	(wire
 		(pts
+			(xy 259.08 81.28) (xy 265.43 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "511aaf8b-60ab-4bf6-9c13-4c19e0589663")
+	)
+	(wire
+		(pts
 			(xy 137.16 90.17) (xy 144.78 90.17)
 		)
 		(stroke
@@ -3699,7 +3828,7 @@
 	)
 	(wire
 		(pts
-			(xy 248.92 81.28) (xy 265.43 81.28)
+			(xy 248.92 81.28) (xy 259.08 81.28)
 		)
 		(stroke
 			(width 0)
@@ -4019,6 +4148,16 @@
 	)
 	(wire
 		(pts
+			(xy 250.19 105.41) (xy 248.92 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c3aac11f-7696-4c5e-ba99-8a147ffa7b57")
+	)
+	(wire
+		(pts
 			(xy 62.23 85.09) (xy 62.23 99.06)
 		)
 		(stroke
@@ -4139,13 +4278,13 @@
 	)
 	(wire
 		(pts
-			(xy 259.08 123.19) (xy 259.08 121.92)
+			(xy 259.08 121.92) (xy 259.08 123.19)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ee5296f7-21ec-43e9-84d1-033c1613878f")
+		(uuid "ee6d1f0a-105a-463f-b405-0496cb7fdb4e")
 	)
 	(wire
 		(pts
@@ -6338,6 +6477,72 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 250.19 105.41 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "932cae2d-02b8-4451-9807-d29f43a08f50")
+		(property "Reference" "TP2"
+			(at 251.968 103.124 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "3.3V"
+			(at 240.792 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Loop_D1.80mm_Drill1.0mm_Beaded"
+			(at 255.27 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 255.27 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 250.19 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "efa6905d-cdce-416c-9da5-ad16033b9119")
+		)
+		(instances
+			(project ""
+				(path "/79f65717-d4aa-4d9b-9389-67dd3cbc0c4f/b2dfabe3-5da3-487e-82ba-41cecc037238"
+					(reference "TP2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C_Polarized")
 		(at 248.92 110.49 0)
 		(unit 1)
@@ -6543,6 +6748,72 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 240.03 90.17 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a07cfd6b-0ea3-4b43-98e4-6dd07cb42c92")
+		(property "Reference" "TP4"
+			(at 238.252 92.456 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "GND"
+			(at 242.062 95.758 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Loop_D1.80mm_Drill1.0mm_Beaded"
+			(at 234.95 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 234.95 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 240.03 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7c84f51d-c1dc-47f9-bd4e-af8d733355e2")
+		)
+		(instances
+			(project "HVAC_STM32F7_PCB"
+				(path "/79f65717-d4aa-4d9b-9389-67dd3cbc0c4f/b2dfabe3-5da3-487e-82ba-41cecc037238"
+					(reference "TP4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+24V")
 		(at 153.67 66.04 0)
 		(unit 1)
@@ -6693,7 +6964,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 243.332 102.362 0)
+			(at 237.998 104.648 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6942,6 +7213,72 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 259.08 81.28 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ce944d6d-d701-44cc-9247-f8409b750ffc")
+		(property "Reference" "TP1"
+			(at 258.064 84.074 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "5V"
+			(at 258.064 75.438 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Loop_D1.80mm_Drill1.0mm_Beaded"
+			(at 264.16 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 264.16 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 259.08 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "0800729e-267b-4d0a-9b30-44f27b1a5d6f")
+		)
+		(instances
+			(project ""
+				(path "/79f65717-d4aa-4d9b-9389-67dd3cbc0c4f/b2dfabe3-5da3-487e-82ba-41cecc037238"
+					(reference "TP1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:FerriteBead")
 		(at 154.94 76.2 90)
 		(unit 1)
@@ -7082,6 +7419,72 @@
 			(project "HVAC_STM32F7_PCB"
 				(path "/79f65717-d4aa-4d9b-9389-67dd3cbc0c4f/b2dfabe3-5da3-487e-82ba-41cecc037238"
 					(reference "D5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 240.03 115.57 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "dc05403b-b002-48b6-baf6-72b4108ad5a5")
+		(property "Reference" "TP3"
+			(at 238.252 117.856 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "GND"
+			(at 242.062 121.158 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Loop_D1.80mm_Drill1.0mm_Beaded"
+			(at 234.95 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 234.95 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 240.03 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "efd7898d-fdc2-4d96-a454-c877655726a4")
+		)
+		(instances
+			(project "HVAC_STM32F7_PCB"
+				(path "/79f65717-d4aa-4d9b-9389-67dd3cbc0c4f/b2dfabe3-5da3-487e-82ba-41cecc037238"
+					(reference "TP3")
 					(unit 1)
 				)
 			)

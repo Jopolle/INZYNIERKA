@@ -519,7 +519,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "./",
-      "plot": "../dokumentacja/img/pcb/",
+      "plot": "gerbery/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
