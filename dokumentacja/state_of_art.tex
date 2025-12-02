@@ -1,2 +1,83 @@
-\section{Stan wiedzy i rozwiązania pokrewne}
-Krótki przegląd: interfejsy analogowe w HVAC (0–10 V, 4–20 mA), standardy i zalecenia, dostępne moduły komercyjne oraz przykłady platform STM32 z wyświetlaczem TFT.
+\chapter{Stan wiedzy i założenia projektowe}
+
+Celem projektu jest przede wszystkim zaprojektowanie i uruchomienie stanowiska
+laboratoryjnego, a nie opracowanie nowego modelu teoretycznego. Z tego powodu
+przegląd literatury ma charakter praktyczny i koncentruje się na zagadnieniach,
+które były rzeczywiście potrzebne podczas projektu: standardzie sygnału 0--10~V
+w HVAC, podstawowych algorytmach regulacji oraz ogólnych zasadach projektowania
+płytek PCB dla układów mieszanych analogowo--cyfrowych. 
+
+\section{Sygnał 0--10~V i sterowanie HVAC}
+
+W automatyce budynkowej jednym z najczęściej spotykanych sygnałów sterujących jest
+napięcie 0--10~V. W materiałach producentów czujników, przetworników oraz w
+opracowaniach dotyczących automatyki budynkowej podkreśla się, że sygnał 0--10~V
+jest powszechnie używany do sterowania siłownikami przepustnic i zaworów, falownikami oraz różnymi czujnikami stosowanymi w instalacjach
+HVAC\cite{veris_010v,jakar_010v,sevensesnor_010v}. Główna zaleta takiego sygnału
+to prostota: praktycznie każdy sterownik PLC lub system BMS potrafi wygenerować
+albo zmierzyć napięcie 0--10~V, a jego interpretacja jest intuicyjna ( 0--100~\%
+odpowiada 0--10~V).
+
+W literaturze naukowej dotyczącej sterowania HVAC większość uwagi poświęca się
+modelom cieplnym i algorytmom regulacji, a warstwa sprzętowa jest zwykle opisywana
+dość ogólnie. W artykułach dotyczących energooszczędnego sterowania HVAC stosuje
+się klasyczne sygnały analogowe (napięciowe lub prądowe), ale szczegóły toru
+0--10~V są zazwyczaj schowane wewnątrz sterowników\cite{kirubakaran2015,almabrok2018}.
+W niniejszej pracy ten tor został celowo ,,wyciągnięty na wierzch'' w postaci
+osobnej płytki dydaktycznej, tak aby można było go obserwować i modyfikować podczas
+zajęć laboratoryjnych.
+
+\section{Regulacja PI/PID i sekwencje pracy central HVAC}
+
+W publikacjach dotyczących sterowania HVAC najczęściej stosuje się regulatory PI
+lub PID. Do ich strojenia wykorzystuje się zarówno proste metody (np.\ Ziegler--Nichols),
+ale również bardziej zaawansowane algorytmy optymalizacyjne\cite{almabrok2018,qu2004,fernandes2019}.
+Przykładowo Almabrok i in.\ prezentują szybką metodę strojenia regulatora PID
+dla systemu HVAC z użyciem algorytmu optymalizacyjnego\cite{almabrok2018}. Zminy termodynamiczne w budynkach są na ogół procesem powolnym, dlatego algorytmy przyspieszające optymalne strojenie regulatorów są głównym motywem przewodnim prac badawczo--naukowych w tej dziedzinie.
+
+W przypadku logiki działania całych central wentylacyjnych, często odwołuje się
+do ustandaryzowanych sekwencji pracy opisanych w wytycznych ASHRAE, w szczególności
+w dokumencie Guideline~36\cite{ashrae_g36}. Wytyczne te definiują gotowe sekwencje
+sterowania nagrzewnicą, chłodnicą, odzyskiem ciepła i bypassem, uwzględniając pasmo
+martwe oraz warunki bezpieczeństwa. W projekcie zastosowano uproszczony wariant
+takiej sekwencji: pojedynczy regulator PI temperatury, którego wyjście jest
+podzielone na przedziały odpowiadające grzaniu, chłodzeniu, odzyskowi ciepła oraz
+pasmowi martwemu.
+
+\section{Sterowniki HVAC na mikrokontrolerach i RTOS}
+
+W literaturze można znaleźć przykłady implementacji sterowania HVAC z użyciem
+mikrokontrolerów oraz prostych systemów operacyjnych czasu rzeczywistego. W pracy
+Fernandesa opisano regulator PID przepływu powietrza w instalacji wentylacyjnej,
+zaimplementowany na mikrokontrolerze, z lokalnym pomiarem oraz sterowaniem pracą
+wentylatora\cite{fernandes2019}. Układ ten jest zbliżony koncepcyjnie do niniejszego projektu, obejmuje jedną pętlę regulacji, czujnik, element wykonawczy i prosty interfejs użytkownika.
+
+W projekcie jako środowisko firmware’u wykorzystano Zephyr RTOS, lekki
+system operacyjny czasu rzeczywistego przeznaczony do układów wbudowanych, obsługujący
+wiele architektur i posiadający rozbudowany zestaw sterowników\cite{zephyr_intro,zephyr_docs}.
+Dokumentacja Zephyra pokazuje typowe podejście do struktury aplikacji: logika jest
+podzielona na wątki, a sprzęt (np.\ magistrale SPI, wyświetlacze) opisuje się w
+drzewie urządzeń (Devicetree). Do realizacji interfejsu HMI wykorzystano bibliotekę
+LVGL, czyli popularną otwartą bibliotekę graficzną dla mikrokontrolerów\cite{lvgl_intro,lvgl_zephyr}.
+LVGL udostępnia gotowe widżety (przyciski, wykresy, listy), dzięki czemu można skupić
+się na logice HVAC, zamiast implementować od podstaw warstwę graficzną.
+
+\section{Ramy projektowania PCB dla układów mieszanych}
+
+Istotnym elementem projektu jest płytka PCB zawierająca zarówno tory analogowe 0--10~V,
+jak i cyfrowe interfejsy SPI. W literaturze dotyczącej projektowania układów
+mieszanych powtarza się kilka podstawowych zaleceń: logiczny podział
+płytki na część analogową i cyfrową, kontrola powrotu prądów w masie oraz rozsądne
+prowadzenie zasilania\cite{ott_mixed,adi_an404,microchip_analog_guide}. 
+Ott \cite{ott_mixed} zwraca uwagę, że zamiast dzielić masę na dwie osobne płaszczyzny, korzystniej jest utrzymać jedną
+wspólną masę i wydzielić część analogową oraz cyfrową głównie geometrycznie oraz
+odpowiednim prowadzeniem ścieżek.
+
+W notach aplikacyjnych firm Analog Devices i Microchip przedstawiono przykładowe
+projekty płytek dla układów mieszanych, gdzie pokazano m.in.\ sposób umieszczania
+przetworników ADC na granicy stref analog/digital, prowadzenia linii SPI oraz
+stosowania przelotek łączących pola masy\cite{adi_an404,microchip_analog_guide}. W niniejszym
+projekcie przyjęto podobne podejście: tory 0--10~V znajduje się w wydzielonych częściach
+płytki z osobnym polem masy analogowej GNDA, interfejsy SPI umieszczono bliżej
+złącza do płytki Discovery, a przetworniki cyfrowo/analogowe i analogowo/cyfrowe pełnią rolę ,,mostu'' pomiędzy
+częścią analogową a cyfrową\cite{ti_ads8688,TI_DAC7568}.
