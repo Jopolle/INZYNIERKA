@@ -32,7 +32,7 @@
     \field{year}{2024}
   \endentry
 
-  \entry{TI_ADS8688}{manual}{}
+  \entry{ti_ads8688}{manual}{}
     \list{organization}{1}{%
       {Texas Instruments}%
     }
@@ -45,6 +45,62 @@
     \verb https://www.ti.com/lit/ds/symlink/ads8688.pdf
     \endverb
     \field{year}{2021}
+  \endentry
+
+  \entry{almabrok2018}{article}{}
+    \name{author}{3}{}{%
+      {{hash=AA}{%
+         family={Almabrok},
+         familyi={A\bibinitperiod},
+         given={Abdoalnasir},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=PM}{%
+         family={Psarakis},
+         familyi={P\bibinitperiod},
+         given={Marios},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=DA}{%
+         family={Dounis},
+         familyi={D\bibinitperiod},
+         given={Anastasios},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{AAPMDA1}
+    \strng{fullhash}{AAPMDA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \verb{doi}
+    \verb 10.3390/a11100146
+    \endverb
+    \field{number}{10}
+    \field{pages}{146}
+    \field{title}{Fast Tuning of the PID Controller in an HVAC System Using the Big Bang--Big Crunch Algorithm and FPGA Technology}
+    \verb{url}
+    \verb https://doi.org/10.3390/a11100146
+    \endverb
+    \field{volume}{11}
+    \field{journaltitle}{Algorithms}
+    \field{year}{2018}
+  \endentry
+
+  \entry{sevensesnor_010v}{manual}{}
+    \list{organization}{1}{%
+      {Seven Sensor Solutions}%
+    }
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{note}{Czujnik temperatury otoczenia z przetwornikiem PT1000 na sygnał 0--10~V}
+    \field{title}{Ambient Temperature Sensor-PT1000 with 0-10V Output}
+    \verb{url}
+    \verb https://www.sevensensor.com/ambient-temperature-sensor-pt1000-u
+    \endverb
+    \field{year}{2023}
   \endentry
 
   \entry{AO4407A}{manual}{}
@@ -74,6 +130,74 @@
     \field{year}{2019}
   \endentry
 
+  \entry{ashrae_g36}{manual}{}
+    \name{author}{1}{}{%
+      {{hash=A}{%
+         family={{ASHRAE}},
+         familyi={A\bibinitperiod},
+      }}%
+    }
+    \list{organization}{2}{%
+      {American Society of Heating, Refrigerating}%
+      {Air-Conditioning Engineers}%
+    }
+    \strng{namehash}{A1}
+    \strng{fullhash}{A1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{note}{Guideline 36-2021}
+    \field{title}{ASHRAE Guideline 36-2021: High-Performance Sequences of Operation for HVAC Systems}
+    \verb{url}
+    \verb https://www.ashrae.org/technical-resources/bookstore/guideline-36-201
+    \verb 8
+    \endverb
+    \field{year}{2021}
+  \endentry
+
+  \entry{microchip_analog_guide}{manual}{}
+    \name{author}{1}{}{%
+      {{hash=BBC}{%
+         family={Baker},
+         familyi={B\bibinitperiod},
+         given={Bonnie\bibnamedelima C.},
+         giveni={B\bibinitperiod\bibinitdelim C\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Microchip Technology Inc.}%
+    }
+    \strng{namehash}{BBC1}
+    \strng{fullhash}{BBC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \field{note}{Zbiór not aplikacyjnych o projektowaniu układów analogowych i PCB}
+    \field{title}{Analog and Interface Guide -- Volume 1: A Compilation of Technical Articles and Design Notes}
+    \verb{url}
+    \verb https://ww1.microchip.com/downloads/en/devicedoc/00924b.pdf
+    \endverb
+    \field{year}{2005}
+  \endentry
+
+  \entry{adi_an404}{manual}{}
+    \list{organization}{1}{%
+      {Analog Devices, Inc.}%
+    }
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{note}{Application Note AN-404}
+    \field{title}{Considerations for Mixed Signal Circuit Board Design (AN-404)}
+    \verb{url}
+    \verb https://www.analog.com/media/en/technical-documentation/application-n
+    \verb otes/495266810an-404.pdf
+    \endverb
+    \field{year}{2000}
+  \endentry
+
   \entry{TI_DAC7568}{manual}{}
     \list{organization}{1}{%
       {Texas Instruments}%
@@ -89,6 +213,129 @@
     \field{year}{2017}
   \endentry
 
+  \entry{fernandes2019}{article}{}
+    \name{author}{4}{}{%
+      {{hash=FAC}{%
+         family={Fernandes},
+         familyi={F\bibinitperiod},
+         given={A.\bibnamedelima C.},
+         giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod},
+      }}%
+      {{hash=GFOS}{%
+         family={Gama},
+         familyi={G\bibinitperiod},
+         given={F.\bibnamedelima O.\bibnamedelima S.},
+         giveni={F\bibinitperiod\bibinitdelim O\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+      {{hash=PAMFR}{%
+         family={Pinto},
+         familyi={P\bibinitperiod},
+         given={A.\bibnamedelima M. F.\bibnamedelima R.},
+         giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+      {{hash=RRJLF}{%
+         family={Rebelo},
+         familyi={R\bibinitperiod},
+         given={R.\bibnamedelima J. L.\bibnamedelima F.},
+         giveni={R\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{FAC+1}
+    \strng{fullhash}{FACGFOSPAMFRRRJLF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{F}
+    \field{sortinithash}{F}
+    \verb{doi}
+    \verb 10.1007/s00542-019-04407-1
+    \endverb
+    \field{number}{9}
+    \field{pages}{3597\bibrangedash 3608}
+    \field{title}{Control of airflow in ventilation systems using embedded systems on microcontrollers}
+    \verb{url}
+    \verb https://doi.org/10.1007/s00542-019-04407-1
+    \endverb
+    \field{volume}{25}
+    \field{journaltitle}{Microsystem Technologies}
+    \field{year}{2019}
+  \endentry
+
+  \entry{veris_010v}{manual}{}
+    \list{organization}{1}{%
+      {Veris Industries}%
+    }
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{note}{Aktywne czujniki wilgotności/temperatury z wyjściem 0--5~V / 0--10~V}
+    \field{title}{HD \& HO Series Deluxe Humidity Transmitters}
+    \verb{url}
+    \verb https://www.veris.com/ASSETS/DOCUMENTS/ITEMS/EN/HD_HO_d0321.pdf
+    \endverb
+    \field{year}{2014}
+  \endentry
+
+  \entry{jakar_010v}{manual}{}
+    \list{organization}{1}{%
+      {Jakar Electronics}%
+    }
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{note}{Nadajnik ciśnienia z wyjściem napięciowym 0--10~V do systemów automatyki}
+    \field{title}{High Accuracy Pressure Transmitter, 0--10~V Output}
+    \verb{url}
+    \verb https://www.jakar.cz/en/p/high-accuracy-pressure-transmitter/4103
+    \endverb
+    \field{year}{2020}
+  \endentry
+
+  \entry{kirubakaran2015}{article}{}
+    \name{author}{4}{}{%
+      {{hash=KV}{%
+         family={Kirubakaran},
+         familyi={K\bibinitperiod},
+         given={V.},
+         giveni={V\bibinitperiod},
+      }}%
+      {{hash=SC}{%
+         family={Sahu},
+         familyi={S\bibinitperiod},
+         given={C.},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=RTK}{%
+         family={Radhakrishnan},
+         familyi={R\bibinitperiod},
+         given={T.\bibnamedelima K.},
+         giveni={T\bibinitperiod\bibinitdelim K\bibinitperiod},
+      }}%
+      {{hash=SN}{%
+         family={Sivakumaran},
+         familyi={S\bibinitperiod},
+         given={N.},
+         giveni={N\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KV+1}
+    \strng{fullhash}{KVSCRTKSN1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \verb{doi}
+    \verb 10.1016/j.ecoenv.2015.03.027
+    \endverb
+    \field{pages}{236\bibrangedash 243}
+    \field{title}{Energy efficient model based algorithm for control of building HVAC systems}
+    \verb{url}
+    \verb https://doi.org/10.1016/j.ecoenv.2015.03.027
+    \endverb
+    \field{volume}{121}
+    \field{journaltitle}{Ecotoxicology and Environmental Safety}
+    \field{year}{2015}
+  \endentry
+
   \entry{TI_LM2596}{manual}{}
     \list{organization}{1}{%
       {Texas Instruments}%
@@ -102,6 +349,78 @@
     \verb https://www.ti.com/lit/ds/symlink/lm2596.pdf
     \endverb
     \field{year}{2020}
+  \endentry
+
+  \entry{lvgl_intro}{misc}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{howpublished}{\url{https://lvgl.io/}}
+    \field{note}{Oficjalna strona projektu LVGL, dostęp: 2025-12-03}
+    \field{title}{LVGL -- Light and Versatile Embedded Graphics Library}
+    \field{year}{2025}
+  \endentry
+
+  \entry{ott_mixed}{article}{}
+    \name{author}{1}{}{%
+      {{hash=OHW}{%
+         family={Ott},
+         familyi={O\bibinitperiod},
+         given={Henry\bibnamedelima W.},
+         giveni={H\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{OHW1}
+    \strng{fullhash}{OHW1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{O}
+    \field{sortinithash}{O}
+    \field{note}{Klasyczny artykuł o podziale mas i prowadzeniu ścieżek w układach mieszanych}
+    \field{number}{6}
+    \field{pages}{16\bibrangedash 26}
+    \field{title}{Partitioning and Layout of a Mixed-Signal PCB}
+    \verb{url}
+    \verb https://www.hottconsultants.com/pdf_files/mixed-signal.pdf
+    \endverb
+    \field{volume}{18}
+    \field{journaltitle}{Printed Circuit Design}
+    \field{year}{2001}
+  \endentry
+
+  \entry{qu2004}{article}{}
+    \name{author}{2}{}{%
+      {{hash=QG}{%
+         family={Qu},
+         familyi={Q\bibinitperiod},
+         given={Guangji},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=ZuM}{%
+         family={Zaheer-uddin},
+         familyi={Z\bibinithyphendelim u\bibinitperiod},
+         given={Mohammed},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{QGZuM1}
+    \strng{fullhash}{QGZuM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{Q}
+    \field{sortinithash}{Q}
+    \verb{doi}
+    \verb 10.1002/er.1030
+    \endverb
+    \field{number}{15}
+    \field{pages}{1313\bibrangedash 1327}
+    \field{title}{Real-time tuning of PI controllers in HVAC systems}
+    \verb{url}
+    \verb https://doi.org/10.1002/er.1030
+    \endverb
+    \field{volume}{28}
+    \field{journaltitle}{International Journal of Energy Research}
+    \field{year}{2004}
   \endentry
 
   \entry{ST_STM32F746NG_Datasheet}{manual}{}
@@ -156,6 +475,36 @@
     \verb https://www.ti.com/lit/ds/symlink/tlv9304.pdf
     \endverb
     \field{year}{2023}
+  \endentry
+
+  \entry{lvgl_zephyr}{misc}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{Z}
+    \field{sortinithash}{Z}
+    \field{howpublished}{\url{https://docs.lvgl.io/9.1/integration/os/zephyr.html}}
+    \field{note}{Opis integracji LVGL z Zephyr RTOS, dostęp: 2025-12-03}
+    \field{title}{Zephyr Integration Guide -- LVGL Documentation}
+    \field{year}{2024}
+  \endentry
+
+  \entry{zephyr_docs}{misc}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{Z}
+    \field{sortinithash}{Z}
+    \field{howpublished}{\url{https://docs.zephyrproject.org/latest/}}
+    \field{note}{Dokumentacja systemu Zephyr RTOS, dostęp: 2025-12-03}
+    \field{title}{Zephyr Project Documentation}
+    \field{year}{2025}
+  \endentry
+
+  \entry{zephyr_intro}{misc}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{Z}
+    \field{sortinithash}{Z}
+    \field{howpublished}{\url{https://www.zephyrproject.org/}}
+    \field{note}{Dostęp: 2025-12-03}
+    \field{title}{Zephyr Project RTOS}
+    \field{year}{2025}
   \endentry
 \enddatalist
 \endinput
