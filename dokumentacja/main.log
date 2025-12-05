@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.10.14)  4 DEC 2025 02:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.10.14)  5 DEC 2025 22:58
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -989,7 +989,100 @@ Package biblatex Info: ... and expl3
 (biblatex)             setting 'casechanger=expl3'.
  (/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty
 Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
-))
+)) (/usr/share/texlive/texmf-dist/tex/latex/minted/minted.sty
+Package: minted 2023/12/18 v2.9 Yet another Pygments shim for LaTeX
+ (/usr/share/texlive/texmf-dist/tex/latex/fvextra/fvextra.sty
+Package: fvextra 2023/11/28 v1.6.1 fvextra - extensions and patches for fancyvrb
+ (/usr/share/texlive/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2024/01/20 4.5c verbatim text (tvz,hv)
+\FV@CodeLineNo=\count479
+\FV@InFile=\read6
+\FV@TabBox=\box75
+\c@FancyVerbLine=\count480
+\FV@StepNumber=\count481
+\FV@OutFile=\write5
+) (/usr/share/texlive/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verbatim
+) (/usr/share/texlive/texmf-dist/tex/latex/lineno/lineno.sty
+Package: lineno 2023/05/20 line numbers on paragraphs v5.3
+\linenopenalty=\count482
+\output=\toks47
+\linenoprevgraf=\count483
+\linenumbersep=\dimen282
+\linenumberwidth=\dimen283
+\c@linenumber=\count484
+\c@pagewiselinenumber=\count485
+\c@LN@truepage=\count486
+\c@internallinenumber=\count487
+\c@internallinenumbers=\count488
+\quotelinenumbersep=\dimen284
+\bframerule=\dimen285
+\bframesep=\dimen286
+\bframebox=\box76
+\linenoamsmath@ams@eqpen=\count489
+
+
+LaTeX Warning: Command \@parboxrestore  has changed.
+               Check if current package is valid.
+
+LaTeX Info: Redefining \\ on input line 3180.
+)
+
+Package fvextra Warning: csquotes should be loaded after fvextra, to avoid a warning from the lineno package on input line 36.
+
+\c@FancyVerbWriteLine=\count490
+\c@FancyVerbBufferIndex=\count491
+\c@FancyVerbBufferLength=\count492
+\c@FancyVerbBufferLine=\count493
+\c@FV@oldbufferlength=\count494
+\c@FV@TrueTabGroupLevel=\count495
+\c@FV@TrueTabCounter=\count496
+\FV@TabBox@Group=\box77
+\FV@TmpLength=\skip85
+\c@FV@HighlightLinesStart=\count497
+\c@FV@HighlightLinesStop=\count498
+\FV@LoopCount=\count499
+\FV@NCharsBox=\box78
+\FV@BreakIndent=\dimen287
+\FV@BreakIndentNChars=\count500
+\FV@BreakSymbolSepLeft=\dimen288
+\FV@BreakSymbolSepLeftNChars=\count501
+\FV@BreakSymbolSepRight=\dimen289
+\FV@BreakSymbolSepRightNChars=\count502
+\FV@BreakSymbolIndentLeft=\dimen290
+\FV@BreakSymbolIndentLeftNChars=\count503
+\FV@BreakSymbolIndentRight=\dimen291
+\FV@BreakSymbolIndentRightNChars=\count504
+\c@FancyVerbLineBreakLast=\count505
+\FV@LineBox=\box79
+\FV@LineIndentBox=\box80
+\c@FV@BreakBufferDepth=\count506
+\FV@LineWidth=\dimen292
+) (/usr/share/texlive/texmf-dist/tex/latex/framed/framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip86
+\fb@frw=\dimen293
+\fb@frh=\dimen294
+\FrameRule=\dimen295
+\FrameSep=\dimen296
+) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count507
+\float@exts=\toks48
+\float@box=\box81
+\@float@everytoks=\toks49
+\@floatcapt=\box82
+)
+\minted@appexistsfile=\read7
+\minted@bgbox=\box83
+\minted@code=\write6
+\c@minted@FancyVerbLineTemp=\count508
+\c@minted@pygmentizecounter=\count509
+\@float@every@listing=\toks50
+\c@listing=\count510
+)
+runsystem(mkdir -p _minted-main)...executed.
+
 LaTeX Font Info:    Trying to load font information for T1+qhv on input line 43.
  (/usr/share/texmf/tex/latex/tex-gyre/t1qhv.fd
 File: t1qhv.fd 2009/09/25 v1.2 font definition file for T1/qhv
@@ -1000,13 +1093,16 @@ Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'polish'.
+runsystem(command -v pygmentize && touch main.aex)...executed.
 
-No file main.aux.
+runsystem(rm main.aex)...executed.
+
+ (./main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/ntxmi/m/it on input line 43.
 LaTeX Font Info:    Trying to load font information for OML+ntxmi on input line 43.
-(/usr/share/texlive/texmf-dist/tex/latex/newtx/omlntxmi.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/newtx/omlntxmi.fd
 File: omlntxmi.fd 2015/08/25 Fontinst v1.933 font definitions for OML/ntxmi.
 )
 LaTeX Font Info:    ... okay on input line 43.
@@ -1079,17 +1175,17 @@ LaTeX Font Info:    ... okay on input line 43.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count479
-\scratchdimen=\dimen282
-\scratchbox=\box75
-\nofMPsegments=\count480
-\nofMParguments=\count481
-\everyMPshowfont=\toks47
-\MPscratchCnt=\count482
-\MPscratchDim=\dimen283
-\MPnumerator=\count483
-\makeMPintoPDFobject=\count484
-\everyMPtoPDFconversion=\toks48
+\scratchcounter=\count511
+\scratchdimen=\dimen297
+\scratchbox=\box84
+\nofMPsegments=\count512
+\nofMParguments=\count513
+\everyMPshowfont=\toks51
+\MPscratchCnt=\count514
+\MPscratchDim=\dimen298
+\MPnumerator=\count515
+\makeMPintoPDFobject=\count516
+\everyMPtoPDFconversion=\toks52
 ) (/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
  (/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
@@ -1106,17 +1202,18 @@ Package translations Info: loading dictionary `translations-basic-dictionary' fo
 File: translations-basic-dictionary-english.trsl (english translation file `translations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 43.
- (|'inkscape' -V )
-\c@mv@tabular=\count485
-\c@mv@boldtabular=\count486
+\c@mv@tabular=\count517
+\c@mv@boldtabular=\count518
 LaTeX Info: Command `\dddot' is already robust on input line 43.
 LaTeX Info: Command `\ddddot' is already robust on input line 43.
 Package hyperref Info: Link coloring OFF on input line 43.
-\@outlinefile=\write5
-\openout5 = `main.out'.
+ (./main.out) (./main.out)
+\@outlinefile=\write7
+\openout7 = `main.out'.
 
-\c@lstlisting=\count487
+\c@lstlisting=\count519
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
 Package biblatex Info: Trying to load language 'polish'...
 Package biblatex Info: ... file 'polish.lbx' found.
@@ -1141,7 +1238,7 @@ Package biblatex Info: ... file 'main.bbl' found.
  (./main.bbl)
 Package biblatex Info: Reference section=0 on input line 43.
 Package biblatex Info: Reference segment=0 on input line 43.
-<StronaTytulowa_193652.pdf, id=7, 597.51233pt x 845.0471pt>
+<StronaTytulowa_193652.pdf, id=139, 597.51233pt x 845.0471pt>
 File: StronaTytulowa_193652.pdf Graphic file (type pdf)
 <use StronaTytulowa_193652.pdf>
 Package pdftex.def Info: StronaTytulowa_193652.pdf  used on input line 45.
@@ -1150,7 +1247,7 @@ File: StronaTytulowa_193652.pdf Graphic file (type pdf)
 <use StronaTytulowa_193652.pdf>
 Package pdftex.def Info: StronaTytulowa_193652.pdf  used on input line 45.
 (pdftex.def)             Requested size: 597.51086pt x 845.04504pt.
-<StronaTytulowa_193652.pdf, id=10, page=1, 597.51233pt x 845.0471pt>
+<StronaTytulowa_193652.pdf, id=142, page=1, 597.51233pt x 845.0471pt>
 File: StronaTytulowa_193652.pdf Graphic file (type pdf)
 <use StronaTytulowa_193652.pdf, page 1>
 Package pdftex.def Info: StronaTytulowa_193652.pdf , page1 used on input line 45.
@@ -1177,164 +1274,186 @@ Package pdftex.def Info: StronaTytulowa_193652.pdf , page1 used on input line 45
  <./StronaTytulowa_193652.pdf>]
 LaTeX Font Info:    Font shape `T1/qhv/b/n' will be
 (Font)              scaled to size 11.28003pt on input line 46.
-
-No file main.toc.
-\tf@toc=\write6
-\openout6 = `main.toc'.
-
-(./abstract.tex [2
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ec.enc}]
+ (./main.toc
 LaTeX Font Info:    Font shape `T1/qhv/b/n' will be
-(Font)              scaled to size 9.40002pt on input line 1.
-LaTeX Font Info:    Trying to load font information for OT1+minntx on input line 2.
+(Font)              scaled to size 9.40002pt on input line 2.
+LaTeX Font Info:    Trying to load font information for OT1+minntx on input line 4.
  (/usr/share/texlive/texmf-dist/tex/latex/newtx/ot1minntx.fd
 File: ot1minntx.fd 2023/09/09 v1.1 font definition file for OT1/minntx
 )
-LaTeX Font Info:    Trying to load font information for U+ntxmia on input line 2.
+LaTeX Font Info:    Trying to load font information for U+ntxmia on input line 4.
  (/usr/share/texlive/texmf-dist/tex/latex/newtx/untxmia.fd
 File: untxmia.fd 2018/04/14 Fontinst v1.933 font definitions for U/ntxmia.
 )
-LaTeX Font Info:    Trying to load font information for U+ntxsym on input line 2.
+LaTeX Font Info:    Trying to load font information for U+ntxsym on input line 4.
  (/usr/share/texlive/texmf-dist/tex/latex/newtx/untxsym.fd
 File: untxsym.fd 2023/08/16 Fontinst v1.933 font definitions for U/ntxsym.
 )
-LaTeX Font Info:    Trying to load font information for U+ntxsyc on input line 2.
+LaTeX Font Info:    Trying to load font information for U+ntxsyc on input line 4.
  (/usr/share/texlive/texmf-dist/tex/latex/newtx/untxsyc.fd
 File: untxsyc.fd 2012/04/12 Fontinst v1.933 font definitions for U/ntxsyc.
-)
+))
+\tf@toc=\write8
+\openout8 = `main.toc'.
+
+ (./abstract.tex [2
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ec.enc}]
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.4 \end{abstract}
                    [1{/usr/share/texlive/texmf-dist/fonts/enc/dvips/newtx/ntx-ot1-tlf.enc}]) (./intro.tex
-LaTeX Font Info:    Font shape `T1/qhv/b/it' will be
-(Font)              scaled to size 9.40002pt on input line 1.
+Rozdzia\l  1.
 ) (./state_of_art.tex
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.1 \chapter
-            {Stan wiedzy i zaÅ‚oÅ¼enia projektowe} [2]
-Rozdzia\l  1.
+            {Stan wiedzy i zaÅ‚oÅ¼enia projektowe} [2
+
+]
+Rozdzia\l  2.
+LaTeX Font Info:    Font shape `T1/qhv/b/it' will be
+(Font)              scaled to size 9.40002pt on input line 10.
 [3
 
-]) (./requirements.tex
+]) (./requirements.tex [4]
+Rozdzia\l  3.
 LaTeX Font Info:    Font shape `T1/qhv/m/it' will be
-(Font)              scaled to size 9.40002pt on input line 2.
-LaTeX Font Info:    Trying to load font information for TS1+qhv on input line 4.
- (/usr/share/texmf/tex/latex/tex-gyre/ts1qhv.fd
+(Font)              scaled to size 9.40002pt on input line 10.
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 10.
+
+LaTeX Font Info:    Trying to load font information for TS1+qhv on input line 17.
+(/usr/share/texmf/tex/latex/tex-gyre/ts1qhv.fd
 File: ts1qhv.fd 2009/09/25 v1.2 font definition file for TS1/qhv
 )
 LaTeX Font Info:    Font shape `TS1/qhv/m/n' will be
-(Font)              scaled to size 9.40002pt on input line 4.
-) (./hardware.tex [4{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ts1.enc}]
-Rozdzia\l  2.
-<./svg-inkscape/pcb_drawing_svg-raw.pdf, id=108, 1199.33115pt x 781.11667pt>
+(Font)              scaled to size 9.40002pt on input line 17.
+ [5
+
+{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ts1.enc}]) (./hardware.tex [6]
+Rozdzia\l  4.
+<./svg-inkscape/pcb_drawing_svg-raw.pdf, id=273, 805.75621pt x 530.3096pt>
 File: ./svg-inkscape/pcb_drawing_svg-raw.pdf Graphic file (type pdf)
 <use ./svg-inkscape/pcb_drawing_svg-raw.pdf>
 Package pdftex.def Info: ./svg-inkscape/pcb_drawing_svg-raw.pdf  used on input line 14.
-(pdftex.def)             Requested size: 1199.32822pt x 781.11476pt.
+(pdftex.def)             Requested size: 805.75424pt x 530.3083pt.
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
 (Font)              scaled to size 8.46002pt on input line 15.
 LaTeX Font Info:    Font shape `T1/qhv/b/n' will be
 (Font)              scaled to size 8.46002pt on input line 15.
 
-LaTeX Warning: Reference `fig:schemat-zasilanie' on page 5 undefined on input line 21.
+Underfull \vbox (badness 1668) has occurred while \output is active []
 
+ [7
 
-Underfull \vbox (badness 2495) has occurred while \output is active []
-
- [5
-
- <./svg-inkscape/pcb_drawing_svg-raw.pdf>] [6]
-
-LaTeX Warning: Reference `fig:pcb-obraz' on page 7 undefined on input line 44.
-
-<./svg-inkscape/schemat_zasilanie_svg-raw.pdf, id=136, 695.14821pt x 195.94055pt>
+ <./svg-inkscape/pcb_drawing_svg-raw.pdf>] [8]
+<./svg-inkscape/schemat_zasilanie_svg-raw.pdf, id=301, 695.14821pt x 195.94055pt>
 File: ./svg-inkscape/schemat_zasilanie_svg-raw.pdf Graphic file (type pdf)
 <use ./svg-inkscape/schemat_zasilanie_svg-raw.pdf>
-Package pdftex.def Info: ./svg-inkscape/schemat_zasilanie_svg-raw.pdf  used on input line 48.
+Package pdftex.def Info: ./svg-inkscape/schemat_zasilanie_svg-raw.pdf  used on input line 47.
 (pdftex.def)             Requested size: 695.1465pt x 195.94006pt.
 
-LaTeX Warning: Reference `fig:schemat-dac' on page 7 undefined on input line 55.
-
-
-Overfull \hbox (4.33008pt too wide) in paragraph at lines 55--56
+Overfull \hbox (4.33008pt too wide) in paragraph at lines 54--55
 \T1/qhv/m/n/10 Tor wyj-±ciowy ge-ne-ru-j¡cy sy-gnaªy 0--10 V oparto na o±mio-ka-na-ªo-wym prze-twor-niku cy-frowo^^Uanalogowym
  []
 
-<./svg-inkscape/schemat_dac_svg-raw.pdf, id=139, 742.99678pt x 417.22807pt>
+<./svg-inkscape/schemat_dac_svg-raw.pdf, id=305, 742.99678pt x 417.22807pt>
 File: ./svg-inkscape/schemat_dac_svg-raw.pdf Graphic file (type pdf)
 <use ./svg-inkscape/schemat_dac_svg-raw.pdf>
-Package pdftex.def Info: ./svg-inkscape/schemat_dac_svg-raw.pdf  used on input line 59.
+Package pdftex.def Info: ./svg-inkscape/schemat_dac_svg-raw.pdf  used on input line 58.
 (pdftex.def)             Requested size: 742.99496pt x 417.22705pt.
-LaTeX Font Info:    Trying to load font information for T1+ntxtt on input line 64.
+LaTeX Font Info:    Trying to load font information for T1+ntxtt on input line 63.
 (/usr/share/texlive/texmf-dist/tex/latex/newtx/t1ntxtt.fd
 File: t1ntxtt.fd 2012/04/20 v3.1
 )
 LaTeX Font Info:    Font shape `T1/ntxtt/m/n' will be
-(Font)              scaled to size 10.0pt on input line 64.
- [7 <./svg-inkscape/schemat_zasilanie_svg-raw.pdf>]
-Overfull \hbox (4.13931pt too wide) in paragraph at lines 82--83
+(Font)              scaled to size 10.0pt on input line 63.
+ [9 <./svg-inkscape/schemat_zasilanie_svg-raw.pdf>]
+Overfull \hbox (4.13931pt too wide) in paragraph at lines 81--82
 []\T1/qhv/m/n/10 Wyj±cia po-szcze-gól-nych wzmac-nia-czy s¡ wy-pro-wa-dzone na uni-wer-salne zª¡-cza J21--J28. Ka»de
  []
 
-
-LaTeX Warning: Reference `fig:pcb-obraz' on page 8 undefined on input line 84.
-
-
-LaTeX Warning: Citation 'TI_ADS8688' on page 8 undefined on input line 92.
-
-
-LaTeX Warning: Reference `fig:schemat-mcu' on page 8 undefined on input line 92.
-
-
-Overfull \hbox (5.57939pt too wide) in paragraph at lines 92--93
-\T1/qhv/m/n/10 pieczne do-pro-wa-dze-nie sy-gna-ªów 0--10 V do wie-lo-ka-na-ªo-wego prze-twor-nika A/C ADS8688[[]].
- []
-
-[8 <./svg-inkscape/schemat_dac_svg-raw.pdf>]
-<./svg-inkscape/schemat_mcu_svg-raw.pdf, id=163, 690.25964pt x 485.37396pt>
+[10 <./svg-inkscape/schemat_dac_svg-raw.pdf>]
+<./svg-inkscape/schemat_mcu_svg-raw.pdf, id=331, 690.25964pt x 485.37396pt>
 File: ./svg-inkscape/schemat_mcu_svg-raw.pdf Graphic file (type pdf)
 <use ./svg-inkscape/schemat_mcu_svg-raw.pdf>
-Package pdftex.def Info: ./svg-inkscape/schemat_mcu_svg-raw.pdf  used on input line 96.
+Package pdftex.def Info: ./svg-inkscape/schemat_mcu_svg-raw.pdf  used on input line 95.
 (pdftex.def)             Requested size: 690.25797pt x 485.37277pt.
-
-
-LaTeX Warning: Citation 'TI_ADS8688' on page 9 undefined on input line 112.
-
-
-Overfull \hbox (48.91513pt too wide) in paragraph at lines 112--113
-\T1/qhv/m/n/10 sin-go-wych; ska-lo-wa-nie i za-bez-pie-cze-nie wej±¢ re-ali-zuje we-wn¦trzny front-end prze-twor-nika ADS8688[[]],
- []
-
-[9 <./svg-inkscape/schemat_mcu_svg-raw.pdf>]
-
-LaTeX Warning: Citation 'TI_ADS8688' on page 10 undefined on input line 116.
-
-
-LaTeX Warning: Citation 'TI_ADS8688' on page 10 undefined on input line 118.
-
-
-LaTeX Warning: Reference `fig:pcb-obraz' on page 10 undefined on input line 131.
-
-[10]
-
-LaTeX Warning: Reference `fig:pcb-obraz' on page 11 undefined on input line 135.
-
-) (./firmware.tex [11] [12]
-Rozdzia\l  3.
+ [11 <./svg-inkscape/schemat_mcu_svg-raw.pdf>] [12]) (./firmware.tex [13] [14]
+Rozdzia\l  5.
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
 (Font)              scaled to size 6.86201pt on input line 17.
-[13
+[15
 
-]) (./validation.tex) [14]
+] [16]
+\openout5 = `main.pyg'.
+
+ (./_minted-main/default.pygstyle) (./_minted-main/27BA132C6693FD5D9675D6C3099173158EF27FAE920C65D7B903E741E9673588.pygtex
+LaTeX Font Info:    Trying to load font information for T1+txtt on input line 2.
+ (/usr/share/texlive/texmf-dist/tex/latex/txfonts/t1txtt.fd
+File: t1txtt.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    Font shape `T1/ntxtt/b/n' in size <10> not available
+(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 2.
+)
+Overfull \hbox (41.74472pt too wide) in paragraph at lines 105--106
+\T1/qhv/m/n/10 na-ªów ana-lo-go-wych. Po-szcze-gólne pa-sma se-kwen-cji s¡ zde-fi-nio-wane jako prze-dziaªy \T1/ntxtt/m/n/10 from_percent\T1/qhv/m/n/10 /\T1/ntxtt/m/n/10 to_percent
+ []
+
+[17] [18]
+\openout5 = `main.pyg'.
+
+ (./_minted-main/FF0B7AF9958EB9AA12C3285282C6361D8EF27FAE920C65D7B903E741E9673588.pygtex)
+Overfull \hbox (0.87744pt too wide) in paragraph at lines 124--125
+[]\T1/qhv/m/n/10 Analogicznie, cz¦±¢ od-po-wie-dzialna za ma-po-wa-nie ka-na-ªów ana-lo-go-wych wy-ko-rzy-stuje te same
+ []
+
+
+Overfull \hbox (35.51184pt too wide) in paragraph at lines 124--125
+\T1/qhv/m/n/10 na-zwy, które po-ja-wiaj¡ si¦ w kon-fi-gu-ra-cji JSON. Dzi¦ki temu ªa-two po-wi¡-za¢ za-pis tek-stowy (np. \T1/ntxtt/m/n/10 "t_supply_ai":
+ []
+
+
+Package caption Warning: \label without proper reference on input line 135.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `lst:hvac-load-json' on page 19 undefined on input line 126.
+
+\openout5 = `main.pyg'.
+
+(./_minted-main/BEFB3FBA77F6919781149392F5F8FFB78EF27FAE920C65D7B903E741E9673588.pygtex)
+
+Package caption Warning: \label without proper reference on input line 102.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `lst:json-example' on page 19 undefined on input line 140.
+
+[19]
+Overfull \hbox (3.81458pt too wide) in paragraph at lines 152--153
+\T1/qhv/m/n/10 ko-nane na tym eta-pie nie s¡ caª-ko-wi-cie stra-cone. Przy-go-to-wana kon-fi-gu-ra-cja sys-temu pli-ków w \T1/ntxtt/m/n/10 prj.conf\T1/qhv/m/n/10 ,
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [20] [21] [22] [23]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [24] [25] [26]) (./validation.tex)
+Underfull \vbox (badness 1917) has occurred while \output is active []
+
+ [27] [28]
 LaTeX Font Info:    Font shape `T1/qhv/m/sc' will be
 (Font)              scaled to size 9.40002pt on input line 59.
- [15
+ [29
 
-{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ec-sc.enc}] [16] (./main.aux)
+{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ec-sc.enc}] [30] (./main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2020/03/25>
@@ -1343,39 +1462,27 @@ L3 programming layer <2020/03/25>
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  098BF0DEF2860570C1EA25DFFC6C7948;4110.
-
-Package biblatex Warning: Please (re)run BibTeX on the file(s):
-(biblatex)                main
-(biblatex)                and rerun LaTeX afterwards.
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: E7A2FFA644CAA9433F115185DB4602D4;7220.
+runsystem(rm main.pyg)...executed.
 
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 35807 strings out of 474222
- 688309 string characters out of 5748732
- 1941975 words of memory out of 5000000
- 57470 multiletter control sequences out of 15000+600000
- 602396 words of font info for 82 fonts, out of 8000000 for 9000
+ 38615 strings out of 474222
+ 752386 string characters out of 5748732
+ 1945975 words of memory out of 5000000
+ 60194 multiletter control sequences out of 15000+600000
+ 602731 words of font info for 83 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 109i,17n,131p,1912b,2193s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/newtx/NewTXMI.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/NewTXMI7.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvb.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvbi.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvr.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvri.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/txsys.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/ztmr.pfb>
-Output written on main.pdf (18 pages, 1047718 bytes).
+ 109i,17n,131p,1912b,2228s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/newtx/NewTXMI.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/NewTXMI7.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvb.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvbi.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvr.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvri.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/t1xbtt.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/txsys.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/ztmr.pfb>
+Output written on main.pdf (32 pages, 1244594 bytes).
 PDF statistics:
- 324 PDF objects out of 1000 (max. 8388607)
- 264 compressed objects within 3 object streams
- 74 named destinations out of 1000 (max. 500000)
- 53 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 591 PDF objects out of 1000 (max. 8388607)
+ 512 compressed objects within 6 object streams
+ 104 named destinations out of 1000 (max. 500000)
+ 317 words of extra memory for PDF output out of 10000 (max. 10000000)
 

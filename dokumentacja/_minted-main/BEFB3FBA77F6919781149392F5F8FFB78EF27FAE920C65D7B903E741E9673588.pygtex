@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n+nf}{hvac\PYGZus{}load\PYGZus{}config\PYGZus{}from\PYGZus{}json}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{k+kt}{char}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{json}\PYG{p}{,}
+\PYG{+w}{                               }\PYG{k+kt}{size\PYGZus{}t}\PYG{+w}{ }\PYG{n}{json\PYGZus{}len}\PYG{p}{,}
+\PYG{+w}{                               }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hvac\PYGZus{}config}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{out\PYGZus{}cfg}\PYG{p}{);}
+\end{Verbatim}

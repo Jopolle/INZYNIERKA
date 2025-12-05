@@ -32,7 +32,7 @@
     \field{year}{2024}
   \endentry
 
-  \entry{ti_ads8688}{manual}{}
+  \entry{TI_ADS8688}{manual}{}
     \list{organization}{1}{%
       {Texas Instruments}%
     }
@@ -156,6 +156,38 @@
     \field{year}{2021}
   \endentry
 
+  \entry{AstromHagglund_PID}{book}{}
+    \name{author}{2}{}{%
+      {{hash=AKJ}{%
+         family={Astrom},
+         familyi={A\bibinitperiod},
+         given={Karl\bibnamedelima J.},
+         giveni={K\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=HT}{%
+         family={Hagglund},
+         familyi={H\bibinitperiod},
+         given={Tore},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Instrument Society of America}%
+    }
+    \strng{namehash}{AKJHT1}
+    \strng{fullhash}{AKJHT1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{edition}{2}
+    \field{title}{PID Controllers: Theory, Design, and Tuning}
+    \list{location}{1}{%
+      {Research Triangle Park, NC}%
+    }
+    \field{year}{1995}
+  \endentry
+
   \entry{microchip_analog_guide}{manual}{}
     \name{author}{1}{}{%
       {{hash=BBC}{%
@@ -258,6 +290,33 @@
     \field{volume}{25}
     \field{journaltitle}{Microsystem Technologies}
     \field{year}{2019}
+  \endentry
+
+  \entry{Haugen_Discretization_PID}{report}{}
+    \name{author}{1}{}{%
+      {{hash=HF}{%
+         family={Haugen},
+         familyi={H\bibinitperiod},
+         given={Finn},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HF1}
+    \strng{fullhash}{HF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{note}{Online article}
+    \field{title}{Discretization of Simulator, Filter, and PID Controller}
+    \verb{url}
+    \verb https://www.mic-journal.no/PDF/ref/Haugen2010.pdf
+    \endverb
+    \list{institution}{1}{%
+      {TechTeach}%
+    }
+    \field{type}{techreport}
+    \field{year}{2010}
   \endentry
 
   \entry{veris_010v}{manual}{}

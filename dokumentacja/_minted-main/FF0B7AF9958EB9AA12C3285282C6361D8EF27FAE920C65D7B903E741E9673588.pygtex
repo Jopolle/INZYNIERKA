@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hvac\PYGZus{}config}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kt}{int32\PYGZus{}t}\PYG{+w}{            }\PYG{n}{setpoint}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hvac\PYGZus{}pid\PYGZus{}cfg}\PYG{+w}{ }\PYG{n}{pid}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hvac\PYGZus{}io\PYGZus{}cfg}\PYG{+w}{  }\PYG{n}{io}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hvac\PYGZus{}seq\PYGZus{}cfg}\PYG{+w}{ }\PYG{n}{seq}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{const}\PYG{+w}{ }\PYG{k+kt}{char}\PYG{+w}{        }\PYG{o}{*}\PYG{n}{sequence\PYGZus{}type}\PYG{p}{;}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

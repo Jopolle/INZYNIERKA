@@ -1,9 +1,87 @@
-\section{Wymagania}
-\subsection{Funkcjonalne}
-\begin{itemize}
-  \item Pomiar napięć wejściowych w zakresie \SIrange{0}{10}{\volt} z rozdzielczością $\leq$ \SI{10}{\milli\volt}.
-  \item Generacja sygnału wyjściowego \SIrange{0}{10}{\volt} obciążalność $\geq$ \SI{5}{\milli\ampere}.
-  \item GUI na TFT: wizualizacja trendów, konfiguracja kanałów.
+\chapter{Wymagania projektu}
+\label{chap:wymagania-projektu}
+
+Zanim przejdzie się do szczegółów dotyczących sprzętu i oprogramowania, warto jednoznacznie
+określić, czego właściwie oczekuje się od projektowanego stanowiska. Wymagania mają tutaj dwa
+poziomy: funkcjonalny (co stanowisko ma potrafić) oraz niefunkcjonalny (z jaką dokładnością, w jaki
+sposób i przy jakiej wygodzie użytkowania). Poniższy zestaw założeń był punktem odniesienia przy
+projektowaniu zarówno płytki PCB, jak i firmware’u opisanych w kolejnych rozdziałach.
+
+\subsection{Wymagania funkcjonalne}
+
+Podstawowym celem jest budowa stanowiska, które pozwala na wygodny pomiar i generację
+sygnałów \mbox{0--10~V} typowych dla instalacji HVAC oraz na rozszerznie działania prostego układu
+regulacji temperatury. W praktyce sprowadza się to do spełnienia następujących wymagań:
+
+\begin{itemize} 
+  \item Płytka powinna umożliwiać pomiar napięć wejściowych w zakresie \mbox{0--10~V}
+        z efektywną rozdzielczością nie gorszą niż 10~mV na kanał,
+        tak aby możliwe było rejestrowanie zmian wielkości fizycznych z dokładnością
+        wystarczającą do ćwiczeń laboratoryjnych.
+  \item Układ ma generować na każdym z ośmiu wyjść sygnał \mbox{0--10~V} o obciążalności
+        co najmniej 5~mA, co pozwala na sterowanie typowymi przetwornikami i siłownikami
+        \mbox{0--10~V} spotykanymi w systemach HVAC (zawory, przepustnice, falowniki itp.).
+  \item Do dyspozycji użytkownika powinno być co najmniej osiem wejść i osiem wyjść
+        analogowych, tak aby dało się równolegle podłączyć kilka czujników i elementów
+        wykonawczych oraz odtworzyć uproszczony schemat małej centrali wentylacyjnej.
+  \item Każdy kanał wejściowy ma udostępniać, oprócz samego sygnału, także dedykowaną masę
+        sygnałową oraz zasilanie \mbox{+24~V}, co umożliwi bezpośrednie podłączenie aktywnych
+        czujników przemysłowych bez dodatkowych zasilaczy pomocniczych.
+  \item Na wyświetlaczu TFT powinny być pokazywane aktualne wartości napięć na wejściach
+        i wyjściach \mbox{0--10~V}, wraz z ich opisem funkcjonalnym (np. ,,T supply'',
+        ,,T extract'', ,,Heater'', ,,Cooler''), tak aby z poziomu GUI dało się zorientować,
+        jaką rolę pełni dany kanał w danej konfiguracji.
+  \item Interfejs użytkownika ma umożliwiać ustawienie zadanej temperatury oraz granic pasm sekwencji (grzanie, chłodzenie, odzysk
+        ciepła, pasmo martwe), a następnie obserwację wynikowych sygnałów wyjściowych
+        \mbox{0--10~V}.
+  \item Oprogramowanie powinno realizować co najmniej jedną pętlę regulacji temperatury (regulator PI/PID w zależności od wybranej konfiguracji) z wyjściem wyrażonym w procentach, które są następnie rozdzielane
+        na wyjścia odpowiadające grzałce, chłodnicy, odzyskowi ciepła i wentylatorowi
+        zgodnie z wybraną sekwencją pracy.
+  \item Użytkownik powinien mieć możliwość przełączania się pomiędzy co najmniej dwiema
+        kompletnymi konfiguracjami stanowiska (różne nastawy, parametry regulatora,
+        mapowanie kanałów, progi sekwencji) bez konieczności rekompilacji oprogramowania
+        -- konfiguracja ma być wczytywana z opisu tekstowego (JSON) w czasie działania
+        systemu.
 \end{itemize}
-\subsection{Niefunkcjonalne}
-EMC, bezpieczeństwo, ESD, kalibracja (offset/gain), testowalność.
+
+Spełnienie powyższych punktów oznacza, że stanowisko może zostać wykorzystane jako prosty,
+ale dość elastyczny w dalszym rozwoju układ labolatoryjny, pozwalające zarówno na pomiary statyczne, jak i na
+podstawowe eksperymenty z regulacją temperatury i sekwencjami działania układu HVAC.
+
+\subsection{Wymagania niefunkcjonalne}
+
+Drugą grupę stanowią wymagania niefunkcjonalne, związane z dokładnością, bezpieczeństwem,
+czytelnością dydaktyczną oraz możliwością dalszego rozwijania projektu. W pracy przyjęto
+w szczególności następujące założenia:
+
+\begin{itemize}
+  \item Tor pomiarowy \mbox{0--10~V} powinien zapewniać rozdzielczość co najmniej 10~mV oraz
+        błąd podstawowy rzędu pojedynczych dziesiątek miliwoltów w całym zakresie, tak aby
+        wyniki pomiarów były powtarzalne i nadawały się do prostych zadań obliczeniowych
+        (np. wyznaczanie charakterystyk statycznych czujników).
+  \item Układ ma być odporny na typowe błędy popełniane w laboratorium: odwrotną polaryzację
+        zasilania, przypadkowe zwarcia oraz krótkotrwałe przekroczenia dopuszczalnego
+        napięcia na wejściach/wyjściach. Wymusza to zastosowanie zabezpieczeń w torze
+        zasilania, ochrony przeciwprzepięciowej oraz podstawowych środków ochrony ESD.
+  \item Projekt PCB powinien uwzględniać dobre praktyki dla układów mieszanych: wydzielenie
+        stref analogowej i cyfrowej, kontrolowany sposób łączenia mas, sensowne prowadzenie
+        ścieżek zasilania i linii szybkich (SPI). Dzięki temu stanowisko ma zachowywać się
+        stabilnie także przy jednoczesnej pracy kilku kanałów i podczas dynamicznych zmian
+        sygnałów.
+  \item Zarówno schemat, jak i sam układ na płytce powinny być czytelne dla studenta. Przepływ
+        sygnału (wejścia \mbox{0--10~V} -- przetwornik A/C -- mikrokontroler -- przetwornik C/A --
+        wyjścia \mbox{0--10~V}) powinien dać się łatwo prześledzić wzrokowo, a opisy na
+        warstwie nadruku i w GUI mają pomagać w zrozumieniu roli poszczególnych bloków.
+  \item Oprogramowanie powinno być oparte na otwartych, powszechnie stosowanych narzędziach
+        (w tym przypadku: Zephyr RTOS, LVGL) i napisane w sposób umożliwiający dalszy rozwój: dołożenie
+        kolejnych ekranów HMI, nowych algorytmów regulacji lub innego sposobu wczytywania
+        konfiguracji (np. z karty SD) bez konieczności radykalnej przebudowy kodu.
+  \item Projekt nie zakłada pełnej certyfikacji pod kątem EMC, ale sposób prowadzenia mas,
+        filtracja zasilania i zastosowane zabezpieczenia mają ograniczać podatność na
+        zakłócenia do poziomu akceptowalnego w warunkach laboratorium dydaktycznego.
+\end{itemize}
+
+Tak zdefiniowany zestaw wymagań wyznacza ramy dalszej części pracy. Rozdział dotyczący
+projektu części sprzętowej pokazuje, w jaki sposób spełniono założenia związane z torami
+\mbox{0--10~V}, zasilaniem i PCB, natomiast rozdział o firmware opisuje realizację wymagań dotyczących
+regulacji, interfejsu użytkownika oraz mechanizmu wczytywania konfiguracji.

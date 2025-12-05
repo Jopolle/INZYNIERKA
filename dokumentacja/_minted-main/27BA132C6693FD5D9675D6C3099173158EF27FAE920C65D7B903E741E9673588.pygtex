@@ -1,0 +1,41 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{static}\PYG{+w}{ }\PYG{k+kt}{char}\PYG{+w}{ }\PYG{n}{hvac\PYGZus{}config1\PYGZus{}json}\PYG{p}{[]}\PYG{+w}{ }\PYG{o}{=}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}\PYGZob{}\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}  }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{setpoint}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 21,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}  }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{pid}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: \PYGZob{}\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{kp}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 10,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{ki}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 2,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{kd}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 1\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}  \PYGZcb{},\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}  }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{seq}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: \PYGZob{}\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{cooling}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: \PYGZob{}\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}      }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{from\PYGZus{}percent}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: \PYGZhy{}100,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}      }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{to\PYGZus{}percent}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: \PYGZhy{}30\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    \PYGZcb{},\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{deadband}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: \PYGZob{}\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}      }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{from\PYGZus{}percent}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: \PYGZhy{}30,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}      }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{to\PYGZus{}percent}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 30\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    \PYGZcb{},\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{heating}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: \PYGZob{}\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}      }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{from\PYGZus{}percent}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 30,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}      }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{to\PYGZus{}percent}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 100\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    \PYGZcb{},\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{heat\PYGZus{}recovery}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: \PYGZob{}\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}      }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{from\PYGZus{}percent}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 0,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}      }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{to\PYGZus{}percent}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 0\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    \PYGZcb{}\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}  \PYGZcb{},\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}  }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{sequence\PYGZus{}type}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{cool\PYGZus{}dead\PYGZus{}heat}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}  }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{io}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: \PYGZob{}\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{t\PYGZus{}supply\PYGZus{}ai}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 0,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{t\PYGZus{}extract\PYGZus{}ai}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 1,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{t\PYGZus{}exhaust\PYGZus{}ai}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 2,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{t\PYGZus{}outdoor\PYGZus{}ai}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 3,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{frost\PYGZus{}ai}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: \PYGZhy{}1,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{bypass\PYGZus{}ao}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: \PYGZhy{}1,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{fan\PYGZus{}vfd\PYGZus{}ao}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 1,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{heater\PYGZus{}ao}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 2,\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}    }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{cooler\PYGZus{}ao}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s}{: 3\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}  \PYGZcb{}\PYGZdq{}}
+\PYG{+w}{    }\PYG{l+s}{\PYGZdq{}\PYGZcb{}\PYGZdq{}}\PYG{p}{;}
+\end{Verbatim}
