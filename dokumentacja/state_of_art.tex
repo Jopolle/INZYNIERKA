@@ -3,14 +3,13 @@
 Celem projektu jest przede wszystkim zaprojektowanie i uruchomienie stanowiska
 laboratoryjnego, a nie opracowanie nowego modelu teoretycznego. Z tego powodu
 przegląd literatury ma charakter praktyczny i koncentruje się na zagadnieniach,
-które były rzeczywiście potrzebne podczas projektu: standardzie sygnału 0--10~V
-w HVAC, podstawowych algorytmach regulacji oraz ogólnych zasadach projektowania
+które były wykorzystane w projekcie: sygnał w standardzie 0-10~V używany w automatyce przemysłowej, podstawowych algorytmach regulacji oraz ogólnych zasadach projektowania
 płytek PCB dla układów mieszanych analogowo--cyfrowych. 
 
 \section{Sygnał 0--10~V i sterowanie HVAC}
 
-W automatyce budynkowej jednym z najczęściej spotykanych sygnałów sterujących jest
-napięcie 0--10~V. W materiałach producentów czujników, przetworników oraz w
+W automatyce budynkowej i innych układach automatyki jednym z najczęściej spotykanych sygnałów sterujących jest
+sygnał napięciowy 0--10~V lub sygnał prądowy 4-20~mA. W materiałach producentów czujników, przetworników oraz w
 opracowaniach dotyczących automatyki budynkowej podkreśla się, że sygnał 0--10~V
 jest powszechnie używany do sterowania siłownikami przepustnic i zaworów, falownikami oraz różnymi czujnikami stosowanymi w instalacjach
 HVAC\cite{veris_010v,jakar_010v,sevensesnor_010v}. Główna zaleta takiego sygnału
@@ -19,10 +18,9 @@ albo zmierzyć napięcie 0--10~V, a jego interpretacja jest intuicyjna ( 0--100~
 odpowiada 0--10~V).
 
 W literaturze naukowej dotyczącej sterowania HVAC większość uwagi poświęca się
-modelom cieplnym i algorytmom regulacji, a warstwa sprzętowa jest zwykle opisywana
+modelom cieplnym i algorytmom regulacji, natomiast warstwa sprzętowa jest zwykle opisywana
 dość ogólnie. W artykułach dotyczących energooszczędnego sterowania HVAC stosuje
-się klasyczne sygnały analogowe (napięciowe lub prądowe), ale szczegóły toru
-0--10~V są zazwyczaj schowane wewnątrz sterowników\cite{kirubakaran2015,almabrok2018}.
+się klasyczne sygnały analogowe (napięciowe lub prądowe)\cite{kirubakaran2015,almabrok2018}.
 W niniejszej pracy ten tor został celowo ,,wyciągnięty na wierzch'' w postaci
 osobnej płytki dydaktycznej, tak aby można było go obserwować i modyfikować podczas
 zajęć laboratoryjnych.
@@ -56,7 +54,7 @@ W projekcie jako środowisko firmware’u wykorzystano Zephyr RTOS, lekki
 system operacyjny czasu rzeczywistego przeznaczony do układów wbudowanych, obsługujący
 wiele architektur i posiadający rozbudowany zestaw sterowników\cite{zephyr_intro,zephyr_docs}.
 Dokumentacja Zephyra pokazuje typowe podejście do struktury aplikacji: logika jest
-podzielona na wątki, a sprzęt (np.\ magistrale SPI, wyświetlacze) opisuje się w
+podzielona na wątki, natomiast sprzęt (np.\ magistrale SPI, wyświetlacze) opisuje się w
 drzewie urządzeń (Devicetree). Do realizacji interfejsu HMI wykorzystano bibliotekę
 LVGL, czyli popularną otwartą bibliotekę graficzną dla mikrokontrolerów\cite{lvgl_intro,lvgl_zephyr}.
 LVGL udostępnia gotowe widżety (przyciski, wykresy, listy), dzięki czemu można skupić
@@ -64,7 +62,7 @@ się na logice HVAC, zamiast implementować od podstaw warstwę graficzną.
 
 \section{Ramy projektowania PCB dla układów mieszanych}
 
-Istotnym elementem projektu jest płytka PCB zawierająca zarówno tory analogowe 0--10~V,
+Istotnym elementem projektu jest płytka PCB zawierająca zarówno sygnały analogowe 0--10~V,
 jak i cyfrowe interfejsy SPI. W literaturze dotyczącej projektowania układów
 mieszanych powtarza się kilka podstawowych zaleceń: logiczny podział
 płytki na część analogową i cyfrową, kontrola powrotu prądów w masie oraz rozsądne
@@ -77,7 +75,7 @@ W notach aplikacyjnych firm Analog Devices i Microchip przedstawiono przykładow
 projekty płytek dla układów mieszanych, gdzie pokazano m.in.\ sposób umieszczania
 przetworników ADC na granicy stref analog/digital, prowadzenia linii SPI oraz
 stosowania przelotek łączących pola masy\cite{adi_an404,microchip_analog_guide}. W niniejszym
-projekcie przyjęto podobne podejście: tory 0--10~V znajduje się w wydzielonych częściach
+projekcie przyjęto podobne podejście: sygnały 0--10~V znajdują się w wydzielonych częściach
 płytki z osobnym polem masy analogowej GNDA, interfejsy SPI umieszczono bliżej
-złącza do płytki Discovery, a przetworniki cyfrowo/analogowe i analogowo/cyfrowe pełnią rolę ,,mostu'' pomiędzy
+złącza do płytki STM32F746G-DISCO, natomiast przetworniki cyfrowo/analogowe i analogowo/cyfrowe pełnią rolę ,,mostu'' pomiędzy
 częścią analogową a cyfrową\cite{TI_ADS8688,TI_DAC7568}.

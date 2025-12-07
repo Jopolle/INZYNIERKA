@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.10.14)  5 DEC 2025 22:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.10.14)  7 DEC 2025 14:30
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1315,28 +1315,28 @@ l.1 \chapter
 ]
 Rozdzia\l  2.
 LaTeX Font Info:    Font shape `T1/qhv/b/it' will be
-(Font)              scaled to size 9.40002pt on input line 10.
+(Font)              scaled to size 9.40002pt on input line 9.
 [3
 
 ]) (./requirements.tex [4]
 Rozdzia\l  3.
 LaTeX Font Info:    Font shape `T1/qhv/m/it' will be
-(Font)              scaled to size 9.40002pt on input line 10.
+(Font)              scaled to size 9.40002pt on input line 9.
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 10.
+(hyperref)                than one, level fixed on input line 9.
 
-LaTeX Font Info:    Trying to load font information for TS1+qhv on input line 17.
+LaTeX Font Info:    Trying to load font information for TS1+qhv on input line 16.
 (/usr/share/texmf/tex/latex/tex-gyre/ts1qhv.fd
 File: ts1qhv.fd 2009/09/25 v1.2 font definition file for TS1/qhv
 )
 LaTeX Font Info:    Font shape `TS1/qhv/m/n' will be
-(Font)              scaled to size 9.40002pt on input line 17.
+(Font)              scaled to size 9.40002pt on input line 16.
  [5
 
 {/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ts1.enc}]) (./hardware.tex [6]
 Rozdzia\l  4.
-<./svg-inkscape/pcb_drawing_svg-raw.pdf, id=273, 805.75621pt x 530.3096pt>
+<./svg-inkscape/pcb_drawing_svg-raw.pdf, id=274, 805.75621pt x 530.3096pt>
 File: ./svg-inkscape/pcb_drawing_svg-raw.pdf Graphic file (type pdf)
 <use ./svg-inkscape/pcb_drawing_svg-raw.pdf>
 Package pdftex.def Info: ./svg-inkscape/pcb_drawing_svg-raw.pdf  used on input line 14.
@@ -1345,35 +1345,32 @@ LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
 (Font)              scaled to size 8.46002pt on input line 15.
 LaTeX Font Info:    Font shape `T1/qhv/b/n' will be
 (Font)              scaled to size 8.46002pt on input line 15.
-
-Underfull \vbox (badness 1668) has occurred while \output is active []
-
- [7
+[7
 
  <./svg-inkscape/pcb_drawing_svg-raw.pdf>] [8]
 <./svg-inkscape/schemat_zasilanie_svg-raw.pdf, id=301, 695.14821pt x 195.94055pt>
 File: ./svg-inkscape/schemat_zasilanie_svg-raw.pdf Graphic file (type pdf)
 <use ./svg-inkscape/schemat_zasilanie_svg-raw.pdf>
-Package pdftex.def Info: ./svg-inkscape/schemat_zasilanie_svg-raw.pdf  used on input line 47.
+Package pdftex.def Info: ./svg-inkscape/schemat_zasilanie_svg-raw.pdf  used on input line 49.
 (pdftex.def)             Requested size: 695.1465pt x 195.94006pt.
 
-Overfull \hbox (4.33008pt too wide) in paragraph at lines 54--55
-\T1/qhv/m/n/10 Tor wyj-±ciowy ge-ne-ru-j¡cy sy-gnaªy 0--10 V oparto na o±mio-ka-na-ªo-wym prze-twor-niku cy-frowo^^Uanalogowym
+Overfull \hbox (2.23387pt too wide) in paragraph at lines 56--57
+\T1/qhv/m/n/10 Tor wyj-±ciowy ge-ne-ru-j¡cy sy-gnaªy 0--10 V oparto na o±mio-ka-na-ªo-wym prze-twor-niku cyfrowo-analogowym
  []
 
 <./svg-inkscape/schemat_dac_svg-raw.pdf, id=305, 742.99678pt x 417.22807pt>
 File: ./svg-inkscape/schemat_dac_svg-raw.pdf Graphic file (type pdf)
 <use ./svg-inkscape/schemat_dac_svg-raw.pdf>
-Package pdftex.def Info: ./svg-inkscape/schemat_dac_svg-raw.pdf  used on input line 58.
+Package pdftex.def Info: ./svg-inkscape/schemat_dac_svg-raw.pdf  used on input line 60.
 (pdftex.def)             Requested size: 742.99496pt x 417.22705pt.
-LaTeX Font Info:    Trying to load font information for T1+ntxtt on input line 63.
+LaTeX Font Info:    Trying to load font information for T1+ntxtt on input line 65.
 (/usr/share/texlive/texmf-dist/tex/latex/newtx/t1ntxtt.fd
 File: t1ntxtt.fd 2012/04/20 v3.1
 )
 LaTeX Font Info:    Font shape `T1/ntxtt/m/n' will be
-(Font)              scaled to size 10.0pt on input line 63.
+(Font)              scaled to size 10.0pt on input line 65.
  [9 <./svg-inkscape/schemat_zasilanie_svg-raw.pdf>]
-Overfull \hbox (4.13931pt too wide) in paragraph at lines 81--82
+Overfull \hbox (4.13931pt too wide) in paragraph at lines 83--84
 []\T1/qhv/m/n/10 Wyj±cia po-szcze-gól-nych wzmac-nia-czy s¡ wy-pro-wa-dzone na uni-wer-salne zª¡-cza J21--J28. Ka»de
  []
 
@@ -1381,9 +1378,14 @@ Overfull \hbox (4.13931pt too wide) in paragraph at lines 81--82
 <./svg-inkscape/schemat_mcu_svg-raw.pdf, id=331, 690.25964pt x 485.37396pt>
 File: ./svg-inkscape/schemat_mcu_svg-raw.pdf Graphic file (type pdf)
 <use ./svg-inkscape/schemat_mcu_svg-raw.pdf>
-Package pdftex.def Info: ./svg-inkscape/schemat_mcu_svg-raw.pdf  used on input line 95.
+Package pdftex.def Info: ./svg-inkscape/schemat_mcu_svg-raw.pdf  used on input line 97.
 (pdftex.def)             Requested size: 690.25797pt x 485.37277pt.
- [11 <./svg-inkscape/schemat_mcu_svg-raw.pdf>] [12]) (./firmware.tex [13] [14]
+ [11 <./svg-inkscape/schemat_mcu_svg-raw.pdf>] [12]
+Overfull \hbox (8.49507pt too wide) in paragraph at lines 136--137
+\T1/qhv/m/n/10 wierzch-nia zaj-mo-wana jest przez pro-sto-k¡tny ob-rys od-po-wia-da-j¡cy for-ma-towi pªytki STM32F746G-DISCO,
+ []
+
+[13]) (./firmware.tex [14]
 Rozdzia\l  5.
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
 (Font)              scaled to size 6.86201pt on input line 17.
@@ -1463,7 +1465,7 @@ L3 programming layer <2020/03/25>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: E7A2FFA644CAA9433F115185DB4602D4;7220.
+(rerunfilecheck)             Checksum: E48B88F796CC9E254F64871D9FDB7288;7214.
 runsystem(rm main.pyg)...executed.
 
 Package logreq Info: Writing requests to 'main.run.xml'.
@@ -1471,18 +1473,18 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 38615 strings out of 474222
- 752386 string characters out of 5748732
+ 38614 strings out of 474222
+ 752371 string characters out of 5748732
  1945975 words of memory out of 5000000
- 60194 multiletter control sequences out of 15000+600000
+ 60193 multiletter control sequences out of 15000+600000
  602731 words of font info for 83 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  109i,17n,131p,1912b,2228s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/newtx/NewTXMI.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/NewTXMI7.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvb.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvbi.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvr.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvri.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/t1xbtt.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/txsys.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/ztmr.pfb>
-Output written on main.pdf (32 pages, 1244594 bytes).
+Output written on main.pdf (32 pages, 1247486 bytes).
 PDF statistics:
- 591 PDF objects out of 1000 (max. 8388607)
- 512 compressed objects within 6 object streams
+ 592 PDF objects out of 1000 (max. 8388607)
+ 513 compressed objects within 6 object streams
  104 named destinations out of 1000 (max. 500000)
  317 words of extra memory for PDF output out of 10000 (max. 10000000)
 
