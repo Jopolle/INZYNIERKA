@@ -10,17 +10,11 @@
 #include <stdbool.h>
 
 #define button_color lv_color_hex(0x0A854A)
-#define line_color lv_color_hex(0x0AA56A)
-#define line_color2 lv_color_hex(0x0A652A)
 
-
-
-#define SEQ_VIEW_WIDTH   350
-#define SEQ_VIEW_HEIGHT  150
-#define SEQ_VIEW_MARGIN  25
-
+/* Ikona nastawy temperatury */
 LV_IMG_DECLARE(TP_type1__not_active);
 
+/* Obrazki z wykresami sekwencji (musisz je wygenerować LVGL converterem) */
 LV_IMG_DECLARE(seq_img_cool_dead_heat);
 LV_IMG_DECLARE(seq_img_cool_rec_dead_rec_heat);
 
@@ -55,6 +49,7 @@ static void write_ao_voltage(int ch, float voltage)
     ARG_UNUSED(voltage);
 }
 
+/* --- Struktury konfiguracji --- */
 
 struct hvac_pid_cfg {
     int32_t kp;
@@ -92,7 +87,7 @@ struct hvac_config {
     struct hvac_pid_cfg pid;
     struct hvac_io_cfg  io;
     struct hvac_seq_cfg seq;
-    const char *sequence_type;
+    const char *sequence_type;   /* np. "cool_dead_heat" albo "cool_rec_dead_rec_heat" */
 };
 
 struct hvac_pid_state {
@@ -114,51 +109,14 @@ static const char *const hvac_seq_band_names[HVAC_SEQ_IDX_COUNT] = {
     "Deadband"
 };
 
+/* --- LVGL / ekrany --- */
 
 static const struct device *display_dev;
 
 static lv_obj_t *screen_dashboard;
 static lv_obj_t *screen_io;
 static lv_obj_t *screen_config;
-static lv_obj_t *screen_seq_viewer; 
-static lv_obj_t *seq_viewer_image; 
-
-static lv_obj_t *seq_line_axis_x;
-static lv_obj_t *seq_line_axis_y;
-
-static lv_obj_t *seq_line_cool_vert;
-static lv_obj_t *seq_line_cool_diag;
-
-static lv_obj_t *seq_line_heat_diag;
-static lv_obj_t *seq_line_heat_vert;
-
-static lv_obj_t *seq_line_hr_l_vert;
-static lv_obj_t *seq_line_hr_l_diag;
-static lv_obj_t *seq_line_hr_r_diag;
-static lv_obj_t *seq_line_hr_r_vert;
-
-static lv_obj_t *seq_line_db;
-
-static lv_point_t seq_axis_x_pts[2];
-static lv_point_t seq_axis_y_pts[2];
-
-static lv_point_t seq_cool_vert_pts[2];
-static lv_point_t seq_cool_diag_pts[2];
-
-static lv_point_t seq_heat_diag_pts[2];
-static lv_point_t seq_heat_vert_pts[2];
-
-static lv_point_t seq_hr_l_vert_pts[2];
-static lv_point_t seq_hr_l_diag_pts[2];
-static lv_point_t seq_hr_r_diag_pts[2];
-static lv_point_t seq_hr_r_vert_pts[2];
-
-static lv_point_t seq_db_pts[2];
-
-static lv_style_t seq_line_style;
-static lv_style_t seq_db_style;
-static bool seq_style_inited;
-static bool seq_graph_created;
+static lv_obj_t *screen_seq_viewer;   /* nowy ekran */
 
 static lv_obj_t *config_status_label;
 
@@ -182,7 +140,7 @@ static lv_obj_t *seq_rows[HVAC_SEQ_IDX_COUNT];
 static lv_obj_t *seq_from_labels[HVAC_SEQ_IDX_COUNT];
 static lv_obj_t *seq_to_labels[HVAC_SEQ_IDX_COUNT];
 
-static lv_obj_t *seq_viewer_image;   
+static lv_obj_t *seq_viewer_image;    /* obrazek na ekranie Sequence Viewer */
 
 struct seq_btn_ctx {
     uint8_t band_index;
@@ -192,6 +150,7 @@ struct seq_btn_ctx {
 
 static struct seq_btn_ctx g_seq_btn_ctx[HVAC_SEQ_IDX_COUNT][2][2];
 
+/* --- Globalna konfiguracja --- */
 
 static struct hvac_config g_hvac_cfg = {
     .setpoint = 0,
@@ -264,6 +223,7 @@ static void hvac_apply_sequence(float pid_out_pct,
 static float hvac_get_extract_temp_c(void);
 static void hvac_control_step(float dt_sec);
 
+/* --- Pomocnicze --- */
 
 static struct hvac_seq_band *hvac_get_seq_band_by_index(struct hvac_seq_cfg *seq, int index)
 {
@@ -594,221 +554,26 @@ static void hvac_refresh_dashboard(void)
     hvac_refresh_dashboard_seq_labels();
 }
 
-
-static lv_coord_t seq_map_u_to_x_px(int32_t u, lv_coord_t w)
-{
-    if (u < -100) u = -100;
-    if (u >  100) u =  100;
-
-    lv_coord_t left  = SEQ_VIEW_MARGIN;
-    lv_coord_t right = w - SEQ_VIEW_MARGIN;
-    if (right <= left) {
-        return left;
-    }
-
-    int32_t span = (int32_t)(right - left);
-    int32_t num  = (int32_t)(u + 100) * span;
-
-    return (lv_coord_t)(left + num / 200);
-}
-
-static lv_coord_t seq_map_pct_to_y_px(int32_t pct, lv_coord_t h)
-{
-    if (pct < 0)   pct = 0;
-    if (pct > 100) pct = 100;
-
-    lv_coord_t top    = SEQ_VIEW_MARGIN;
-    lv_coord_t bottom = h - SEQ_VIEW_MARGIN;
-    if (bottom <= top) {
-        return bottom;
-    }
-
-    int32_t span = (int32_t)(bottom - top);
-    int32_t num  = pct * span;
-
-    return (lv_coord_t)(bottom - num / 100);
-}
-
-
-static void seq_viewer_init_graph_if_needed(void)
-{
-    if (!seq_viewer_image) {
-        return;
-    }
-
-    if (!seq_style_inited) {
-        lv_style_init(&seq_line_style);
-        lv_style_set_line_width(&seq_line_style, 2);
-        lv_style_set_line_color(&seq_line_style, line_color);
-        lv_style_set_line_rounded(&seq_line_style, false);
-
-        lv_style_init(&seq_db_style);
-        lv_style_set_line_width(&seq_db_style, 4);
-        lv_style_set_line_color(&seq_db_style, line_color);
-        lv_style_set_line_rounded(&seq_db_style, false);
-
-        seq_style_inited = true;
-    }
-
-    if (seq_graph_created) {
-        return;
-    }
-
-    seq_line_axis_x    = lv_line_create(seq_viewer_image);
-    seq_line_axis_y    = lv_line_create(seq_viewer_image);
-    seq_line_cool_vert = lv_line_create(seq_viewer_image);
-    seq_line_cool_diag = lv_line_create(seq_viewer_image);
-    seq_line_heat_diag = lv_line_create(seq_viewer_image);
-    seq_line_heat_vert = lv_line_create(seq_viewer_image);
-    seq_line_hr_l_vert = lv_line_create(seq_viewer_image);
-    seq_line_hr_l_diag = lv_line_create(seq_viewer_image);
-    seq_line_hr_r_diag = lv_line_create(seq_viewer_image);
-    seq_line_hr_r_vert = lv_line_create(seq_viewer_image);
-    seq_line_db        = lv_line_create(seq_viewer_image);
-
-    lv_obj_add_style(seq_line_axis_x,    &seq_line_style, LV_PART_MAIN);
-    lv_obj_add_style(seq_line_axis_y,    &seq_line_style, LV_PART_MAIN);
-    lv_obj_add_style(seq_line_cool_vert, &seq_line_style, LV_PART_MAIN);
-    lv_obj_add_style(seq_line_cool_diag, &seq_line_style, LV_PART_MAIN);
-    lv_obj_add_style(seq_line_heat_diag, &seq_line_style, LV_PART_MAIN);
-    lv_obj_add_style(seq_line_heat_vert, &seq_line_style, LV_PART_MAIN);
-    lv_obj_add_style(seq_line_hr_l_vert, &seq_line_style, LV_PART_MAIN);
-    lv_obj_add_style(seq_line_hr_l_diag, &seq_line_style, LV_PART_MAIN);
-    lv_obj_add_style(seq_line_hr_r_diag, &seq_line_style, LV_PART_MAIN);
-    lv_obj_add_style(seq_line_hr_r_vert, &seq_line_style, LV_PART_MAIN);
-    lv_obj_add_style(seq_line_db,        &seq_db_style,   LV_PART_MAIN);
-
-    seq_graph_created = true;
-}
-
-
 static void hvac_refresh_sequence_viewer(void)
 {
     if (!seq_viewer_image) {
         return;
     }
 
-    seq_viewer_init_graph_if_needed();
+    const lv_img_dsc_t *img = NULL;
 
-    lv_coord_t w = lv_obj_get_width(seq_viewer_image);
-    lv_coord_t h = lv_obj_get_height(seq_viewer_image);
-    if (w <= 0 || h <= 0) {
-        return;
-    }
-
-    lv_coord_t y0    = seq_map_pct_to_y_px(0,   h);  
-    lv_coord_t y_top = seq_map_pct_to_y_px(100, h);   
-
-    lv_coord_t x_min  = seq_map_u_to_x_px(-100, w);
-    lv_coord_t x_max  = seq_map_u_to_x_px( 100, w);
-    lv_coord_t x_zero = seq_map_u_to_x_px(0,    w);
-
-    seq_axis_x_pts[0].x = x_min;
-    seq_axis_x_pts[0].y = y0;
-    seq_axis_x_pts[1].x = x_max;
-    seq_axis_x_pts[1].y = y0;
-    lv_line_set_points(seq_line_axis_x, seq_axis_x_pts, 2);
-    lv_obj_clear_flag(seq_line_axis_x, LV_OBJ_FLAG_HIDDEN);
-
-    seq_axis_y_pts[0].x = x_zero;
-    seq_axis_y_pts[0].y = y0;
-    seq_axis_y_pts[1].x = x_zero;
-    seq_axis_y_pts[1].y = y_top;
-    lv_line_set_points(seq_line_axis_y, seq_axis_y_pts, 2);
-    lv_obj_clear_flag(seq_line_axis_y, LV_OBJ_FLAG_HIDDEN);
-
-    /* --- cooling --- */
-    const struct hvac_seq_band *cool = &g_hvac_cfg.seq.cooling;
-    if (cool->from_percent != cool->to_percent) {
-        lv_coord_t x_from = seq_map_u_to_x_px(cool->from_percent, w);
-        lv_coord_t x_to   = seq_map_u_to_x_px(cool->to_percent,   w);
-
-
-
-        seq_cool_diag_pts[0].x = x_from;
-        seq_cool_diag_pts[0].y = y_top;
-        seq_cool_diag_pts[1].x = x_to;
-        seq_cool_diag_pts[1].y = y0;
-        lv_line_set_points(seq_line_cool_diag, seq_cool_diag_pts, 2);
-        lv_obj_clear_flag(seq_line_cool_diag, LV_OBJ_FLAG_HIDDEN);
-    } else {
-        lv_obj_add_flag(seq_line_cool_vert, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_add_flag(seq_line_cool_diag, LV_OBJ_FLAG_HIDDEN);
-    }
-
-    /* --- heating --- */
-    const struct hvac_seq_band *heat = &g_hvac_cfg.seq.heating;
-    if (heat->from_percent != heat->to_percent) {
-        lv_coord_t x_from = seq_map_u_to_x_px(heat->from_percent, w);
-        lv_coord_t x_to   = seq_map_u_to_x_px(heat->to_percent,   w);
-
-        seq_heat_diag_pts[0].x = x_from;
-        seq_heat_diag_pts[0].y = y0;
-        seq_heat_diag_pts[1].x = x_to;
-        seq_heat_diag_pts[1].y = y_top;
-        lv_line_set_points(seq_line_heat_diag, seq_heat_diag_pts, 2);
-        lv_obj_clear_flag(seq_line_heat_diag, LV_OBJ_FLAG_HIDDEN);
-
-
-    } else {
-        lv_obj_add_flag(seq_line_heat_diag, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_add_flag(seq_line_heat_vert, LV_OBJ_FLAG_HIDDEN);
-    }
-
-    /* --- heat recovery --- */
-    const struct hvac_seq_band *hr = &g_hvac_cfg.seq.heat_recovery;
-    if (hr->from_percent != hr->to_percent) {
-        int32_t u1 = hr->from_percent;
-        int32_t u2 = hr->to_percent;
-        if (u1 > u2) {
-            int32_t tmp = u1;
-            u1 = u2;
-            u2 = tmp;
+    if (g_hvac_cfg.sequence_type != NULL) {
+        if (strcmp(g_hvac_cfg.sequence_type, "cool_dead_heat") == 0) {
+            img = &seq_img_cool_dead_heat;
+        } else if (strcmp(g_hvac_cfg.sequence_type, "cool_rec_dead_rec_heat") == 0) {
+            img = &seq_img_cool_rec_dead_rec_heat;
         }
-
-        lv_coord_t x_left  = seq_map_u_to_x_px(u1, w);
-        lv_coord_t x_right = seq_map_u_to_x_px(u2, w);
-        lv_coord_t x1 = seq_map_u_to_x_px(g_hvac_cfg.seq.deadband.from_percent, w);
-        lv_coord_t x2 = seq_map_u_to_x_px(g_hvac_cfg.seq.deadband.to_percent,   w);
-
-        seq_hr_l_diag_pts[0].x = x_left;
-        seq_hr_l_diag_pts[0].y = y_top;
-        seq_hr_l_diag_pts[1].x = x1;
-        seq_hr_l_diag_pts[1].y = y0;
-        lv_line_set_points(seq_line_hr_l_diag, seq_hr_l_diag_pts, 2);
-        lv_obj_clear_flag(seq_line_hr_l_diag, LV_OBJ_FLAG_HIDDEN);
-
-        seq_hr_r_diag_pts[0].x = x2;
-        seq_hr_r_diag_pts[0].y = y0;
-        seq_hr_r_diag_pts[1].x = x_right;
-        seq_hr_r_diag_pts[1].y = y_top;
-        lv_line_set_points(seq_line_hr_r_diag, seq_hr_r_diag_pts, 2);
-        lv_obj_clear_flag(seq_line_hr_r_diag, LV_OBJ_FLAG_HIDDEN);
-
-    } else {
-        lv_obj_add_flag(seq_line_hr_l_vert, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_add_flag(seq_line_hr_l_diag, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_add_flag(seq_line_hr_r_diag, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_add_flag(seq_line_hr_r_vert, LV_OBJ_FLAG_HIDDEN);
     }
 
-    /* --- deadband --- */
-    const struct hvac_seq_band *db = &g_hvac_cfg.seq.deadband;
-    if (db->from_percent != db->to_percent) {
-        lv_coord_t x1 = seq_map_u_to_x_px(db->from_percent, w);
-        lv_coord_t x2 = seq_map_u_to_x_px(db->to_percent,   w);
-
-        seq_db_pts[0].x = x1;
-        seq_db_pts[0].y = y0;
-        seq_db_pts[1].x = x2;
-        seq_db_pts[1].y = y0;
-        lv_line_set_points(seq_line_db, seq_db_pts, 2);
-        lv_obj_clear_flag(seq_line_db, LV_OBJ_FLAG_HIDDEN);
-    } else {
-        lv_obj_add_flag(seq_line_db, LV_OBJ_FLAG_HIDDEN);
+    if (img) {
+        lv_img_set_src(seq_viewer_image, img);
     }
 }
-
 
 /* --- Dashboard handlers --- */
 
@@ -853,9 +618,9 @@ static void on_seq_band_adjust(lv_event_t *e)
     }
 
     hvac_refresh_dashboard_seq_labels();
-    hvac_refresh_sequence_viewer(); 
 }
 
+/* callback: pokaż Screen 1 (setpoint + cooling + heating) */
 static void on_dash_show_screen1(lv_event_t *e)
 {
     ARG_UNUSED(e);
@@ -956,6 +721,7 @@ static void create_dashboard_screen(void)
     lv_obj_set_style_border_width(dash_screen2_container, 0, LV_PART_MAIN);
     lv_obj_set_style_bg_opa(dash_screen2_container, LV_OPA_TRANSP, LV_PART_MAIN);
 
+    /* --- Screen 1: wiersz nastawy temperatury --- */
     lv_obj_t *row_sp = lv_obj_create(dash_screen1_container);
     lv_obj_set_width(row_sp, LV_PCT(100));
     lv_obj_set_height(row_sp, LV_SIZE_CONTENT);
@@ -969,6 +735,7 @@ static void create_dashboard_screen(void)
     lv_obj_set_style_border_width(row_sp, 0, LV_PART_MAIN);
     lv_obj_set_style_bg_opa(row_sp, LV_OPA_TRANSP, LV_PART_MAIN);
 
+    /* Ikona nastawy temperatury */
     lv_obj_t *img_sp = lv_img_create(row_sp);
     lv_img_set_src(img_sp, &TP_type1__not_active);
     lv_img_set_zoom(img_sp, 128);
@@ -991,13 +758,14 @@ static void create_dashboard_screen(void)
     lv_obj_add_event_cb(btn_sp_plus, on_btn_setpoint_plus, LV_EVENT_CLICKED, NULL);
     lv_obj_set_style_bg_color(btn_sp_plus, button_color, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    /* --- Wiersze sekwencji: Cooling/Heating -> Screen 1, Deadband/HR -> Screen 2 --- */
     for (int i = 0; i < HVAC_SEQ_IDX_COUNT; i++) {
         lv_obj_t *parent_for_row;
 
         if (i == HVAC_SEQ_IDX_COOLING || i == HVAC_SEQ_IDX_HEATING) {
-            parent_for_row = dash_screen1_container;
+            parent_for_row = dash_screen1_container;   /* Screen 1 */
         } else {
-            parent_for_row = dash_screen2_container;
+            parent_for_row = dash_screen2_container;   /* Screen 2 */
         }
 
         lv_obj_t *row = lv_obj_create(parent_for_row);
@@ -1017,13 +785,13 @@ static void create_dashboard_screen(void)
 
         if (i == HVAC_SEQ_IDX_COOLING) {
             lv_obj_t *img_cool = lv_img_create(row);
-            lv_img_set_src(img_cool, &snowflake);   
-            lv_img_set_zoom(img_cool, 128);              
+            lv_img_set_src(img_cool, &snowflake);   /* nazwa jak w LV_IMG_DECLARE */
+            lv_img_set_zoom(img_cool, 128);              /* podobnie jak przy TP_type1__not_active */
             lv_obj_set_size(img_cool, 32, 32);
         } else if (i == HVAC_SEQ_IDX_HEATING) {
             lv_obj_t *img_heat = lv_img_create(row);
-            lv_img_set_src(img_heat, &heater);  
-            lv_img_set_zoom(img_heat, 128);          
+            lv_img_set_src(img_heat, &heater);   /* nazwa jak w LV_IMG_DECLARE */
+            lv_img_set_zoom(img_heat, 128);          /* podobnie jak przy TP_type1__not_active */
             lv_obj_set_size(img_heat, 32, 32);
         }else if (i == HVAC_SEQ_IDX_HEAT_RECOVERY)
         {
@@ -1039,7 +807,7 @@ static void create_dashboard_screen(void)
             lv_label_set_text(lbl_band, hvac_seq_band_names[i]);
         }
 
-
+        /* FROM */
         lv_obj_t *from_cont = lv_obj_create(row);
         lv_obj_set_width(from_cont, LV_SIZE_CONTENT);
         lv_obj_set_height(from_cont, LV_SIZE_CONTENT);
@@ -1070,7 +838,7 @@ static void create_dashboard_screen(void)
         lv_obj_center(lbl_from_plus);
         lv_obj_set_style_bg_color(btn_from_plus, button_color, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-
+        /* TO */
         lv_obj_t *to_cont = lv_obj_create(row);
         lv_obj_set_width(to_cont, LV_SIZE_CONTENT);
         lv_obj_set_height(to_cont, LV_SIZE_CONTENT);
@@ -1129,12 +897,15 @@ static void create_dashboard_screen(void)
                             &g_seq_btn_ctx[i][1][1]);
     }
 
+    /* domyślnie widoczny Screen 1, Screen 2 ukryty */
     lv_obj_add_flag(dash_screen2_container, LV_OBJ_FLAG_HIDDEN);
 
     hvac_refresh_dashboard();
 }
 
+/* --- I/O Visualiser: przełączane pod-ekrany AI / AO --- */
 
+/* callback: pokaż wejścia (AI) */
 static void on_io_show_ai(lv_event_t *e)
 {
     ARG_UNUSED(e);
@@ -1146,6 +917,7 @@ static void on_io_show_ai(lv_event_t *e)
     lv_obj_add_flag(io_ao_container, LV_OBJ_FLAG_HIDDEN);
 }
 
+/* callback: pokaż wyjścia (AO) */
 static void on_io_show_ao(lv_event_t *e)
 {
     ARG_UNUSED(e);
@@ -1159,8 +931,10 @@ static void on_io_show_ao(lv_event_t *e)
 
 static void create_io_visualiser(lv_obj_t *parent)
 {
+    /* brak scrolla na ekranie głównym */
     lv_obj_clear_flag(parent, LV_OBJ_FLAG_SCROLLABLE);
 
+    /* kontener na całą zawartość pod headerem */
     lv_obj_t *cont = lv_obj_create(parent);
     lv_obj_set_size(cont, LV_PCT(100), LV_PCT(80));
     lv_obj_align(cont, LV_ALIGN_BOTTOM_MID, 0, 0);
@@ -1175,6 +949,7 @@ static void create_io_visualiser(lv_obj_t *parent)
     lv_obj_set_style_border_width(cont, 0, LV_PART_MAIN);
     lv_obj_set_style_bg_opa(cont, LV_OPA_TRANSP, LV_PART_MAIN);
 
+    /* wiersz z przyciskami przełączającymi AI / AO */
     lv_obj_t *tab_row = lv_obj_create(cont);
     lv_obj_set_width(tab_row, LV_PCT(100));
     lv_obj_set_height(tab_row, LV_SIZE_CONTENT);
@@ -1202,6 +977,7 @@ static void create_io_visualiser(lv_obj_t *parent)
     lv_obj_add_event_cb(btn_ao, on_io_show_ao, LV_EVENT_CLICKED, NULL);
     lv_obj_set_style_bg_color(btn_ao, button_color, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    /* --- pod-ekran: wejścia AI --- */
     io_ai_container = lv_obj_create(cont);
     lv_obj_set_width(io_ai_container, LV_PCT(100));
     lv_obj_set_height(io_ai_container, LV_SIZE_CONTENT);
@@ -1216,6 +992,7 @@ static void create_io_visualiser(lv_obj_t *parent)
     lv_obj_set_style_bg_opa(io_ai_container, LV_OPA_TRANSP, LV_PART_MAIN);
 
 
+    /* kontener na dwie kolumny AI */
     lv_obj_t *ai_cols = lv_obj_create(io_ai_container);
     lv_obj_set_width(ai_cols, LV_PCT(100));
     lv_obj_set_height(ai_cols, LV_SIZE_CONTENT);
@@ -1256,6 +1033,7 @@ static void create_io_visualiser(lv_obj_t *parent)
     lv_obj_set_style_bg_opa(ai_col_left,  LV_OPA_TRANSP, LV_PART_MAIN);
     lv_obj_set_style_bg_opa(ai_col_right, LV_OPA_TRANSP, LV_PART_MAIN);
 
+    /* AI1–AI4 -> lewa kolumna, AI5–AI8 -> prawa kolumna */
     for (int i = 0; i < HVAC_NUM_AI_CHANNELS; i++) {
         lv_obj_t *col = (i < 4) ? ai_col_left : ai_col_right;
 
@@ -1292,6 +1070,7 @@ static void create_io_visualiser(lv_obj_t *parent)
         ai_name_labels[i] = lbl_ai_name;
     }
 
+    /* --- pod-ekran: wyjścia AO --- */
     io_ao_container = lv_obj_create(cont);
     lv_obj_set_width(io_ao_container, LV_PCT(100));
     lv_obj_set_height(io_ao_container, LV_SIZE_CONTENT);
@@ -1305,6 +1084,8 @@ static void create_io_visualiser(lv_obj_t *parent)
     lv_obj_set_style_border_width(io_ao_container, 0, LV_PART_MAIN);
     lv_obj_set_style_bg_opa(io_ao_container, LV_OPA_TRANSP, LV_PART_MAIN);
 
+
+    /* kontener na dwie kolumny AO */
     lv_obj_t *ao_cols = lv_obj_create(io_ao_container);
     lv_obj_set_width(ao_cols, LV_PCT(100));
     lv_obj_set_height(ao_cols, LV_SIZE_CONTENT);
@@ -1345,6 +1126,7 @@ static void create_io_visualiser(lv_obj_t *parent)
     lv_obj_set_style_bg_opa(ao_col_left,  LV_OPA_TRANSP, LV_PART_MAIN);
     lv_obj_set_style_bg_opa(ao_col_right, LV_OPA_TRANSP, LV_PART_MAIN);
 
+    /* AO1–AO4 -> lewa kolumna, AO5–AO8 -> prawa kolumna */
     for (int i = 0; i < HVAC_NUM_AO_CHANNELS; i++) {
         lv_obj_t *col = (i < 4) ? ao_col_left : ao_col_right;
 
@@ -1381,6 +1163,7 @@ static void create_io_visualiser(lv_obj_t *parent)
         ao_name_labels[i] = lbl_ao_name;
     }
 
+    /* domyślnie pokazujemy wejścia, wyjścia ukryte */
     lv_obj_add_flag(io_ao_container, LV_OBJ_FLAG_HIDDEN);
 }
 
@@ -1437,6 +1220,8 @@ static void create_config_screen(void)
     lv_label_set_text(config_status_label, "No config loaded");
 }
 
+/* --- Ekran Sequence Viewer --- */
+
 static void create_seq_viewer_screen(void)
 {
     screen_seq_viewer = lv_obj_create(NULL);
@@ -1460,16 +1245,11 @@ static void create_seq_viewer_screen(void)
     lv_obj_t *lbl = lv_label_create(cont);
     lv_label_set_text(lbl, "Current sequence");
 
-    seq_viewer_image = lv_obj_create(cont);
-    lv_obj_set_size(seq_viewer_image, SEQ_VIEW_WIDTH, SEQ_VIEW_HEIGHT);
-    lv_obj_clear_flag(seq_viewer_image, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_border_width(seq_viewer_image, 0, LV_PART_MAIN);
-    lv_obj_set_style_bg_opa(seq_viewer_image, LV_OPA_TRANSP, LV_PART_MAIN);
+    seq_viewer_image = lv_img_create(cont);
     lv_obj_center(seq_viewer_image);
 
     hvac_refresh_sequence_viewer();
 }
-
 
 /* --- Nawigacja ekranów --- */
 
@@ -1506,12 +1286,14 @@ static void nav_to_seq_viewer(lv_event_t *e)
 }
 
 /* --- JSON loader --- */
+/* --- JSON loader --- */
 
 static int hvac_load_config_from_json(const char *json_src, size_t len,
                                       struct hvac_config *out_cfg)
 {
     char buf[612];
 
+    /* Ze sizeof() masz zwykle wliczone końcowe '\0', obetnij je */
     if (len > 0 && json_src[len - 1] == '\0') {
         len--;
     }
@@ -1749,6 +1531,7 @@ K_THREAD_DEFINE(hvac_ctrl_thread_id,
                 NULL, NULL, NULL,
                 HVAC_CTRL_PRIORITY, 0, 0);
 
+/* --- Zastosowanie konfiguracji --- */
 
 static void hvac_apply_config(const struct hvac_config *cfg)
 {
@@ -1760,6 +1543,7 @@ static void hvac_apply_config(const struct hvac_config *cfg)
     hvac_refresh_sequence_viewer();
 }
 
+/* --- Callbacki ładowania configu --- */
 
 static void on_btn_load_cfg1(lv_event_t *e)
 {
@@ -1773,7 +1557,7 @@ static void on_btn_load_cfg1(lv_event_t *e)
     );
 
     if (ret == 0) {
-        tmp.sequence_type = "cool_dead_heat";  
+        tmp.sequence_type = "cool_dead_heat";  /* ręcznie ustawiamy typ sekwencji */
         hvac_apply_config(&tmp);
         lv_label_set_text(config_status_label, "Loaded Config 1");
     } else {
@@ -1793,7 +1577,7 @@ static void on_btn_load_cfg2(lv_event_t *e)
     );
 
     if (ret == 0) {
-        tmp.sequence_type = "cool_rec_dead_rec_heat";  
+        tmp.sequence_type = "cool_rec_dead_rec_heat";  /* tutaj drugi typ */
         hvac_apply_config(&tmp);
         lv_label_set_text(config_status_label, "Loaded Config 2");
     } else {

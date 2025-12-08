@@ -1,0 +1,9 @@
+/* boards/native_sim_64.overlay */
+
+/* Nie dodajemy żadnych nowych węzłów, tylko nadpisujemy parametry sdl_dc */
+&sdl_dc {
+    /* Tu ustawiasz rozdzielczość okna w symulatorze */
+    width = <480>;   /* np. 2x 480 */
+    height = <272>;  /* 2x 272 */
+    title = "HVAC GUI (native_sim x2)";
+};
