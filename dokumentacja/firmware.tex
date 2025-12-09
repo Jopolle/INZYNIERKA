@@ -43,7 +43,10 @@ Niezależnie od pętli głównej działa również oddzielny wątek odpowiedzial
 
 Na początku pliku \texttt{main.c} zdefiniowano globalne struktury i zmienne opisujące stan regulatora oraz konfigurację stanowiska. Kluczową rolę pełni struktura konfiguracji HVAC, która zawiera nastawę temperatury, parametry regulatora PI, mapowanie analogowych kanałów wejść i wyjść oraz opis sekwencji grzania i chłodzenia (progi podziału na strefy: chłodzenie, martwą strefę, grzanie, ewentualnie odzysk ciepła/chłodu). Dodatkowe pole tekstowe przechowuje nazwę wariantu sekwencji wykorzystywaną m.in.\ do powiązania konfiguracji z odpowiednią prezentacją graficzną. Aktualnie obowiązująca konfiguracja jest przechowywana w jednej globalnej strukturze, a stan wewnętrzny regulatora w osobnej. Wczytanie nowej konfiguracji polega na skopiowaniu jej do struktury globalnej, zresetowaniu stanu regulatora oraz odświeżeniu odpowiednich elementów interfejsu (dashboard, wizualizator I/O, podgląd sekwencji).
 
-Istotnym elementem są również funkcje abstrakcyjne I/O, które odpowiadają za odczyt napięć z wejść analogowych oraz zapis wartości na wyjściach 0--10~V. W obecnej wersji prototypowej funkcje te pełnią rolę atrap: zwracają wartości stałe lub ignorują parametry, co pozwala rozwijać i testować logikę regulatora oraz interfejs LVGL bez konieczności pełnej implementacji obsługi zewnętrznych przetworników A/C i C/A. W docelowej wersji projektu funkcje te będą opakowywać rzeczywistą obsługę urządzeń (ADC i DAC sterowane magistralami SPI) oraz odpowiadać za normalizację napięć 0--10~V na fizyczne wielkości (np.\ temperaturę, przepływ).
+
+%%%%DO ZMIANY JAK BEDZIE OBSŁUGA SPI
+
+Istotnym elementem są również funkcje abstrakcyjne I/O, które odpowiadają za odczyt napięć z wejść analogowych oraz zapis wartości na wyjściach 0--10~V. Zaprojektowano je jako cienką warstwę pośrednią pomiędzy logiką sterowania a sprzętem, tak aby można było w jednym miejscu przeliczać napięcia na wielkości fizyczne (np.\ temperaturę czy przepływ) oraz odwrotnie. W docelowej wersji projektu te same funkcje opakowują obsługę przetworników A/C i C/A sterowanych magistralami SPI, zachowując prosty, czytelny interfejs od strony regulatora i warstwy HMI.
 
 Cała warstwa HMI oparta jest na obiektach LVGL. W kodzie zadeklarowano zestaw wskaźników na potrzeby poszczególnych ekranów: dashboardu, wizualizatora I/O, ekranu wyboru konfiguracji oraz podglądu sekwencji. Dodatkowe tablice wskaźników na etykiety przechowują obiekty tekstowe reprezentujące kolejne kanały wejść i wyjść analogowych na ekranie wizualizatora. Ekran dashboardu korzysta z etykiety wyświetlającej bieżącą nastawę oraz z obiektów reprezentujących pasma sekwencji, którym przypisane są odpowiednie ikony i przyciski do zmiany progów. Ekran ,,Sequence Viewer'' korzysta z osobnego kontenera, w którym rysowany jest prosty wykres liniowy odzwierciedlający aktualne pasma sekwencji. Współrzędne punktów charakterystycznych (granice martwej strefy, początku i końca pasm grzania, chłodzenia i ewentualnego odzysku) są każdorazowo przeliczane na współrzędne ekranu na podstawie bieżącej konfiguracji, a następnie przekazywane do obiektu LVGL odpowiedzialnego za rysowanie linii. Dzięki temu kształt wykresu zmienia się natychmiast po modyfikacji progów na dashboardzie.
 
@@ -138,16 +141,23 @@ Na potrzeby testów i demonstracji przygotowano dwie gotowe konfiguracje, zapisa
 
 Po udanym zdekodowaniu JSON-a tymczasowa struktura konfiguracji jest przekazywana do funkcji, która uaktualnia globalne parametry sterownika, resetuje stan regulatora PI oraz odświeża odpowiednie elementy interfejsu graficznego. W przypadku błędu użytkownik otrzymuje czytelny komunikat na ekranie: ,,Error loading configuration [nr]''. Sam mechanizm pozostaje jednak taki sam: logika sterowania i UI korzystają z jednej, spójnej struktury konfiguracji, natomiast sposób jej wprowadzania (bezpośrednio w kodzie czy z zewnętrznej pamięci) można w przyszłości zmieniać bez potrzeby modyfikowania pozostałych części programu. W dalszej części pracy omówiono próby przeniesienia plików JSON na kartę SD oraz potencjalne kierunki rozwoju tego rozwiązania.
 
-\section{Próby wczytywania konfiguracji z karty SD}
+\subsection{Próby wczytywania konfiguracji z karty SD}
 
-Naturalnym uzupełnieniem modelu konfiguracji opartego na JSON było przeniesienie tych plików z kodu programu do zewnętrznej pamięci, tak aby można było dodawać nowe scenariusze ćwiczeń bez rekompilacji firmware'u. Najprostszym kandydatem jest karta SD, do której użytkownik może łatwo wgrać kolejne pliki \texttt{.json} z poziomu komputera. Przykładem takiego podejścia są drukarki 3D i maszyny CNC, które korzystają z kart SD do przechowywania plików \emph{G-code} opisujących zadania do wykonania.
+Naturalnym uzupełnieniem modelu konfiguracji opartego na JSON było przeniesienie tych plików z kodu
+programu do zewnętrznej pamięci, tak aby można było dodawać nowe scenariusze ćwiczeń bez
+rekompilacji firmware'u. Najprostszym kandydatem jest karta SD, do której użytkownik może łatwo wgrać
+kolejne pliki \texttt{.json} z poziomu komputera. Przykładem takiego podejścia są drukarki~3D i maszyny
+CNC, które korzystają z kart SD do przechowywania plików G-code opisujących zadania do wykonania.
 
-W ramach pracy podjęto pierwsze próby w tej kierunku. Koncepcja zakładała wykorzystanie kontrolera karty SD dostępnego na płytce STM32F746G-DISCO i jego opis w \texttt{DeviceTree}, tak aby Zephyr mógł zainicjalizować urządzenie przy starcie systemu. W warstwie aplikacyjnej planowano dodać prostą procedurę montowania systemu plików FAT na karcie oraz funkcje, które otwierają pliki JSON o z góry ustalonych nazwach, wczytują ich zawartość do bufora i przekazują ją do istniejącej funkcji dekodującej konfigurację. Z punktu widzenia interfejsu HMI ekran ,,Config Loader'' miałby zyskać dodatkowe przyciski pozwalające na wybór pliku z listy dostępnych konfiguracji.
+Na potrzeby pracy przygotowano wstępną konfigurację takiego rozwiązania. Koncepcja zakłada
+wykorzystanie kontrolera karty SD dostępnego na płytce STM32F746G-DISCO i jego opis w DeviceTree,
+tak aby Zephyr mógł zainicjalizować urządzenie przy starcie systemu. W warstwie aplikacyjnej
+przewidziano prostą procedurę montowania systemu plików FAT na karcie oraz funkcje, które otwierają
+pliki JSON o z góry ustalonych nazwach, wczytują ich zawartość do bufora i przekazują ją do istniejącej
+funkcji dekodującej konfigurację. Z punktu widzenia interfejsu HMI ekran ,,Config Loader'' miałby zyskać
+dodatkowe przyciski pozwalające na wybór pliku z listy dostępnych konfiguracji.
 
-Praktyczna realizacja tego pomysłu okazała się bardziej problematyczna, niż początkowo zakładano. Konfiguracja kontrolera SD wraz z odpowiednim zestawem pinów i zegarów w \texttt{DeviceTree} wymagała dokładnego przeanalizowania schematu płytki, a próby montowania systemu plików FATFS kończyły się niestabilnym działaniem: sporadycznymi błędami inicjalizacji i problemami z poprawnym odczytem danych z karty. Ze względu na ograniczony czas oraz fakt, że głównym celem pracy było uruchomienie kompletnego toru sterowania HVAC z interfejsem HMI, zdecydowano się w finalnej wersji firmware'u pozostawić konfiguracje JSON w postaci wbudowanych łańcuchów znakowych w kodzie.
-
-Mimo że obsługa karty SD nie została doprowadzona do w pełni działającego stanu, prace wykonane na tym etapie nie są całkowicie stracone. Przygotowana konfiguracja systemu plików w \texttt{prj.conf}, wstępne wpisy w \texttt{DeviceTree} oraz szkice funkcji montujących FATFS i otwierających pliki stanowią dobry punkt wyjścia do dalszego rozwoju stanowiska. W przyszłości możliwe będzie powrócenie do tego tematu, dopracowanie konfiguracji kontrolera SD i dokończenie integracji w taki sposób, aby pliki konfiguracyjne były traktowane analogicznie do plików \emph{G-code} w drukarkach 3D czy maszynach CNC: jako zewnętrzny opis zadania, który można łatwo przygotować i wymienić bez ingerencji w oprogramowanie urządzenia.
-
+Szczegółowy status realizacji tej funkcjonalności oraz planowane dalsze prace opisano w podrozdziale\ref{sec:kierunki-rozwoju}.
 
 \section{Algorytm regulacji PI i sekwencja pracy układu}
 
@@ -161,7 +171,8 @@ Błąd regulacji zdefiniowano jako różnicę między zadaną temperaturą a tem
 \begin{center}
 \texttt{error = setpoint - T\_extract}
 \end{center}
-Dzięki takiemu zapisowi dodatni błąd oznacza, że powietrze w pomieszczeniu jest za zimne i trzeba grzać, a ujemny -- że jest za ciepłe i należy włączyć chłodzenie. W prototypie zastosowano uproszczony model czujnika: napięcie na wejściu analogowym jest liniowo przeliczane na temperaturę (przyjęto, że 1~V odpowiada 5~\textcelsius{}). Pozwala to uruchomić i przetestować algorytm sterowania, zanim zostanie zaimplementowana obsługa konkretnych czujników temperatury stosowanych w rzeczywistej instalacji HVAC.
+Na potrzeby implementacji przyjęto uproszczony model czujnika: napięcie na wejściu analogowym jest liniowo przeliczane na temperaturę (1~V odpowiada 5~\si{\celsius}). Taki model jest wystarczający do uruchomienia i przetestowania algorytmu sterowania oraz do realizacji ćwiczeń laboratoryjnych, a w razie potrzeby może zostać zastąpiony charakterystyką konkretnego przetwornika lub czujnika temperatury stosowanego w rzeczywistej instalacji HVAC.
+
 
 Wyjście regulatora PI w postaci wartości procentowej trafia następnie do bloku sekwencji. Granice poszczególnych pasm (chłodzenie, grzanie, odzysk ciepła, martwa strefa) są zdefiniowane w konfiguracji jako przedziały \texttt{from\_percent}/\texttt{to\_percent}. Algorytm sekwencji najpierw sprawdza martwą strefę: jeżeli wyjście regulatora mieści się w tym zakresie, wszystkie trzy kanały (grzanie, chłodzenie, odzysk) są wyłączone. Zapobiega to oscylowaniu układu w pobliżu punktu pracy i ogranicza liczbę przełączeń urządzeń.
 
@@ -233,7 +244,8 @@ Trzeci ekran, oznaczony w interfejsie jako ,,Config Loader'', służy do szybkie
 
 Ostatni ekran to ,,Sequence Viewer''. Jego zadaniem jest graficzna prezentacja sekwencji pracy układu na podstawie aktualnych progów zapisanych w konfiguracji. W odróżnieniu od pierwotnej wersji, w której wykorzystywano statyczne bitmapy LVGL, obecna implementacja rysuje wykres liniowy dynamicznie: po każdej zmianie progów na dashboardzie obliczane są nowe współrzędne punktów podziału skali \mbox{-100~\%}-\mbox{100~\%} i aktualizowany jest zestaw linii reprezentujących pasma chłodzenia, martwej strefy, odzysku i grzania. Przykładowe przebiegi dla dwóch wariantów konfiguracji pokazano na rysunkach~\ref{fig:gui-sequence-cool-dead-heat} i~\ref{fig:gui-sequence-rec}. Pierwszy odpowiada prostej sekwencji typu \texttt{cool\_dead\_heat} z wyraźnym pasmem martwej strefy między obszarem chłodzenia i grzania, drugi -- sekwencji z odzyskiem, w której dochodzą dodatkowe ramiona odpowiadające pracy wymiennika.
 
-Choć ekran ten nie prezentuje jeszcze pełnej historii pracy regulatora, już sama zmiana progów na dashboardzie i natychmiastowa zmiana kształtu wykresu w ,,Sequence Viewerze'' dobrze ilustrują zależność pomiędzy parametrami sekwencji a zachowaniem bloków grzania, chłodzenia i odzysku.
+Ekran ten skupia się na zależności pomiędzy parametrami sekwencji a zachowaniem bloków grzania, chłodzenia i odzysku: zmiana progów na dashboardzie natychmiast przekłada się na zmianę kształtu wykresu w ,,Sequence Viewerze'', co dobrze ilustruje sposób podziału skali od \mbox{-100~\%} do \mbox{100~\%} na poszczególne pasma.
+
 
 \begin{figure}[htbp]
   \centering
@@ -279,15 +291,16 @@ Równolegle działa drugi, osobny wątek, odpowiedzialny za pętlę regulacji PI
 
 Priorytet wątku regulacji został ustawiony tak, aby miał on pierwszeństwo przed zadaniami mniej wrażliwymi na opóźnienia, takimi jak aktualizacja etykiet na ekranie. Dzięki temu nawet przy intensywniejszym korzystaniu z interfejsu graficznego, przewijaniu list czy zmianie konfiguracji, podstawowa logika sterowania zachowuje w miarę stabilny okres próbkowania. Z drugiej strony częstotliwości próbkowania dobrano świadomie na dość niskim poziomie, typowym dla układów HVAC, w których stałe czasowe są długie i nie ma potrzeby aktualizowania sterowania co kilka milisekund. Taki kompromis upraszcza harmonogram zadań i ogranicza ryzyko problemów wynikających z niedoszacowania obciążeń.
 
-W obecnej wersji nie wprowadzano dodatkowych wątków do obsługi przetworników A/C i C/A czy nnej komunikacji. Ich obsługa zostanie w przyszłości w naturalny sposób włączona do wątku regulacji (dla ścieżki sterowania) oraz wątku głównego (dla wizualizacji). Jeżeli w toku dalszego rozwoju okaże się, że to za mało, Zephyr pozwala stosunkowo łatwo wydzielić kolejne zadania do osobnych wątków, nadać im priorytety i dołożyć proste mechanizmy synchronizacji.
+Architektura wątków została dobrana tak, aby logika sterowania mogła w prosty sposób zostać powiązana zarówno z docelowymi przetwornikami A/C i C/A, jak i ewentualnymi interfejsami komunikacyjnymi. W razie potrzeby Zephyr pozwala wydzielić obsługę dodatkowych urządzeń do osobnych zadań, nadać im odpowiednie priorytety i dodać mechanizmy synchronizacji, bez konieczności przebudowy istniejącego kodu regulatora.
+
 
 \section{Abstrakcja wejść/wyjść analogowych i integracja z przetwornikami}
 
 Jednym z założeń projektowych było rozdzielenie logiki sterowania od szczegółów sprzętowych związanych z przetwornikami A/C i C/A. Z punktu widzenia regulatora PI i warstwy HMI interesujące są jedynie wielkości fizyczne: temperatura, procent wysterowania grzałki, wartość napięcia na wyjściu sterującym falownikiem. To, czy odczyt temperatury pochodzi z konkretnego kanału przetwornika A/C konkretnego producenta, powinno pozostać ukryte w jednej, spójnej warstwie pośredniej.
 
-W firmware przyjęto prosty model abstrakcji wejść/wyjść. Dla każdego kanału wejściowego AI dostępna jest funkcja zwracająca napięcie 0--10~V w postaci liczby zmiennoprzecinkowej, a dla każdego kanału wyjściowego AO funkcja przyjmująca żądane napięcie w tym samym zakresie. Kod regulatora posługuje się wyłącznie tymi prostymi interfejsami. Przeliczenie napięć na temperaturę i odwrotnie jest zrealizowane w jednym miejscu, według obecnie przyjętego liniowego modelu (1~V odpowiada 5~\textcelsius{}). Zmiana typu czujnika temperatury w przyszłości, na przykład na przetwornik z wyjściem 0--10~V o innej charakterystyce, wymaga więc tylko modyfikacji tej funkcji, a nie całego algorytmu sterowania.
+W firmware przyjęto prosty model abstrakcji wejść/wyjść. W firmware przyjęto prosty model abstrakcji wejść/wyjść. Dla każdego kanału wejściowego AI dostępna jest funkcja zwracająca napięcie 0--10~V w postaci liczby zmiennoprzecinkowej, a dla każdego kanału wyjściowego AO funkcja przyjmująca żądane napięcie w tym samym zakresie. Kod regulatora posługuje się wyłącznie tymi prostymi interfejsami. Przeliczenie napięć na temperaturę i odwrotnie jest zrealizowane w jednym miejscu, według przyjętego liniowego modelu (1~V odpowiada 5~\si{\celsius}). Zmiana typu czujnika temperatury w przyszłości, na przykład na przetwornik z wyjściem 0--10~V o innej charakterystyce, wymaga więc tylko modyfikacji tej funkcji, a nie całego algorytmu sterowania.
 
-W aktualnej wersji prototypowej funkcje odczytu i zapisu napięć są celowo uproszczone. Zwracają wartości stałe lub pomijają parametry, dzięki czemu można było równolegle rozwijać interfejs LVGL, model JSON i logikę regulacji, nie czekając na pełne uruchomienie warstwy sprzętowej. W docelowej wersji projektu ich implementacja zostanie rozszerzona o wywołania driverów korzystających z magistral SPI skonfigurowanych w \texttt{DeviceTree}. Dla przetwornika A/C będzie to typowy schemat: rozpoczęcie konwersji, odczyt próbki, przeliczenie na napięcie oraz ewentualna filtracja; dla przetwornika C/A odpowiednio: przeskalowanie żądanego napięcia na kod cyfrowy i przesłanie go interfejsem SPI.
+W docelowej wersji projektu implementacja warstwy I/O zostanie rozszerzona o wywołania driverów korzystających z magistral SPI skonfigurowanych w DeviceTree. Dla przetwornika A/C będzie to typowy schemat: rozpoczęcie konwersji, odczyt próbki, przeliczenie na napięcie oraz ewentualna filtracja; dla przetwornika C/A odpowiednio: przeskalowanie żądanego napięcia na kod cyfrowy i przesłanie go interfejsem SPI.
 
 Takie podejście ma dwie zalety. Po pierwsze, studenci analizujący kod firmware'u nie są od razu konfrontowani z mało czytelnymi sekwencjami konfiguracji rejestrów przetwornika; mogą skupić się na logice HVAC, a warstwę niskopoziomową potraktować jako osobny, zamknięty moduł. Po drugie, ułatwia to utrzymanie projektu: ewentualna wymiana przetwornika na inny model, lepiej dostępny na rynku, będzie wymagała jedynie modyfikacji warstwy I/O, bez ingerencji w pozostałe części programu.
 
@@ -315,6 +328,7 @@ Trzecia grupa testów dotyczyła interfejsu użytkownika. Sprawdzano, czy zmiana
 Ostatnim krokiem była ocena ogólnej responsywności systemu. W trakcie intensywnego przełączania ekranów, zmiany nastawy i progów sekwencji oraz wielokrotnego ładowania konfiguracji obserwowano, czy interfejs zachowuje płynność, a wątki regulacji nie ulegają widocznemu ,,zamrożeniu''. Dzięki rozdzieleniu zadań na osobne wątki oraz umiarkowanym częstotliwościom odświeżania udało się osiągnąć dostatecznie stabilne działanie.
 
 \section{Ograniczenia obecnej implementacji i kierunki rozwoju}
+\label{sec:kierunki-rozwoju}
 
 Zastosowany w projekcie firmware spełnia podstawowe założenia: pozwala wczytać konfigurację HVAC z opisu JSON, przeprowadzić regulację PI z sekwencyjnym podziałem na pasma grzania, chłodzenia i odzysku oraz zobrazować bieżący stan układu na czytelnym interfejsie HMI. Jednocześnie w aktualnej formie zawiera kilka świadomych ograniczeń, wynikających zarówno z zakresu pracy inżynierskiej, jak i z dostępnego czasu.
 

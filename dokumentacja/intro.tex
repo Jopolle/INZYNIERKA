@@ -1,3 +1,62 @@
+
+
+
+\section*{Wykaz skrótów i oznaczeń}
+
+% Lista skrótów opracowana na podstawie treści pracy inżynierskiej. :contentReference[oaicite:0]{index=0}
+
+\begin{longtable}{p{3cm}p{11cm}}
+\textbf{Skrót} & \textbf{Znaczenie} \\
+\hline
+HVAC & Heating, Ventilation and Air Conditioning -- układy ogrzewania, wentylacji i klimatyzacji budynków, główny obszar zastosowań projektowanego stanowiska. \\
+TFT & Thin Film Transistor -- matryca ciekłokrystaliczna z tranzystorami cienkowarstwowymi, typ wyświetlacza zastosowany w zestawie STM32F746G\_DISCO. \\
+PCB & Printed Circuit Board -- płytka drukowana z obwodami miedzianymi, na której zrealizowano tor 0--10~V i moduł zasilania. \\
+DC & Direct Current -- prąd stały (np. instalacyjne zasilanie 24~V~DC). \\
+PLC & Programmable Logic Controller -- programowalny sterownik logiczny stosowany w automatyce przemysłowej i budynkowej. \\
+BMS & Building Management System -- nadrzędny system zarządzania instalacjami w budynku (HVAC, oświetlenie, bezpieczeństwo). \\
+PI & Proportional--Integral -- regulator z członem proporcjonalnym i całkującym, zastosowany w projekcie do regulacji temperatury. \\
+PID & Proportional--Integral--Derivative -- regulator z członem proporcjonalnym, całkującym i różniczkującym; w pracy rozważany jako rozszerzenie regulatora PI. \\
+ADC & Analog to Digital Converter (A/C) -- przetwornik analogowo--cyfrowy zamieniający sygnał napięciowy na kod cyfrowy (układ ADS8688). \\
+DAC & Digital to Analog Converter (C/A) -- przetwornik cyfrowo--analogowy generujący sygnał napięciowy z kodu cyfrowego (układ DAC7568). \\
+RTOS & Real Time Operating System -- system operacyjny czasu rzeczywistego, w pracy wykorzystano Zephyr RTOS. \\
+MCU & Microcontroller Unit -- mikrokontroler pełniący rolę jednostki centralnej (STM32F746NG na płytce STM32F746G\_/DISCO). \\
+CPU & Central Processing Unit -- rdzeń obliczeniowy mikrokontrolera. \\
+STM32F746G\_/DISCO & Zestaw uruchomieniowy firmy STMicroelectronics z mikrokontrolerem STM32F746NG i wyświetlaczem TFT, pełniący rolę jednostki centralnej stanowiska. \\
+SPI & Serial Peripheral Interface -- szeregowy interfejs komunikacyjny typu master--slave użyty do połączenia z przetwornikami ADC i DAC. \\
+I2C & Inter\-/Integrated Circuit -- dwukierunkowa magistrala szeregowa wykorzystywana w Zephyrze jako jedno ze standardowych peryferiów (w projekcie nieużywana bezpośrednio, ale wspominana w opisie środowiska). \\
+GPIO & General Purpose Input/Output -- uniwersalne linie wejścia/wyjścia cyfrowego mikrokontrolera, wykorzystywane m.in. jako sygnały CS. \\
+DMA & Direct Memory Access -- mechanizm bezpośredniego dostępu do pamięci. \\
+UART & Universal Asynchronous Receiver/Transmitter -- asynchroniczny interfejs szeregowy używany w projekcie jako kanał logowania. \\
+HMI & Human--Machine Interface -- warstwa interfejsu człowiek--maszyna, ekranów, przycisków i elementów graficznych. \\
+UI & User Interface -- interfejs użytkownika; w pracy używany zamiennie z HMI. \\
+GUI & Graphical User Interface -- graficzny interfejs użytkownika oparty na ikonach, przyciskach i wykresach na ekranie TFT. \\
+LVGL & Light and Versatile Graphics Library -- biblioteka graficzna dla systemów wbudowanych użyta do budowy interfejsu HMI. \\
+DeviceTree & Opis sprzętu w postaci drzewa urządzeń używany w Zephyrze do deklarowania peryferiów (magistrale SPI, wyświetlacz, karta SD itp.). \\
+CMake & System budowania projektów C i C++, wykorzystywany przez Zephyra. \\
+NVS & Non\-/Volatile Storage -- warstwa trwałego przechowywania ustawień w Zephyrze. \\
+FAT & File Allocation Table -- klasyczny system plików wykorzystywany m.in. na kartach SD. \\
+LittleFS & Lekki system plików dla pamięci typu flash, obsługiwany przez Zephyra. \\
+BLE & Bluetooth Low Energy -- energooszczędny standard komunikacji radiowej dostępny w stosach sieciowych Zephyra. \\
+IP & Internet Protocol -- protokół sieciowy obsługiwany przez stosy sieciowe Zephyra (Ethernet, BLE IP). \\
+JSON & JavaScript Object Notation -- tekstowy format opisu danych użyty do zapisu konfiguracji HVAC. \\
+SD & Secure Digital -- karta pamięci SD planowana jako nośnik zewnętrznych plików JSON. \\
+CNC & Computer Numerical Control -- obrabiarki sterowane numerycznie; w pracy przywołane jako przykład urządzeń wczytujących pliki z karty SD. \\
+G\-/code & Język poleceń sterujących ruchem maszyn CNC i drukarek 3D, przywołany jako analogia do plików konfiguracji HVAC. \\
+AI & Analog Input -- kanał wejścia analogowego (0--10~V) na projektowanej płytce. \\
+AO & Analog Output -- kanał wyjścia analogowego (0--10~V) na projektowanej płytce. \\
+GNDA & Ground Analog -- masa analogowa wykorzystywana w torach 0--10~V, wydzielona geometrycznie na PCB. \\
+GND & Ground -- wspólna masa układu, odniesienie dla części cyfrowej i zasilania. \\
+SG & Signal Ground -- lokalny powrót sygnałowy dla danego kanału wejściowego/wyjściowego 0--10~V. \\
+SHIELD & Ekran przewodu, podłączany do wspólnego ekranu na płytce w celu poprawy odporności na zakłócenia. \\
+VFD & Variable Frequency Drive -- falownik wentylatora (oznaczenie ,,Fan VFD'' przy jednym z wyjść 0--10~V). \\
+EMC & Electromagnetic Compatibility -- kompatybilność elektromagnetyczna; w pracy wspomniana przy omawianiu ograniczeń projektu PCB. \\
+PPTC & Polymeric Positive Temperature Coefficient -- polimerowy bezpiecznik samoresetujący stosowany w torze zasilania (oznaczenie F1, F2). \\
+TVS & Transient Voltage Suppressor -- dioda zabezpieczająca przed przepięciami w torze zasilania (np. SMBJ33A). \\
+MOSFET & Metal--Oxide--Semiconductor Field Effect Transistor -- tranzystor polowy, w projekcie P\-/MOSFET użyty do ochrony przed odwrotną polaryzacją. \\
+LED & Light Emitting Diode -- dioda świecąca sygnalizująca obecność napięcia zasilania. \\
+FPGA & Field Programmable Gate Array -- programowalna macierz bramek, występująca w tytule cytowanej pracy o szybkim strojeniu regulatora PID. \\
+\end{longtable}
+
 \chapter{Wstęp}
 Celem pracy jest zaprojektowanie i weryfikacja stanowiska pomiarowego dla podstawowych wielkości fizycznych spotykanych w HVAC oraz interfejsu sterującego \SI{0}-\SI{10}{\volt}, z wykorzystaniem zestawu STM32F746G-Discovery (STM32F746NG, Cortex-M7) i dedykowanego modułu pomiarowego PCB. Motywacją jest potrzeba ekonomicznego, dydaktycznego stanowiska do testów i demonstracji algorytmów sterowania.
 
