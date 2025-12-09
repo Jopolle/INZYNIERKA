@@ -11,7 +11,7 @@
 \contentsline {chapter}{\numberline {4}Projekt części sprzętowej}{7}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Wymagania sprzętowe — przegląd}{7}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Moduł zasilania}{8}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Tor wyjściowy 0--10\,V: przetwornik DAC + wzmacniacze operacyjne}{9}{section.4.3}%
+\contentsline {section}{\numberline {4.3}Tor wyjściowy 0--10\,V: przetwornik DAC + wzmacniacze operacyjne}{10}{section.4.3}%
 \contentsline {section}{\numberline {4.4}Tor wejściowy 0--10\,V: interfejs pomiarowy}{11}{section.4.4}%
 \contentsline {section}{\numberline {4.5}Projekt PCB i separacja stref}{13}{section.4.5}%
 \contentsline {chapter}{\numberline {5}Firmware}{15}{chapter.5}%
@@ -22,13 +22,13 @@
 \contentsline {section}{\numberline {5.4}Próby wczytywania konfiguracji z karty SD}{20}{section.5.4}%
 \contentsline {section}{\numberline {5.5}Algorytm regulacji PI i sekwencja pracy układu}{21}{section.5.5}%
 \contentsline {section}{\numberline {5.6}Interfejs użytkownika (HMI)}{22}{section.5.6}%
-\contentsline {section}{\numberline {5.7}Konfiguracja systemu Zephyr}{23}{section.5.7}%
-\contentsline {section}{\numberline {5.8}Wątki systemu czasu rzeczywistego i harmonogram zadań}{24}{section.5.8}%
-\contentsline {section}{\numberline {5.9}Abstrakcja wejść/wyjść analogowych i integracja z przetwornikami}{25}{section.5.9}%
-\contentsline {section}{\numberline {5.10}Diagnostyka i logowanie}{25}{section.5.10}%
-\contentsline {section}{\numberline {5.11}Testy i walidacja działania firmware'u}{26}{section.5.11}%
-\contentsline {section}{\numberline {5.12}Ograniczenia obecnej implementacji i kierunki rozwoju}{26}{section.5.12}%
-\contentsline {section}{\numberline {5.13}Walidacja}{27}{section.5.13}%
-\contentsline {subsection}{\numberline {5.13.1}Metodyka}{27}{subsection.5.13.1}%
-\contentsline {subsection}{\numberline {5.13.2}Wyniki}{27}{subsection.5.13.2}%
-\contentsline {subsection}{\numberline {5.13.3}Dyskusja}{28}{subsection.5.13.3}%
+\contentsline {section}{\numberline {5.7}Konfiguracja systemu Zephyr}{27}{section.5.7}%
+\contentsline {section}{\numberline {5.8}Wątki systemu czasu rzeczywistego i harmonogram zadań}{27}{section.5.8}%
+\contentsline {section}{\numberline {5.9}Abstrakcja wejść/wyjść analogowych i integracja z przetwornikami}{28}{section.5.9}%
+\contentsline {section}{\numberline {5.10}Diagnostyka i logowanie}{29}{section.5.10}%
+\contentsline {section}{\numberline {5.11}Testy i walidacja działania firmware'u}{29}{section.5.11}%
+\contentsline {section}{\numberline {5.12}Ograniczenia obecnej implementacji i kierunki rozwoju}{30}{section.5.12}%
+\contentsline {section}{\numberline {5.13}Walidacja}{31}{section.5.13}%
+\contentsline {subsection}{\numberline {5.13.1}Metodyka}{31}{subsection.5.13.1}%
+\contentsline {subsection}{\numberline {5.13.2}Wyniki}{31}{subsection.5.13.2}%
+\contentsline {subsection}{\numberline {5.13.3}Dyskusja}{31}{subsection.5.13.3}%

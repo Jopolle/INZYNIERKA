@@ -31,26 +31,23 @@ Nie bez znaczenia pozostaje kwestia licencjonowania i wsparcia społeczności. Z
 
 
 
-
-
 \section{Struktura projektu firmware}
 
-Kod aplikacji został zorganizowany w możliwie prosty sposób, z myślą o łatwym uruchomieniu i debugowaniu na płytce STM32F746G-DISCO. Zasadnicza część logiki znajduje się w pojedynczym pliku \texttt{main.c}, natomiast zasoby graficzne (ikony i wykresy sekwencji) są przechowywane w osobnych plikach źródłowych wygenerowanych przez konwerter obrazów LVGL. Taka organizacja jest w pełni wystarczająca na etapie prototypu stanowiska laboratoryjnego.
+Kod aplikacji został zorganizowany w możliwie prosty sposób, z myślą o łatwym uruchomieniu i debugowaniu na płytce STM32F746G-DISCO. Zasadnicza część logiki znajduje się w pojedynczym pliku \texttt{main.c}, natomiast zasoby graficzne (ikony używane w interfejsie) są przechowywane w osobnych plikach źródłowych wygenerowanych przez konwerter obrazów LVGL. Taka organizacja jest w pełni wystarczająca na etapie prototypu stanowiska laboratoryjnego.
 
-Wejściem do aplikacji jest funkcja \texttt{main}, w której inicjalizowany jest sterownik wyświetlacza oraz uruchamiany jest stos LVGL. W tym samym miejscu tworzone są wszystkie ekrany interfejsu: ekran główny (dashboard), wizualizator I/O, ekran wczytywania konfiguracji oraz ekran podglądu sekwencji (,,Sequence Viewer''). Po utworzeniu obiektów HMI wybierany jest ekran startowy, a wyświetlacz zostaje odblokowany.
+Wejściem do aplikacji jest funkcja \texttt{main}, w której inicjalizowany jest sterownik wyświetlacza oraz uruchamiany jest stos LVGL. W tym samym miejscu tworzone są wszystkie ekrany interfejsu: ekran główny (dashboard), wizualizator I/O, ekran wczytywania konfiguracji oraz ekran podglądu sekwencji. Po utworzeniu obiektów HMI wybierany jest ekran startowy, a wyświetlacz zostaje odblokowany.
 
 Pętla główna ma dwie podstawowe odpowiedzialności. Po pierwsze, cyklicznie wywołuje mechanizmy odświeżania LVGL, dzięki czemu interfejs użytkownika reaguje na zdarzenia i jest dostatecznie płynny. Po drugie, w zadanym okresie (w aktualnej implementacji co około 1~s) wykonywana jest aktualizacja wartości kanałów analogowych prezentowanych na ekranie wizualizatora I/O. Do odmierzania czasu wykorzystywany jest systemowy licznik czasu rzeczywistego, a pętla została uzupełniona krótkim opóźnieniem, tak aby nie obciążać niepotrzebnie rdzenia CPU i pozostawić zapas mocy obliczeniowej na dalszy rozwój funkcjonalności.
 
 Niezależnie od pętli głównej działa również oddzielny wątek odpowiedzialny za regulator PI. Wątek ten pracuje z krótszym okresem (około 100~ms), na bieżąco oblicza przyrost czasu między kolejnymi iteracjami i na tej podstawie wykonuje krok algorytmu regulacji. Rozdzielenie obsługi HMI (wątek główny) od pętli sterowania (osobny wątek RTOS) zapewnia dobrą responsywność interfejsu nawet wtedy, gdy w przyszłości logika regulacji lub komunikacja z przetwornikami zostaną znacząco rozbudowane.
 
-Na początku pliku \texttt{main.c} zdefiniowano globalne struktury i zmienne opisujące stan regulatora oraz konfigurację stanowiska. Kluczową rolę pełni struktura konfiguracji HVAC, która zawiera nastawę temperatury, parametry regulatora PI, mapowanie analogowych kanałów wejść i wyjść oraz opis sekwencji grzania i chłodzenia (progi podziału na strefy: chłodzenie, martwą strefę, grzanie, ewentualnie odzysk ciepła/chłodu). Dodatkowe pole tekstowe przechowuje nazwę wariantu sekwencji wykorzystywaną m.in.\ do wyboru odpowiedniej grafiki na ekranie ,,Sequence Viewer''. Aktualnie obowiązująca konfiguracja jest przechowywana w jednej globalnej strukturze, a stan wewnętrzny regulatora w osobnej. Wczytanie nowej konfiguracji polega na skopiowaniu jej do struktury globalnej, zresetowaniu stanu regulatora oraz odświeżeniu odpowiednich elementów interfejsu (dashboard, wizualizator I/O, podgląd sekwencji).
+Na początku pliku \texttt{main.c} zdefiniowano globalne struktury i zmienne opisujące stan regulatora oraz konfigurację stanowiska. Kluczową rolę pełni struktura konfiguracji HVAC, która zawiera nastawę temperatury, parametry regulatora PI, mapowanie analogowych kanałów wejść i wyjść oraz opis sekwencji grzania i chłodzenia (progi podziału na strefy: chłodzenie, martwą strefę, grzanie, ewentualnie odzysk ciepła/chłodu). Dodatkowe pole tekstowe przechowuje nazwę wariantu sekwencji wykorzystywaną m.in.\ do powiązania konfiguracji z odpowiednią prezentacją graficzną. Aktualnie obowiązująca konfiguracja jest przechowywana w jednej globalnej strukturze, a stan wewnętrzny regulatora w osobnej. Wczytanie nowej konfiguracji polega na skopiowaniu jej do struktury globalnej, zresetowaniu stanu regulatora oraz odświeżeniu odpowiednich elementów interfejsu (dashboard, wizualizator I/O, podgląd sekwencji).
 
 Istotnym elementem są również funkcje abstrakcyjne I/O, które odpowiadają za odczyt napięć z wejść analogowych oraz zapis wartości na wyjściach 0--10~V. W obecnej wersji prototypowej funkcje te pełnią rolę atrap: zwracają wartości stałe lub ignorują parametry, co pozwala rozwijać i testować logikę regulatora oraz interfejs LVGL bez konieczności pełnej implementacji obsługi zewnętrznych przetworników A/C i C/A. W docelowej wersji projektu funkcje te będą opakowywać rzeczywistą obsługę urządzeń (ADC i DAC sterowane magistralami SPI) oraz odpowiadać za normalizację napięć 0--10~V na fizyczne wielkości (np.\ temperaturę, przepływ).
 
-Cała warstwa HMI oparta jest na obiektach LVGL. W kodzie zadeklarowano zestaw wskaźników na potrzeby poszczególnych ekranów: dashboardu, wizualizatora I/O, ekranu wyboru konfiguracji oraz podglądu sekwencji. Dodatkowe tablice wskaźników na etykiety przechowują obiekty tekstowe reprezentujące kolejne kanały wejść i wyjść analogowych na ekranie wizualizatora. Ekran dashboardu korzysta z etykiety wyświetlającej bieżącą nastawę oraz z obiektów reprezentujących pasma sekwencji, którym przypisane są odpowiednie ikony i przyciski do zmiany progów. Ekran ,,Sequence Viewer'' wykorzystuje natomiast pojedynczy obiekt typu obraz, na którym prezentowany jest wykres sekwencji w postaci bitmapy LVGL.
+Cała warstwa HMI oparta jest na obiektach LVGL. W kodzie zadeklarowano zestaw wskaźników na potrzeby poszczególnych ekranów: dashboardu, wizualizatora I/O, ekranu wyboru konfiguracji oraz podglądu sekwencji. Dodatkowe tablice wskaźników na etykiety przechowują obiekty tekstowe reprezentujące kolejne kanały wejść i wyjść analogowych na ekranie wizualizatora. Ekran dashboardu korzysta z etykiety wyświetlającej bieżącą nastawę oraz z obiektów reprezentujących pasma sekwencji, którym przypisane są odpowiednie ikony i przyciski do zmiany progów. Ekran ,,Sequence Viewer'' korzysta z osobnego kontenera, w którym rysowany jest prosty wykres liniowy odzwierciedlający aktualne pasma sekwencji. Współrzędne punktów charakterystycznych (granice martwej strefy, początku i końca pasm grzania, chłodzenia i ewentualnego odzysku) są każdorazowo przeliczane na współrzędne ekranu na podstawie bieżącej konfiguracji, a następnie przekazywane do obiektu LVGL odpowiedzialnego za rysowanie linii. Dzięki temu kształt wykresu zmienia się natychmiast po modyfikacji progów na dashboardzie.
 
-Zasoby graficzne zostały wygenerowane za pomocą konwertera obrazów LVGL i są zapisane w oddzielnych plikach źródłowych. Obejmują one m.in.\ ikonę nastawy temperatury, ikonę płatka śniegu symbolizującą chłodzenie, ikonę grzałki, ikonę wymiennika ciepła (odzysk) oraz kilka wykresów sekwencji grzania/chłodzenia odpowiadających różnym wariantom konfiguracji. Każdy z tych plików definiuje strukturę opisu obrazu oraz tablicę danych w formacie wymaganym przez LVGL. W \texttt{main.c} obrazy są jedynie deklarowane i wiązane z obiektami interfejsu; logika HMI operuje więc na wskaźnikach do gotowych zasobów graficznych, a same bitmapy pozostają w osobnych modułach, co upraszcza ich ewentualną podmianę lub rozszerzanie zestawu ikon.
-
+Zasoby graficzne wygenerowane za pomocą konwertera LVGL obejmują przede wszystkim ikony wykorzystywane na dashboardzie: ikonę nastawy temperatury, ikonę płatka śniegu symbolizującą chłodzenie, ikonę grzałki oraz ikonę wymiennika ciepła (odzysk). Każdy z tych plików definiuje strukturę opisu obrazu oraz tablicę danych w formacie wymaganym przez LVGL. W \texttt{main.c} obrazy są jedynie deklarowane i wiązane z obiektami interfejsu; logika HMI operuje więc na wskaźnikach do gotowych zasobów graficznych, a same bitmapy pozostają w osobnych modułach. Wykres sekwencji jest natomiast generowany programowo, dzięki czemu nie wymaga utrzymywania osobnych bitmap dla każdego wariantu pracy.
 
 \section{Model konfiguracji HVAC i format JSON}
 
@@ -178,27 +175,86 @@ z dodatkowymi ograniczeniami do zakresu 0-10~V. Jeżeli w konfiguracji dane wyj�
 
 Cały opisany łańcuch obliczeń jest okresowo wykonywany w osobnym wątku systemu czasu rzeczywistego. Wątek mierzy odstęp czasu między kolejnymi iteracjami, tak aby krok regulacji wykonywać co około 100~ms. Pomiędzy obliczeniami dodano krótkie uśpienie, dzięki czemu procesor ma czas na obsługę innych zadań, w szczególności odświeżanie interfejsu graficznego. Taki prosty harmonogram jest w pełni wystarczający dla stanowiska laboratoryjnego, a jednocześnie na tyle czytelny, że studenci mogą na jego podstawie prześledzić cały przepływ informacji: od pomiaru temperatury, przez regulator PI i sekwencję, aż po napięcia 0--10~V na wyjściach.
 
-
 \section{Interfejs użytkownika (HMI)}
 
-Interfejs użytkownika został zbudowany w całości w bibliotece LVGL i podzielony na kilka logicznych ekranów: dashboard z nastawami i pasmami sekwencji, wizualizator wejść/wyjść analogowych, prosty ,,loader'' konfiguracji oraz ekran z poglądowym wykresem wybranej sekwencji. Wszystkie ekrany mają wspólny pasek nawigacyjny u góry z czterema przyciskami: ,,Dashboard'', ,,I/O'', ,,Sequence'' oraz ,,Config Loader''. Niezależnie od tego, który ekran jest aktualnie widoczny, użytkownik zawsze ma do dyspozycji ten sam układ przycisków służących do przełączania widoków.
+Interfejs użytkownika został zbudowany w całości w bibliotece LVGL i podzielony na kilka logicznych ekranów: dashboard z nastawami i pasmami sekwencji, wizualizator wejść/wyjść analogowych, prosty ,,loader'' konfiguracji oraz ekran z wykresem aktualnej sekwencji. Wszystkie ekrany mają wspólny pasek nawigacyjny u góry z przyciskami ,,Dashboard'', ,,I/O'', ,,Sequence'' oraz ,,Config Loader''. Niezależnie od tego, który ekran jest aktualnie widoczny, użytkownik zawsze ma do dyspozycji ten sam układ przycisków służących do przełączania widoków.
 
-Najważniejszym ekranem z punktu widzenia ćwiczenia jest dashboard. W jego górnej części umieszczono wiersz z przyciskami ,,Screen~1'' i ,,Screen~2'', które przełączają widok między dwiema podstronami. Pierwsza prezentuje nastawę temperatury oraz pasma sekwencji dla chłodzenia i grzania, druga -- pasma martwej strefy i, jeżeli jest w konfiguracji, odzysku ciepła. Taki podział pozwala zmieścić wszystkie elementy w czytelny sposób, bez przeładowania jednego ekranu zbyt dużą liczbą kontrolek.
+Najważniejszym ekranem z punktu widzenia ćwiczenia jest dashboard. W jego górnej części umieszczono wiersz z przyciskami ,,Screen~1'' i ,,Screen~2'', które przełączają widok między dwiema podstronami. Pierwsza prezentuje nastawę temperatury oraz pasma sekwencji dla chłodzenia i grzania, druga -- pasma martwej strefy i, jeżeli jest w konfiguracji, odzysku ciepła. Przykładowe widoki dashboardu dla dwóch konfiguracji pokazano na rysunkach~\ref{fig:gui-dashboard-screen1-config1} i~\ref{fig:gui-dashboard-screen1-config2}, natomiast rysunek~\ref{fig:gui-dashboard-screen2} obrazuje drugi ekran z ustawieniami martwej strefy i odzysku.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img/dashboard12.png}
+  \caption{Ekran ,,Dashboard'' (Screen~1) dla pierwszej konfiguracji: nastawa 21~\textcelsius{} oraz pasma grzania i chłodzenia zgodne z konfiguracją JSON nr~1.}
+  \label{fig:gui-dashboard-screen1-config1}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img/dashboard21.png}
+  \caption{Ekran ,,Dashboard'' (Screen~1) dla drugiej konfiguracji: nastawa 23~\textcelsius{} oraz zmienione granice pasm grzania i chłodzenia.}
+  \label{fig:gui-dashboard-screen1-config2}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img/dashboard22.png}
+  \caption{Ekran ,,Dashboard'' (Screen~2): edycja martwej strefy oraz, w razie potrzeby, pasma odzysku ciepła.}
+  \label{fig:gui-dashboard-screen2}
+\end{figure}
 
 Nastawa temperatury jest prezentowana w postaci wyraźnej etykiety, poprzedzonej ikoną symbolizującą parametr komfortu cieplnego. Po jej bokach znajdują się przyciski ,,-'' i ,,+'', którymi użytkownik może zmniejszać lub zwiększać wartość zadanej temperatury. Zmiana wykonana na ekranie jest od razu zapisywana w aktualnej konfiguracji i wykorzystywana przez regulator PI, dzięki czemu wartości widoczne na dashboardzie odpowiadają rzeczywiście używanym parametrom sterowania.
 
-%DO ZMIANY KIEDY DORZUCIMY NASTĘPNE IKONKI!!------------------------------------------------------------------------------------------
+Poniżej nastawy znajdują się wiersze opisujące poszczególne pasma sekwencji. Każdy wiersz składa się z ikony (np.\ płatka śniegu dla chłodzenia, symbolu grzałki dla ogrzewania czy wymiennika ciepła dla odzysku) oraz kontrolek pozwalających na zmianę progów \texttt{from} i \texttt{to} w danym paśmie. Progi te są edytowane bezpośrednio z poziomu interfejsu za pomocą przycisków ,,-'' i ,,+'', a informacje o tym, który przycisk zmienia jaki próg i w jakim paśmie, przechowywane są w małej strukturze kontekstu powiązanej z danym przyciskiem. Algorytm modyfikujący wartości pilnuje, aby progi nie wyszły poza zakres \mbox{-100~\%}-\mbox{100~\%} i aby dolna granica nie przekraczała górnej. Po każdej zmianie odświeżane są etykiety z wartościami progów, co dobrze widać na porównaniu rysunków~\ref{fig:gui-dashboard-screen1-config1} i~\ref{fig:gui-dashboard-screen1-config2}.
 
-Poniżej nastawy znajdują się wiersze opisujące poszczególne pasma sekwencji. Każdy wiersz składa się z ikony (np.\ płatka śniegu dla chłodzenia, symbolu grzałki dla ogrzewania czy wymiennika ciepła dla odzysku) oraz kontrolek pozwalających na zmianę progów \texttt{from} i \texttt{to} w danym paśmie. Progi te są edytowane bezpośrednio z poziomu interfejsu za pomocą przycisków ,,-'' i ,,+'', a informacje o tym, który przycisk zmienia jaki próg i w jakim paśmie, przechowywane są w małej strukturze kontekstu powiązanej z danym przyciskiem. Algorytm modyfikujący wartości pilnuje, aby progi nie wyszły poza zakres \mbox{-100~\%}-\mbox{100~\%} i aby dolna granica nie przekraczała górnej. Po każdej zmianie odświeżane są etykiety z wartościami progów.
+Kolejny ekran to wizualizator wejść i wyjść układu. W jego górnym wierszu znajdują się przyciski ,,Inputs (AI)'' i ,,Outputs (AO)'', które przełączają widoczność dwóch kontenerów z danymi. Widok wejść pokazuje listę kanałów analogowych 0--7, każdy w osobnym wierszu z numerem kanału, aktualną wartością napięcia oraz opisem roli wynikającym z konfiguracji (np.\ ,,T~supply'', ,,T~extract'' albo ,,Unused''). Odpowiada temu zrzut ekranu na rysunku~\ref{fig:gui-io-inputs}. Widok wyjść jest zbudowany podobnie, lecz dla lepszej czytelności wyjścia podzielono na dwie kolumny, tak aby wszystkie osiem kanałów zmieściło się jednocześnie na ekranie (rysunek~\ref{fig:gui-io-outputs}). Aktualne napięcia na wejściach i wyjściach są odświeżane cyklicznie (co około sekundę), dzięki czemu wizualizator pełni rolę prostego, graficznego miernika pracy przetworników A/C i C/A. Po zmianie konfiguracji role kanałów aktualizują się automatycznie, ponieważ opisy są wyznaczane na podstawie bieżącego mapowania z modelu konfiguracji.
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img/inputs.png}
+  \caption{Ekran ,,I/O Visualiser'' -- podgląd kanałów wejściowych AI wraz z opisami ról przypisanych w konfiguracji.}
+  \label{fig:gui-io-inputs}
+\end{figure}
 
-%DO ZMIANY JAK DODAM IKONKI ZAMIAST NAZW KANAŁÓW-----------------------------------------------------------
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img/outputs.png}
+  \caption{Ekran ,,I/O Visualiser'' -- podgląd kanałów wyjściowych AO w dwóch kolumnach.}
+  \label{fig:gui-io-outputs}
+\end{figure}
 
-Nasępny ekran to wizualizator wejść i wyjść układu. W jego górnym wierszu znajdują się przyciski ,,Inputs (AI)'' i ,,Outputs (AO)'', które przełączają widoczność dwóch kontenerów z danymi. Widok wejść pokazuje listę kanałów analogowych 0-7, każdy w osobnym wierszu z numerem kanału, aktualną wartością napięcia oraz opisem roli wynikającym z konfiguracji (np.\ ,,T~supply'', ,,T~extract'' albo ,,Unused''). Widok wyjść jest zbudowany podobnie, lecz dla lepszej czytelności wyjścia podzielono na dwie kolumny, tak aby wszystkie osiem kanałów zmieściło się jednocześnie na ekranie. Aktualne napięcia na wejściach i wyjściach są odświeżane cyklicznie (co około sekundę), dzięki czemu wizualizator pełni rolę prostego, graficznego miernika pracy przetworników A/C i C/A. Po zmianie konfiguracji role kanałów aktualizują się automatycznie, ponieważ opisy są wyznaczane na podstawie bieżącego mapowania z modelu konfiguracji.
+Trzeci ekran, oznaczony w interfejsie jako ,,Config Loader'', służy do szybkiego przełączania się między przygotowanymi wcześniej konfiguracjami JSON. W centralnej części ekranu umieszczono dwa duże przyciski, odpowiadające dwóm przykładowym konfiguracjom, oraz etykietę z tekstem statusu (rysunek~\ref{fig:gui-config-loader}). Naciśnięcie przycisku powoduje wywołanie procedury wczytującej konfigurację w formacie JSON i zastosowanie nowego zestawu parametrów w globalnej strukturze konfiguracji. Jeżeli operacja się powiedzie, etykieta statusu informuje użytkownika, że dana konfiguracja została załadowana pomyślnie; w przeciwnym razie pojawia się komunikat o błędzie parsowania. W ten sposób student może w trakcie ćwiczenia łatwo przełączyć się między dwoma scenariuszami bez ponownego programowania mikrokontrolera.
 
-Trzeci ekran, oznaczony w interfejsie jako ,,Config Loader'', służy do szybkiego przełączania się między przygotowanymi wcześniej konfiguracjami JSON. W centralnej części ekranu umieszczono dwa duże przyciski, odpowiadające dwóm przykładowym konfiguracjom, oraz etykietę z tekstem statusu. Naciśnięcie przycisku powoduje wywołanie funkcji wczytującej konfigurację w formacie JSON (opisanej w poprzedniej sekcji), a następnie zastosowanie nowego zestawu parametrów w globalnej strukturze konfiguracji. Jeżeli operacja się powiedzie, etykieta statusu informuje użytkownika, że dana konfiguracja została załadowana pomyślnie; w przeciwnym razie pojawia się komunikat o błędzie parsowania. W ten sposób student może w trakcie ćwiczenia łatwo przełączyć się między dwoma scenariuszami bez ponownego programowania mikrokontrolera.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img/loader.png}
+  \caption{Ekran ,,Config Loader'' z przyciskami wczytującymi dwie przykładowe konfiguracje JSON oraz etykietą statusu.}
+  \label{fig:gui-config-loader}
+\end{figure}
 
-Ostatni ekran to ,,Sequence Viewer''. Jego zadaniem jest graficzna prezentacja sekwencji pracy układu w postaci statycznego obrazka LVGL. Na ekranie znajduje się jeden obiekt typu obraz, a wybierana bitmapa zależy od pola \texttt{sequence\_type} w aktualnej konfiguracji. Dla przykładowej konfiguracji o typie \texttt{"cool\_dead\_heat"} prezentowany jest wykres z wyraźnym pasmem martwej strefy między obszarem chłodzenia i grzania, natomiast dla konfiguracji z odzyskiem ciepła (\texttt{"cool\_rec\_dead\_rec\_heat"}) dodatkowo pokazane jest pasmo pracy wymiennika. Ekran ten nie jest jeszcze interaktywny, ale pozwala intuicyjnie powiązać liczbowe wartości progów \texttt{from}/\texttt{to} ustawiane na dashboardzie z ich graficzną reprezentacją. W planach rozwoju przewiduje się rozszerzenie tego widoku o możliwość dynamicznego reagowania na zmiany progów sekwencji, tak aby wykres odzwierciedlał faktyczną sekwencje oraz podświetlanie aktualnie używanej sekwencji w zależności od pracy regulatora.
+Ostatni ekran to ,,Sequence Viewer''. Jego zadaniem jest graficzna prezentacja sekwencji pracy układu na podstawie aktualnych progów zapisanych w konfiguracji. W odróżnieniu od pierwotnej wersji, w której wykorzystywano statyczne bitmapy LVGL, obecna implementacja rysuje wykres liniowy dynamicznie: po każdej zmianie progów na dashboardzie obliczane są nowe współrzędne punktów podziału skali \mbox{-100~\%}-\mbox{100~\%} i aktualizowany jest zestaw linii reprezentujących pasma chłodzenia, martwej strefy, odzysku i grzania. Przykładowe przebiegi dla dwóch wariantów konfiguracji pokazano na rysunkach~\ref{fig:gui-sequence-cool-dead-heat} i~\ref{fig:gui-sequence-rec}. Pierwszy odpowiada prostej sekwencji typu \texttt{cool\_dead\_heat} z wyraźnym pasmem martwej strefy między obszarem chłodzenia i grzania, drugi -- sekwencji z odzyskiem, w której dochodzą dodatkowe ramiona odpowiadające pracy wymiennika.
+
+Choć ekran ten nie prezentuje jeszcze pełnej historii pracy regulatora, już sama zmiana progów na dashboardzie i natychmiastowa zmiana kształtu wykresu w ,,Sequence Viewerze'' dobrze ilustrują zależność pomiędzy parametrami sekwencji a zachowaniem bloków grzania, chłodzenia i odzysku.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img/sequence1.png}
+  \caption{Ekran ,,Sequence Viewer'' dla konfiguracji typu \texttt{cool\_dead\_heat}.}
+  \label{fig:gui-sequence-cool-dead-heat}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img/sequence3.png}
+  \caption{Ekran ,,Sequence Viewer'' dla konfiguracji z odzyskiem (\texttt{cool\_rec\_dead\_rec\_heat})bez zmian}
+  \label{fig:gui-sequence-rec}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.75\textwidth]{img/sequence2.png}
+  \caption{Ekran ,,Sequence Viewer'' dla konfiguracji z odzyskiem (\texttt{cool\_rec\_dead\_rec\_heat}) ze zmienionym zakresem odzysku chłodu.}
+  \label{fig:gui-sequence-rec}
+\end{figure}
 
 
 \section{Konfiguracja systemu Zephyr}
@@ -266,12 +322,10 @@ Najbardziej widocznym kompromisem jest brak pełnej integracji z rzeczywistymi p
 
 Drugim istotnym ograniczeniem jest niedokończona obsługa karty SD i systemu plików FAT. Choć przygotowano wstępną konfigurację i podjęto próby montowania systemu plików, finalna wersja firmware'u korzysta wciąż z wbudowanych łańcuchów JSON. Konfiguracje są więc kompilowane razem z programem, a dodanie nowego scenariusza ćwiczenia wymaga przebudowania firmware'u. Z punktu widzenia użytkownika końcowego, którym ma być student na stanowisku laboratoryjnym, ważniejsze było jednak to, aby samo stanowisko działało stabilnie.
 
-
-%MOŻE DO ZMIANY JAK DOROBIMY DYNAMICZNE RYSOWANIE SEKWENCJI----------------------------------------------------------
-Kolejnym obszarem, w którym świadomie uproszczono rozwiązanie, jest warstwa wizualizacji sekwencji. Ekran ,,Sequence Viewer'' korzysta z przygotowanych statycznych obrazów, dobranych na podstawie typu sekwencji zapisanego w konfiguracji. Nie reaguje jeszcze dynamicznie na zmiany progów \texttt{from}/\texttt{to} wprowadzane na dashboardzie, choć od strony algorytmicznej nic nie stoi na przeszkodzie, aby taką funkcjonalność dopisać.
+Kolejnym obszarem, w którym rozwiązanie pozostaje celowo proste, jest warstwa wizualizacji sekwencji. Obecny ,,Sequence Viewer'' rysuje wykres dynamicznie na podstawie aktualnych progów, co w zupełności wystarcza do pokazania idei sekwencyjnego podziału skali \mbox{-100~\%}-\mbox{100~\%}. Wykres nie prezentuje jednak ani historii pracy regulatora, ani wartości wyjść w funkcji czasu. Rozszerzenie go o podświetlanie bieżącego punktu pracy oraz proste logowanie kilku ostatnich sekund sterowania byłoby naturalnym krokiem rozwojowym.
 
 Wszystkie te ograniczenia można potraktować jako naturalne punkty wyjścia do dalszego rozwoju stanowiska. W pierwszej kolejności planowane jest dokończenie integracji z rzeczywistymi przetwornikami A/C i C/A, tak aby stan wizualizowany na ekranie odpowiadał rzeczywistym napięciom na zaciskach płytki. Równolegle warto wrócić do koncepcji wczytywania konfiguracji z karty SD: docelowo pliki JSON mogłyby być przygotowywane i wgrywane podobnie jak pliki konfiguracyjne do drukarek 3D czy maszyn CNC, co ułatwiłoby prowadzącemu zajęcia szybką zmianę scenariusza ćwiczeń.
 
-Interesującym kierunkiem rozwoju jest także uczynienie widoku sekwencji w pełni interaktywnym. Zamiast statycznej bitmapy LVGL mógłby on dynamicznie rysować wykres w oparciu o aktualne wartości progów zapisane w konfiguracji, a nawet pokazywać bieżący punkt pracy regulatora. Takie rozwiązanie byłoby bardziej przejrzyste dydaktycznie i mogłoby pomóc studentom lepiej zrozumieć zależności pomiędzy nastawami a zachowaniem układu. W dalszej perspektywie możliwe jest również dołączenie prostego interfejsu sieciowego, który pozwoliłby na podgląd i modyfikację nastaw z poziomu przeglądarki lub zewnętrznej aplikacji, korzystając z wbudowanych w Zephyra stosów komunikacyjnych.
+Interesującym kierunkiem rozwoju jest także dalsze rozwinięcie widoku sekwencji. Ponieważ wykres jest już rysowany dynamicznie w oparciu o aktualne progi, powinno być możliwe dodanie do niego podświetlanie aktywnego pasma, wskaźnik sygnału regulatora czy prostą animację przejść pomiędzy stanami. Takie rozwiązanie byłoby przejrzyste dydaktycznie i mogłoby pomóc studentom lepiej zrozumieć zależności pomiędzy nastawami a zachowaniem układu. W dalszej perspektywie możliwe jest również dołączenie prostego interfejsu sieciowego, który pozwoliłby na podgląd i modyfikację nastaw z poziomu przeglądarki lub zewnętrznej aplikacji, korzystając z wbudowanych w Zephyra stosów komunikacyjnych.
 
 Podsumowując, obecna wersja firmware'u realizuje trzon funkcjonalności potrzebny do przeprowadzenia ćwiczeń laboratoryjnych i stanowi dobrą bazę pod dalszą pracę. Zaprojektowana struktura kodu, rozdzielenie warstw abstrakcji i wybór stosu Zephyr+LVGL sprawiają, że rozwijanie stanowiska o kolejne funkcje powinno być możliwe bez gruntownej przebudowy istniejących modułów.

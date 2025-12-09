@@ -16,6 +16,13 @@ Istotnym założeniem projektowym było zachowanie kompatybilności elektrycznej
   \label{fig:pcb-obraz}
 \end{figure}
 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.75\textwidth]{img/render_full.png}
+  \caption{Schemat blokowy głównych modułów funkcjonalnych płytki z interfejsem 0--10~V.}
+  \label{fig:block-diagram}
+\end{figure}
+
 \section{Moduł zasilania}
 
 Układ zasilania płytki został zaprojektowany tak, aby bezpiecznie przyjąć instalacyjne napięcie stałe (do ok.\ 24~V) i rozdzielić je na dwa napięcia pomocnicze: +5~V oraz +3{,}3~V. Schemat modułu zasilania przedstawiono na rysunku~\ref{fig:schemat-zasilanie}.
@@ -42,7 +49,9 @@ co przekłada się na stabilną pracę układu.
 
 Na poziomie PCB cały moduł zasilania został umieszczony w górnej części płytki (rysunek~\ref{fig:pcb-obraz}), możliwie blisko gniazda wejściowego oraz oddalony od wrażliwych części analogowych. Ścieżki prowadzące prądy impulsowe z przetwornic LM2596S zaprojektowano jako szerokie i możliwie krótkie, z lokalnymi polami masy minimalizującymi powierzchnię pętli prądowych. Dzięki temu ograniczono emisję zakłóceń przewodzonych i promieniowanych oraz uproszczono separację pomiędzy strefą mocy a strefą pomiarową.
 
-Zastosowanie przetwornic impulsowych LM2596S zamiast stabilizatorów liniowych (np.\ serii 78xx lub LM317) wynika bezpośrednio z warunków pracy projektowanej płytki. Przy typowym napięciu wejściowym 24~V oraz konieczności zasilenia mikrokontrolera, przetworników A/C i C/A oraz interfejsu użytkownika, stabilizatory liniowe musiałyby rozproszyć znaczną moc na elementach półprzewodnikowych, co prowadziłoby do dużego nagrzewania, wymagało dodatkowych radiatorów i groziło poparzeniu przy dłuższej pracy. Przetwornice obniżające napięcie LM2596S pozwalają uzyskać te same poziomy napięć 5~V i 3{,}3~V przy znacznie wyższej sprawności, co przekłada się na mniejsze straty mocy, niższą temperaturę pracy oraz większy zapas energetyczny dla przyszłej rozbudowy stanowiska. Dodatkowo rodzina LM2596 jest dobrze udokumentowana i szeroko stosowana w aplikacjach laboratoryjnych, co ułatwia dobór elementów zewnętrznych oraz przewidywalne zachowanie układu przy różnych konfiguracjach obciążenia.
+Zastosowanie przetwornic impulsowych LM2596S zamiast stabilizatorów liniowych (np.\ serii 78xx\cite{ST_L78xx} lub LM317\cite{TI_LM317}) wynika bezpośrednio z warunków pracy projektowanej płytki. Przy typowym napięciu wejściowym 24~V oraz konieczności zasilenia mikrokontrolera, przetworników A/C i C/A oraz interfejsu użytkownika, stabilizatory liniowe musiałyby rozproszyć znaczną moc na elementach półprzewodnikowych, co prowadziłoby do dużego nagrzewania, wymagało dodatkowych radiatorów i groziło poparzeniu przy dłuższej pracy. Przetwornice obniżające napięcie LM2596S pozwalają uzyskać te same poziomy napięć 5~V i 3{,}3~V przy znacznie wyższej sprawności, co przekłada się na mniejsze straty mocy i niższą temperaturę pracy. Dodatkowo rodzina LM2596 jest dobrze udokumentowana i szeroko stosowana w aplikacjach laboratoryjnych, co ułatwia dobór elementów zewnętrznych oraz przewidywalne zachowanie układu przy różnych konfiguracjach obciążenia.
+
+Z punktu widzenia generacji sygnału 0--10~V istotne są również pozostałe parametry rodziny TLV9304. Są to wzmacniacze niskoszumowe, o wyjściu typu rail--to--rail i szerokim zakresie napięcia zasilania (od ok.\ 4{,}5~V do 40~V)\cite{TI_TLV9304}. Przy zasilaniu z instalacyjnych 24~V pozwala to uzyskać użyteczny zakres wyjściowy bardzo blisko szyn zasilania, co zmniejsza błąd przy skrajnych poziomach napięcia 0~V i 10~V bez konieczności stosowania dodatkowych przetwornic. Niewielkie napięcie niezrównoważenia oraz mały dryft temperaturowy są w pełni wystarczające dla typowych aplikacji HVAC, gdzie ważniejsza od absolutnej precyzji jest stabilność i powtarzalność sygnału sterującego. Dodatkowo wzmacniacze te potrafią dostarczyć prąd wyjściowy rzędu kilkudziesięciu miliamperów, co upraszcza współpracę z typowymi wejściami 0--10~V przetwornic częstotliwości i sterowników automatyki budynkowej, obciążających wyjście stosunkowo niską rezystancją.
 
 \begin{figure}[htbp]
   \centering
@@ -127,7 +136,7 @@ Takie rozwiązanie ma kilka zalet:
     \item pozwala na łatwe eksperymentowanie i diagnostykę w warunkach laboratoryjnych — zmiana konfiguracji sprowadza się do przełożenia zworek, bez konieczności modyfikacji PCB ani rozcinania ścieżek.
 \end{itemize}
 
-Komunikacja z mikrokontrolerem odbywa się po magistrali SPI: linie SDI, SDO, SCLK i CS zostały połączone z odpowiednimi pinami MCU. Zestaw STM32F746G-DISCO wyposażony jest w dwa oddzielne interfejsy SPI. Dzięki temu oba przetworniki (ADS8688 i DAC7568) mogą komunikować się z MCU niezależnie od siebie; każdy z nich korzysta z własnej magistrali, co upraszcza konfigurację sprzętową i pozwala w przyszłości obsługiwać je w osobnych wątkach oprogramowania.
+Komunikacja z mikrokontrolerem odbywa się po magistrali SPI: linie SDI, SDO, SCLK i CS zostały połączone z odpowiednimi pinami MCU. Zestaw STM32F746G-DISCO wyposażony jest w dwa oddzielne interfejsy SPI. Dzięki temu oba przetworniki (ADS8688 i DAC7568) mogą komunikować się z MCU niezależnie od siebie; każdy z nich korzysta z własnej magistrali, co upraszcza konfigurację sprzętową.
 
 Na poziomie PCB (rysunek~\ref{fig:pcb-obraz}) przetwornik ADS8688 oraz złącza wejściowe zostały umieszczone w lewej części płytki, w niewielkiej odległości od siebie. Ścieżki sygnałowe SIG/SG prowadzone są nad pełną płaszczyzną masy GNDA, z zachowaniem odstępów pomiędzy kanałami, co ogranicza pojemnościowe sprzężenia krzyżowe. Ekrany SHIELD tworzą osobną, częściowo wylaną strefę połączoną z GNDA poprzez elementy R2/C11.
 

@@ -147,13 +147,9 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{A}
     \field{sortinithash}{A}
-    \field{note}{Guideline 36-2021}
-    \field{title}{ASHRAE Guideline 36-2021: High-Performance Sequences of Operation for HVAC Systems}
-    \verb{url}
-    \verb https://www.ashrae.org/technical-resources/bookstore/guideline-36-201
-    \verb 8
-    \endverb
-    \field{year}{2021}
+    \field{note}{Guideline 36-2024}
+    \field{title}{Guideline 36-2024 -- High-Performance Sequences of Operation for HVAC Systems}
+    \field{year}{2024}
   \endentry
 
   \entry{AstromHagglund_PID}{book}{}
@@ -395,6 +391,21 @@
     \field{year}{2015}
   \endentry
 
+  \entry{ST_L78xx}{manual}{}
+    \list{organization}{1}{%
+      {STMicroelectronics}%
+    }
+    \field{labeltitlesource}{title}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{note}{Datasheet DS0422 Rev.\ 36}
+    \field{title}{L78xx Series: Positive Voltage Regulators}
+    \verb{url}
+    \verb https://www.st.com/resource/en/datasheet/l78.pdf
+    \endverb
+    \field{year}{2018}
+  \endentry
+
   \entry{TI_LM2596}{manual}{}
     \list{organization}{1}{%
       {Texas Instruments}%
@@ -408,6 +419,21 @@
     \verb https://www.ti.com/lit/ds/symlink/lm2596.pdf
     \endverb
     \field{year}{2020}
+  \endentry
+
+  \entry{TI_LM317}{manual}{}
+    \list{organization}{1}{%
+      {Texas Instruments}%
+    }
+    \field{labeltitlesource}{title}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{note}{Datasheet SLVS044S}
+    \field{title}{LM317: 3-Terminal Adjustable Regulator}
+    \verb{url}
+    \verb https://www.ti.com/lit/ds/symlink/lm317.pdf
+    \endverb
+    \field{year}{2007}
   \endentry
 
   \entry{lvgl_intro}{misc}{}
@@ -440,7 +466,8 @@
     \field{pages}{16\bibrangedash 26}
     \field{title}{Partitioning and Layout of a Mixed-Signal PCB}
     \verb{url}
-    \verb https://www.hottconsultants.com/pdf_files/mixed-signal.pdf
+    \verb https://www.eetimes.com/partitioning-and-layout-of-a-mixed-signal-pcb
+    \verb -3/
     \endverb
     \field{volume}{18}
     \field{journaltitle}{Printed Circuit Design}
